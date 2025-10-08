@@ -21,17 +21,17 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 navbar-blur">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20 py-2">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="bg-zinc-900 p-2 rounded-lg">
               <Scissors className="h-6 w-6 text-yellow-500" />
             </div>
-            <div>
-              <h1 className="text-2xl font-bold font-heading text-zinc-900">
+            <div className="flex flex-col">
+              <h1 className="text-2xl font-bold font-heading text-zinc-900 leading-tight">
                 Oxy'ss
               </h1>
-              <p className="text-xs text-zinc-600 -mt-1">Barbershop</p>
+              <p className="text-xs text-zinc-600 -mt-0.5 leading-tight">Barbershop</p>
             </div>
           </Link>
 
