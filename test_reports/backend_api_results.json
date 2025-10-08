@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "total_tests": 9,
+    "passed_tests": 9,
+    "success_rate": 100.0,
+    "timestamp": "2025-10-08T13:22:26.230217"
+  },
+  "detailed_results": [
+    {
+      "test_name": "API Root Endpoint",
+      "success": true,
+      "details": "Status: 200, Response: {'message': \"Oxy'ss Barbershop API\"}",
+      "timestamp": "2025-10-08T13:22:25.857542"
+    },
+    {
+      "test_name": "Initialize Services",
+      "success": true,
+      "details": "Status: 200, Response: {'message': 'Services already initialized'}",
+      "timestamp": "2025-10-08T13:22:25.938544"
+    },
+    {
+      "test_name": "Get Services",
+      "success": true,
+      "details": "Status: 200, Found 12 services, Service example: Classic Haircut - $35.0",
+      "timestamp": "2025-10-08T13:22:25.979690"
+    },
+    {
+      "test_name": "Create Appointment",
+      "success": true,
+      "details": "Status: 200, Appointment ID: ba9fe96a-1933-4080-92b7-0f315a55c117, Status: pending",
+      "timestamp": "2025-10-08T13:22:26.022695"
+    },
+    {
+      "test_name": "Get Appointments",
+      "success": true,
+      "details": "Status: 200, Found 2 appointments",
+      "timestamp": "2025-10-08T13:22:26.065724"
+    },
+    {
+      "test_name": "Get Appointment by ID",
+      "success": true,
+      "details": "Status: 200, Customer: John Doe",
+      "timestamp": "2025-10-08T13:22:26.106625"
+    },
+    {
+      "test_name": "Update Appointment Status",
+      "success": true,
+      "details": "Status: 200, Message: Appointment status updated successfully",
+      "timestamp": "2025-10-08T13:22:26.145733"
+    },
+    {
+      "test_name": "Create Contact Message",
+      "success": true,
+      "details": "Status: 200, Message ID: ed9301f3-b6c2-49bc-b523-fca77fedbca1",
+      "timestamp": "2025-10-08T13:22:26.190311"
+    },
+    {
+      "test_name": "Get Contact Messages",
+      "success": true,
+      "details": "Status: 200, Found 2 messages",
+      "timestamp": "2025-10-08T13:22:26.229348"
+    }
+  ]
+}
