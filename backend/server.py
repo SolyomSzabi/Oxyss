@@ -39,8 +39,12 @@ def prepare_for_mongo(data):
 def parse_from_mongo(item):
     if isinstance(item.get('date'), str):
         item['date'] = datetime.fromisoformat(item['date']).date()
+    if isinstance(item.get('appointment_date'), str):
+        item['appointment_date'] = datetime.fromisoformat(item['appointment_date']).date()
     if isinstance(item.get('time'), str):
         item['time'] = datetime.strptime(item['time'], '%H:%M:%S').time()
+    if isinstance(item.get('appointment_time'), str):
+        item['appointment_time'] = datetime.strptime(item['appointment_time'], '%H:%M:%S').time()
     return item
 
 # Models
