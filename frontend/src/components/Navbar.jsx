@@ -74,11 +74,11 @@ const Navbar = () => {
                     <div className="bg-zinc-900 p-2 rounded-lg">
                       <Scissors className="h-6 w-6 text-yellow-500" />
                     </div>
-                    <div>
-                      <h1 className="text-xl font-bold font-heading text-zinc-900">
+                    <div className="flex flex-col">
+                      <h1 className="text-xl font-bold font-heading text-zinc-900 leading-tight">
                         Oxy'ss
                       </h1>
-                      <p className="text-xs text-zinc-600 -mt-1">Barbershop</p>
+                      <p className="text-xs text-zinc-600 -mt-0.5 leading-tight">Barbershop</p>
                     </div>
                   </div>
                   
