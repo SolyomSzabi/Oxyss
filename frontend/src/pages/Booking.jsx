@@ -231,41 +231,102 @@ const Booking = () => {
             </CardHeader>
             <CardContent className="space-y-6">
 
-              {/* Step 1: Service Selection */}
+              {/* Step 1: Service & Barber Selection */}
               {currentStep === 1 && (
-                <div className="space-y-4" data-testid="service-selection-step">
-                  <p className="text-zinc-600 mb-6">
-                    Choose the service you'd like to book:
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {services.map((service) => (
-                      <div
-                        key={service.id}
-                        className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                          bookingData.serviceId === service.id
-                            ? 'border-yellow-600 bg-yellow-50'
-                            : 'border-zinc-200 hover:border-zinc-300'
-                        }`}
-                        onClick={() => handleServiceSelect(service.id)}
-                        data-testid={`service-option-${service.id}`}
-                      >
-                        <h3 className="font-semibold text-zinc-900 mb-2">{service.name}</h3>
-                        <p className="text-sm text-zinc-600 mb-3">{service.description}</p>
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center space-x-3">
-                            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                              <Clock className="h-3 w-3 mr-1" />
-                              {service.duration} min
-                            </Badge>
-                            <div className="flex items-center text-green-600 font-semibold">
-                              <DollarSign className="h-4 w-4" />
-                              {service.price}
+                <div className="space-y-8" data-testid="service-selection-step">
+                  {/* Service Selection */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-zinc-900 mb-4">
+                      Choose Your Service
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {services.map((service) => (
+                        <div
+                          key={service.id}
+                          className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                            bookingData.serviceId === service.id
+                              ? 'border-yellow-600 bg-yellow-50'
+                              : 'border-zinc-200 hover:border-zinc-300'
+                          }`}
+                          onClick={() => handleServiceSelect(service.id)}
+                          data-testid={`service-option-${service.id}`}
+                        >
+                          <h4 className="font-semibold text-zinc-900 mb-2">{service.name}</h4>
+                          <p className="text-sm text-zinc-600 mb-3">{service.description}</p>
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center space-x-3">
+                              <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                                <Clock className="h-3 w-3 mr-1" />
+                                {service.duration} min
+                              </Badge>
+                              <div className="flex items-center text-green-600 font-semibold">
+                                <DollarSign className="h-4 w-4" />
+                                {service.price}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
+
+                  {/* Barber Selection */}
+                  {bookingData.serviceId && (
+                    <div>
+                      <h3 className="text-lg font-semibold text-zinc-900 mb-4">
+                        Choose Your Barber
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {barbers.map((barber) => (
+                          <div
+                            key={barber.id}
+                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                              bookingData.barberId === barber.id
+                                ? 'border-yellow-600 bg-yellow-50'
+                                : 'border-zinc-200 hover:border-zinc-300'
+                            }`}
+                            onClick={() => handleBarberSelect(barber.id)}
+                            data-testid={`barber-option-${barber.id}`}
+                          >
+                            <div className="flex items-start space-x-3">
+                              <img 
+                                src={barber.image_url} 
+                                alt={barber.name}
+                                className="w-12 h-12 rounded-full object-cover"
+                              />
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-zinc-900 mb-1">{barber.name}</h4>
+                                <p className="text-sm text-zinc-600 mb-2">{barber.description}</p>
+                                <div className="flex items-center space-x-2">
+                                  <Badge variant="outline" className="text-xs">
+                                    {barber.experience_years}+ years
+                                  </Badge>
+                                </div>
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {barber.specialties.slice(0, 2).map((specialty, idx) => (
+                                    <Badge key={idx} variant="secondary" className="text-xs bg-zinc-100 text-zinc-600">
+                                      {specialty}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Selection Summary */}
+                  {bookingData.serviceId && bookingData.barberId && (
+                    <div className="bg-green-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-green-800 mb-2">Selection Summary</h4>
+                      <div className="text-sm text-green-700">
+                        <p><strong>Service:</strong> {bookingData.serviceName}</p>
+                        <p><strong>Barber:</strong> {bookingData.barberName}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
