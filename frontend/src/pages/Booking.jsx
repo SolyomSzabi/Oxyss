@@ -143,6 +143,8 @@ const Booking = () => {
         customer_phone: bookingData.customerPhone,
         service_id: bookingData.serviceId,
         service_name: bookingData.serviceName,
+        barber_id: bookingData.barberId,
+        barber_name: bookingData.barberName,
         appointment_date: format(bookingData.appointmentDate, 'yyyy-MM-dd'),
         appointment_time: bookingData.appointmentTime + ':00'
       };
