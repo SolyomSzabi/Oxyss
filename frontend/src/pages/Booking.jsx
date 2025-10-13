@@ -511,6 +511,8 @@ const Booking = () => {
                       setBookingData({
                         serviceId: '',
                         serviceName: '',
+                        barberId: '',
+                        barberName: '',
                         appointmentDate: null,
                         appointmentTime: '',
                         customerName: '',
