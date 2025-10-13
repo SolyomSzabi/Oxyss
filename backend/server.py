@@ -242,15 +242,36 @@ async def get_appointment(appointment_id: str):
     
     return appointment
 
-@api_router.patch("/appointments/{appointment_id}")
+@api_router.patch("/appointments/{appointment_id}/status")
 async def update_appointment_status(appointment_id: str, status: str):
+    valid_statuses = ["pending", "confirmed", "completed", "cancelled"]
+    if status not in valid_statuses:
+        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {valid_statuses}")
+        
     result = await db.appointments.update_one(
         {"id": appointment_id},
         {"$set": {"status": status}}
     )
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Appointment not found")
-    return {"message": "Appointment status updated successfully"}
+    return {"message": "Appointment status updated successfully", "status": status}
+
+class StatusUpdate(BaseModel):
+    status: str
+
+@api_router.patch("/appointments/{appointment_id}")
+async def update_appointment_status_body(appointment_id: str, status_update: StatusUpdate):
+    valid_statuses = ["pending", "confirmed", "completed", "cancelled"]
+    if status_update.status not in valid_statuses:
+        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {valid_statuses}")
+        
+    result = await db.appointments.update_one(
+        {"id": appointment_id},
+        {"$set": {"status": status_update.status}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    return {"message": "Appointment status updated successfully", "status": status_update.status}
 
 # Contact messages endpoints
 @api_router.post("/contact", response_model=ContactMessage)
