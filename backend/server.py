@@ -178,6 +178,46 @@ async def get_appointments():
     
     return appointments
 
+@api_router.get("/barbers/{barber_id}/appointments", response_model=List[Appointment])
+async def get_barber_appointments(barber_id: str, status: Optional[str] = None, date_from: Optional[str] = None, date_to: Optional[str] = None):
+    # Build query filter
+    query_filter = {"barber_id": barber_id}
+    
+    if status:
+        query_filter["status"] = status
+        
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["$gte"] = date_from
+        if date_to:
+            date_filter["$lte"] = date_to
+        if date_filter:
+            query_filter["appointment_date"] = date_filter
+    
+    appointments = await db.appointments.find(query_filter, {"_id": 0}).sort("appointment_date", 1).to_list(1000)
+    
+    # Parse dates and times from MongoDB
+    for appointment in appointments:
+        appointment = parse_from_mongo(appointment)
+        if isinstance(appointment['created_at'], str):
+            appointment['created_at'] = datetime.fromisoformat(appointment['created_at'])
+    
+    return appointments
+
+@api_router.get("/appointments/today", response_model=List[Appointment])
+async def get_today_appointments():
+    today = datetime.now(timezone.utc).date().isoformat()
+    appointments = await db.appointments.find({"appointment_date": today}, {"_id": 0}).sort("appointment_time", 1).to_list(1000)
+    
+    # Parse dates and times from MongoDB
+    for appointment in appointments:
+        appointment = parse_from_mongo(appointment)
+        if isinstance(appointment['created_at'], str):
+            appointment['created_at'] = datetime.fromisoformat(appointment['created_at'])
+    
+    return appointments
+
 @api_router.post("/appointments", response_model=Appointment)
 async def create_appointment(appointment_data: AppointmentCreate):
     appointment_dict = appointment_data.model_dump()
