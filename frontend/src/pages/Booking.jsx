@@ -223,7 +223,7 @@ const Booking = () => {
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-zinc-900">
-                {currentStep === 1 && 'Select Service'}
+                {currentStep === 1 && 'Select Service & Barber'}
                 {currentStep === 2 && 'Choose Date & Time'}
                 {currentStep === 3 && 'Contact Information'}
                 {currentStep === 4 && 'Booking Confirmed!'}
