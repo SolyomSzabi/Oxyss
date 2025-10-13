@@ -335,13 +335,20 @@ const Booking = () => {
                 <div className="space-y-6" data-testid="datetime-selection-step">
                   {selectedServiceDetails && (
                     <div className="bg-yellow-50 p-4 rounded-lg mb-6">
-                      <h3 className="font-semibold text-zinc-900 mb-2">Selected Service:</h3>
-                      <div className="flex items-center justify-between">
-                        <span className="text-zinc-700">{selectedServiceDetails.name}</span>
-                        <div className="flex items-center space-x-2">
-                          <Badge variant="secondary">{selectedServiceDetails.duration} min</Badge>
-                          <span className="font-semibold text-green-600">${selectedServiceDetails.price}</span>
+                      <h3 className="font-semibold text-zinc-900 mb-3">Your Selection:</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-zinc-700"><strong>Service:</strong> {selectedServiceDetails.name}</span>
+                          <div className="flex items-center space-x-2">
+                            <Badge variant="secondary">{selectedServiceDetails.duration} min</Badge>
+                            <span className="font-semibold text-green-600">${selectedServiceDetails.price}</span>
+                          </div>
                         </div>
+                        {bookingData.barberName && (
+                          <div className="flex items-center">
+                            <span className="text-zinc-700"><strong>Barber:</strong> {bookingData.barberName}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
