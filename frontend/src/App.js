@@ -10,6 +10,7 @@ import Gallery from "./pages/Gallery";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
+import BarberDashboard from "./pages/BarberDashboard";
 
 // Import components
 import Navbar from "./components/Navbar";
