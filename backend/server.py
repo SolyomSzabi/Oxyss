@@ -128,6 +128,28 @@ class ContactMessageCreate(BaseModel):
 async def root():
     return {"message": "Oxy'ss Barbershop API"}
 
+# Barbers endpoints
+@api_router.get("/barbers", response_model=List[Barber])
+async def get_barbers():
+    barbers = await db.barbers.find({}, {"_id": 0}).to_list(1000)
+    return barbers
+
+@api_router.post("/barbers", response_model=Barber)
+async def create_barber(barber_data: BarberCreate):
+    barber_dict = barber_data.model_dump()
+    barber_obj = Barber(**barber_dict)
+    
+    doc = barber_obj.model_dump()
+    _ = await db.barbers.insert_one(doc)
+    return barber_obj
+
+@api_router.get("/barbers/{barber_id}", response_model=Barber)
+async def get_barber(barber_id: str):
+    barber = await db.barbers.find_one({"id": barber_id}, {"_id": 0})
+    if not barber:
+        raise HTTPException(status_code=404, detail="Barber not found")
+    return barber
+
 # Services endpoints
 @api_router.get("/services", response_model=List[Service])
 async def get_services():
