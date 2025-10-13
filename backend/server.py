@@ -91,6 +91,8 @@ class Appointment(BaseModel):
     customer_phone: str
     service_id: str
     service_name: str
+    barber_id: str
+    barber_name: str
     appointment_date: date
     appointment_time: time
     status: str = "pending"  # pending, confirmed, completed, cancelled
@@ -102,6 +104,8 @@ class AppointmentCreate(BaseModel):
     customer_phone: str
     service_id: str
     service_name: str
+    barber_id: str
+    barber_name: str
     appointment_date: date
     appointment_time: time
 
