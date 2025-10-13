@@ -14,6 +14,7 @@ const Navbar = () => {
     { href: '/gallery', label: 'Gallery' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
+    { href: '/dashboard', label: 'Dashboard' },
   ];
 
   const isActive = (path) => location.pathname === path;
