@@ -21,6 +21,7 @@ const Booking = () => {
   const selectedService = location.state?.selectedService || null;
 
   const [services, setServices] = useState([]);
+  const [barbers, setBarbers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -28,6 +29,8 @@ const Booking = () => {
   const [bookingData, setBookingData] = useState({
     serviceId: selectedService?.id || '',
     serviceName: selectedService?.name || '',
+    barberId: '',
+    barberName: '',
     appointmentDate: null,
     appointmentTime: '',
     customerName: '',
