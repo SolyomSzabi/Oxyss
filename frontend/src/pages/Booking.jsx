@@ -82,6 +82,15 @@ const Booking = () => {
     }));
   };
 
+  const handleBarberSelect = (barberId) => {
+    const barber = barbers.find(b => b.id === barberId);
+    setBookingData(prev => ({
+      ...prev,
+      barberId: barberId,
+      barberName: barber?.name || ''
+    }));
+  };
+
   const handleDateSelect = (date) => {
     setBookingData(prev => ({
       ...prev,
