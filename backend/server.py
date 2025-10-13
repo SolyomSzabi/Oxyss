@@ -48,6 +48,25 @@ def parse_from_mongo(item):
     return item
 
 # Models
+class Barber(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    description: str
+    experience_years: int
+    specialties: List[str]
+    image_url: Optional[str] = None
+    is_available: bool = True
+
+class BarberCreate(BaseModel):
+    name: str
+    description: str
+    experience_years: int
+    specialties: List[str]
+    image_url: Optional[str] = None
+    is_available: bool = True
+
 class Service(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
