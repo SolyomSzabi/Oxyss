@@ -234,60 +234,97 @@ async def get_contact_messages():
     
     return messages
 
-# Initialize default services
+# Initialize default barbers and services
+@api_router.post("/init-data")
+async def initialize_data():
+    # Initialize barbers if not exists
+    existing_barbers = await db.barbers.count_documents({})
+    if existing_barbers == 0:
+        default_barbers = [
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Oxy",
+                "description": "Master barber and founder with exceptional skills in classic and modern cuts",
+                "experience_years": 15,
+                "specialties": ["Classic cuts", "Fades", "Beard styling", "Hot towel shaves"],
+                "image_url": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+                "is_available": True
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Helga",
+                "description": "Expert stylist specializing in modern cuts and precision beard work",
+                "experience_years": 8,
+                "specialties": ["Modern styles", "Precision cuts", "Beard trimming", "Hair treatments"],
+                "image_url": "https://images.unsplash.com/photo-1594736797933-d0401ba5fe65?w=400&h=400&fit=crop&crop=face",
+                "is_available": True
+            }
+        ]
+        await db.barbers.insert_many(default_barbers)
+    
+    # Initialize services if not exists
+    existing_services = await db.services.count_documents({})
+    if existing_services == 0:
+        default_services = [
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Classic Haircut",
+                "description": "Traditional men's haircut with wash and style",
+                "duration": 45,
+                "price": 35.00
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Beard Trim & Style",
+                "description": "Professional beard trimming and styling",
+                "duration": 30,
+                "price": 25.00
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Premium Cut & Beard",
+                "description": "Complete grooming package with haircut and beard service",
+                "duration": 75,
+                "price": 55.00
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Hot Towel Shave",
+                "description": "Traditional hot towel shave with premium products",
+                "duration": 45,
+                "price": 40.00
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Kids Haircut",
+                "description": "Haircut for children under 12",
+                "duration": 30,
+                "price": 20.00
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Senior Haircut",
+                "description": "Haircut for seniors (65+)",
+                "duration": 45,
+                "price": 28.00
+            }
+        ]
+        await db.services.insert_many(default_services)
+    
+    barber_count = await db.barbers.count_documents({})
+    service_count = await db.services.count_documents({})
+    
+    return {
+        "message": "Data initialized successfully",
+        "barbers_count": barber_count,
+        "services_count": service_count
+    }
+
+# Legacy endpoint for backward compatibility
 @api_router.post("/init-services")
 async def initialize_services():
-    existing_services = await db.services.count_documents({})
-    if existing_services > 0:
-        return {"message": "Services already initialized"}
-    
-    default_services = [
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Classic Haircut",
-            "description": "Traditional men's haircut with wash and style",
-            "duration": 45,
-            "price": 35.00
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Beard Trim & Style",
-            "description": "Professional beard trimming and styling",
-            "duration": 30,
-            "price": 25.00
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Premium Cut & Beard",
-            "description": "Complete grooming package with haircut and beard service",
-            "duration": 75,
-            "price": 55.00
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Hot Towel Shave",
-            "description": "Traditional hot towel shave with premium products",
-            "duration": 45,
-            "price": 40.00
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Kids Haircut",
-            "description": "Haircut for children under 12",
-            "duration": 30,
-            "price": 20.00
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Senior Haircut",
-            "description": "Haircut for seniors (65+)",
-            "duration": 45,
-            "price": 28.00
-        }
-    ]
-    
-    await db.services.insert_many(default_services)
-    return {"message": "Services initialized successfully"}
+    result = await initialize_data()
+    return {"message": result["message"], "services_initialized": True}
 
 # Include the router in the main app
 app.include_router(api_router)
