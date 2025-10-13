@@ -497,6 +497,7 @@ const Booking = () => {
                     <h3 className="font-semibold text-zinc-900 mb-3">Appointment Details:</h3>
                     <div className="space-y-2 text-sm">
                       <p><strong>Service:</strong> {bookingData.serviceName}</p>
+                      <p><strong>Barber:</strong> {bookingData.barberName}</p>
                       <p><strong>Date:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>Time:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>Customer:</strong> {bookingData.customerName}</p>
