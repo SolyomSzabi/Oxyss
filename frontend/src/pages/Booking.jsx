@@ -47,18 +47,26 @@ const Booking = () => {
   ];
 
   useEffect(() => {
-    fetchServices();
+    fetchData();
   }, []);
 
-  const fetchServices = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      await axios.post(`${API}/init-services`);
-      const response = await axios.get(`${API}/services`);
-      setServices(response.data);
-    } catch (error) {
-      console.error('Error fetching services:', error);
-      toast.error('Failed to load services');
+      // Initialize data (barbers and services)
+      await axios.post(`${API}/init-data`);
+      
+      // Fetch services and barbers
+      const [servicesResponse, barbersResponse] = await Promise.all([
+        axios.get(`${API}/services`),
+        axios.get(`${API}/barbers`)
+      ]);
+      
+      setServices(servicesResponse.data);
+      setBarbers(barbersResponse.data);
+    } catch (err) {
+      setError('Failed to load booking data');
+      console.error('Error fetching data:', err);
     } finally {
       setLoading(false);
     }
