@@ -96,8 +96,13 @@ const Booking = () => {
     setBookingData(prev => ({
       ...prev,
       barberId: barberId,
-      barberName: barber?.name || ''
+      barberName: barber?.name || '',
+      serviceId: '', // Reset service selection when barber changes
+      serviceName: ''
     }));
+    
+    // Fetch services for this barber
+    fetchBarberServices(barberId);
   };
 
   const handleDateSelect = (date) => {
