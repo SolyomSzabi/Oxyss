@@ -131,7 +131,7 @@ const Booking = () => {
   const isStepComplete = (step) => {
     switch (step) {
       case 1:
-        return bookingData.serviceId !== '' && bookingData.barberId !== '';
+        return bookingData.barberId !== '' && bookingData.serviceId !== '';
       case 2:
         return bookingData.appointmentDate && bookingData.appointmentTime !== '';
       case 3:
