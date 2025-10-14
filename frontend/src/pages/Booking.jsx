@@ -82,12 +82,13 @@ const Booking = () => {
     }
   };
 
-  const handleServiceSelect = (serviceId) => {
-    const service = services.find(s => s.id === serviceId);
+  const handleServiceSelect = (barberServiceId) => {
+    const barberService = services.find(s => s.id === barberServiceId);
     setBookingData(prev => ({
       ...prev,
-      serviceId: serviceId,
-      serviceName: service?.name || ''
+      serviceId: barberService?.service_id || '',
+      serviceName: barberService?.service_name || '',
+      barberServiceId: barberServiceId
     }));
   };
 
