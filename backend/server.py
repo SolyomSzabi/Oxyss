@@ -74,13 +74,40 @@ class Service(BaseModel):
     name: str
     description: str
     duration: int  # in minutes
-    price: float
+    base_price: float  # base price, can be overridden per barber
 
 class ServiceCreate(BaseModel):
     name: str
     description: str
     duration: int
+    base_price: float
+
+class BarberService(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    barber_id: str
+    service_id: str
+    price: float  # barber-specific price for this service
+    is_available: bool = True
+
+class BarberServiceCreate(BaseModel):
+    barber_id: str
+    service_id: str
     price: float
+    is_available: bool = True
+
+class BarberServiceWithDetails(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str
+    barber_id: str
+    service_id: str
+    price: float
+    is_available: bool
+    service_name: str
+    service_description: str
+    duration: int
 
 class Appointment(BaseModel):
     model_config = ConfigDict(extra="ignore")
