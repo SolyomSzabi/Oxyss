@@ -178,7 +178,7 @@ const Booking = () => {
     }
   };
 
-  const selectedServiceDetails = services.find(s => s.id === bookingData.serviceId);
+  const selectedServiceDetails = services.find(s => s.id === bookingData.barberServiceId);
 
   if (loading) {
     return (
