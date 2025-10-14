@@ -32,6 +32,7 @@ const Booking = () => {
     serviceName: selectedService?.name || '',
     barberId: '',
     barberName: '',
+    barberServiceId: '',
     appointmentDate: null,
     appointmentTime: '',
     customerName: '',
