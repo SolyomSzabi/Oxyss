@@ -192,6 +192,49 @@ async def create_service(service_data: ServiceCreate):
     _ = await db.services.insert_one(doc)
     return service_obj
 
+# Barber Services endpoints
+@api_router.get("/barbers/{barber_id}/services", response_model=List[BarberServiceWithDetails])
+async def get_barber_services(barber_id: str):
+    # Get barber services with service details
+    pipeline = [
+        {"$match": {"barber_id": barber_id, "is_available": True}},
+        {"$lookup": {
+            "from": "services",
+            "localField": "service_id", 
+            "foreignField": "id",
+            "as": "service_info"
+        }},
+        {"$unwind": "$service_info"},
+        {"$project": {
+            "_id": 0,
+            "id": 1,
+            "barber_id": 1,
+            "service_id": 1,
+            "price": 1,
+            "is_available": 1,
+            "service_name": "$service_info.name",
+            "service_description": "$service_info.description",
+            "duration": "$service_info.duration"
+        }}
+    ]
+    
+    barber_services = await db.barber_services.aggregate(pipeline).to_list(1000)
+    return barber_services
+
+@api_router.post("/barber-services", response_model=BarberService)
+async def create_barber_service(barber_service_data: BarberServiceCreate):
+    barber_service_dict = barber_service_data.model_dump()
+    barber_service_obj = BarberService(**barber_service_dict)
+    
+    doc = barber_service_obj.model_dump()
+    _ = await db.barber_services.insert_one(doc)
+    return barber_service_obj
+
+@api_router.get("/services/by-barber/{barber_id}")
+async def get_services_by_barber(barber_id: str):
+    """Get all services offered by a specific barber with their pricing"""
+    return await get_barber_services(barber_id)
+
 # Appointments endpoints
 @api_router.get("/appointments", response_model=List[Appointment])
 async def get_appointments():
