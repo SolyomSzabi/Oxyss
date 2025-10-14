@@ -246,37 +246,46 @@ const Booking = () => {
             </CardHeader>
             <CardContent className="space-y-6">
 
-              {/* Step 1: Service & Barber Selection */}
+              {/* Step 1: Barber & Service Selection */}
               {currentStep === 1 && (
                 <div className="space-y-8" data-testid="service-selection-step">
-                  {/* Service Selection */}
+                  {/* Barber Selection */}
                   <div>
                     <h3 className="text-lg font-semibold text-zinc-900 mb-4">
-                      Choose Your Service
+                      Choose Your Barber
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {services.map((service) => (
+                      {barbers.map((barber) => (
                         <div
-                          key={service.id}
+                          key={barber.id}
                           className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                            bookingData.serviceId === service.id
+                            bookingData.barberId === barber.id
                               ? 'border-yellow-600 bg-yellow-50'
                               : 'border-zinc-200 hover:border-zinc-300'
                           }`}
-                          onClick={() => handleServiceSelect(service.id)}
-                          data-testid={`service-option-${service.id}`}
+                          onClick={() => handleBarberSelect(barber.id)}
+                          data-testid={`barber-option-${barber.id}`}
                         >
-                          <h4 className="font-semibold text-zinc-900 mb-2">{service.name}</h4>
-                          <p className="text-sm text-zinc-600 mb-3">{service.description}</p>
-                          <div className="flex justify-between items-center">
-                            <div className="flex items-center space-x-3">
-                              <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                                <Clock className="h-3 w-3 mr-1" />
-                                {service.duration} min
-                              </Badge>
-                              <div className="flex items-center text-green-600 font-semibold">
-                                <DollarSign className="h-4 w-4" />
-                                {service.price}
+                          <div className="flex items-start space-x-3">
+                            <img 
+                              src={barber.image_url} 
+                              alt={barber.name}
+                              className="w-12 h-12 rounded-full object-cover"
+                            />
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-zinc-900 mb-1">{barber.name}</h4>
+                              <p className="text-sm text-zinc-600 mb-2">{barber.description}</p>
+                              <div className="flex items-center space-x-2">
+                                <Badge variant="outline" className="text-xs">
+                                  {barber.experience_years}+ years
+                                </Badge>
+                              </div>
+                              <div className="flex flex-wrap gap-1 mt-2">
+                                {barber.specialties.slice(0, 2).map((specialty, idx) => (
+                                  <Badge key={idx} variant="secondary" className="text-xs bg-zinc-100 text-zinc-600">
+                                    {specialty}
+                                  </Badge>
+                                ))}
                               </div>
                             </div>
                           </div>
@@ -285,8 +294,53 @@ const Booking = () => {
                     </div>
                   </div>
 
-                  {/* Barber Selection */}
-                  {bookingData.serviceId && (
+                  {/* Service Selection - Only show after barber is selected */}
+                  {bookingData.barberId && (
+                    <div>
+                      <h3 className="text-lg font-semibold text-zinc-900 mb-4">
+                        Choose Your Service with {bookingData.barberName}
+                      </h3>
+                      {services.length === 0 ? (
+                        <div className="text-center py-8 text-zinc-500">
+                          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+                          <p>Loading services...</p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {services.map((service) => (
+                            <div
+                              key={service.id}
+                              className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                                bookingData.barberServiceId === service.id
+                                  ? 'border-yellow-600 bg-yellow-50'
+                                  : 'border-zinc-200 hover:border-zinc-300'
+                              }`}
+                              onClick={() => handleServiceSelect(service.id)}
+                              data-testid={`service-option-${service.id}`}
+                            >
+                              <h4 className="font-semibold text-zinc-900 mb-2">{service.service_name}</h4>
+                              <p className="text-sm text-zinc-600 mb-3">{service.service_description}</p>
+                              <div className="flex justify-between items-center">
+                                <div className="flex items-center space-x-3">
+                                  <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                                    <Clock className="h-3 w-3 mr-1" />
+                                    {service.duration} min
+                                  </Badge>
+                                  <div className="flex items-center text-green-600 font-semibold">
+                                    <DollarSign className="h-4 w-4" />
+                                    {service.price}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Selection Summary */}
+                  {bookingData.barberId && bookingData.serviceId && (
                     <div>
                       <h3 className="text-lg font-semibold text-zinc-900 mb-4">
                         Choose Your Barber
