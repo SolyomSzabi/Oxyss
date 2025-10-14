@@ -57,19 +57,28 @@ const Booking = () => {
       // Initialize data (barbers and services)
       await axios.post(`${API}/init-data`);
       
-      // Fetch services and barbers
-      const [servicesResponse, barbersResponse] = await Promise.all([
-        axios.get(`${API}/services`),
-        axios.get(`${API}/barbers`)
-      ]);
-      
-      setServices(servicesResponse.data);
+      // Fetch barbers first
+      const barbersResponse = await axios.get(`${API}/barbers`);
       setBarbers(barbersResponse.data);
+      
+      // Don't fetch services yet - wait for barber selection
+      setServices([]);
     } catch (err) {
       setError('Failed to load booking data');
       console.error('Error fetching data:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchBarberServices = async (barberId) => {
+    try {
+      const response = await axios.get(`${API}/barbers/${barberId}/services`);
+      setServices(response.data);
+    } catch (err) {
+      console.error('Error fetching barber services:', err);
+      toast.error('Failed to load services for selected barber');
+      setServices([]);
     }
   };
 
