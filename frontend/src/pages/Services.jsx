@@ -178,12 +178,19 @@ const Services = () => {
       <section className="section-padding bg-zinc-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6">
-            Transparent Pricing
+            Personalized Pricing
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            No hidden fees, no surprises. Our pricing is straightforward and competitive, 
-            reflecting the quality and expertise you receive.
+          <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto">
+            Our experienced barbers offer services at different pricing levels based on their 
+            expertise and specializations. Choose your preferred barber during booking to see exact pricing.
           </p>
+          <div className="bg-yellow-600/20 border border-yellow-600/30 rounded-lg p-4 mb-8 max-w-3xl mx-auto">
+            <p className="text-yellow-200 text-sm">
+              <strong>*Pricing Note:</strong> Prices shown are starting rates. Each barber has their own pricing 
+              based on experience and specializations. Final pricing will be confirmed when you select 
+              your preferred barber during the booking process.
+            </p>
+          </div>
           
           <div className="bg-zinc-800 rounded-lg p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
