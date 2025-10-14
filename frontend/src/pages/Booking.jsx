@@ -328,9 +328,8 @@ const Booking = () => {
                                     <Clock className="h-3 w-3 mr-1" />
                                     {service.duration} min
                                   </Badge>
-                                  <div className="flex items-center text-green-600 font-semibold">
-                                    <DollarSign className="h-4 w-4" />
-                                    {service.price}
+                                  <div className="text-green-600 font-semibold text-sm">
+                                    From ${service.base_price}*
                                   </div>
                                 </div>
                               </div>
