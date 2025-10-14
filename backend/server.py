@@ -395,6 +395,7 @@ async def initialize_data():
     
     # Initialize services if not exists
     existing_services = await db.services.count_documents({})
+    service_ids = {}
     if existing_services == 0:
         default_services = [
             {
@@ -402,45 +403,114 @@ async def initialize_data():
                 "name": "Classic Haircut",
                 "description": "Traditional men's haircut with wash and style",
                 "duration": 45,
-                "price": 35.00
+                "base_price": 35.00
             },
             {
                 "id": str(uuid.uuid4()),
                 "name": "Beard Trim & Style",
                 "description": "Professional beard trimming and styling",
                 "duration": 30,
-                "price": 25.00
+                "base_price": 25.00
             },
             {
                 "id": str(uuid.uuid4()),
                 "name": "Premium Cut & Beard",
                 "description": "Complete grooming package with haircut and beard service",
                 "duration": 75,
-                "price": 55.00
+                "base_price": 55.00
             },
             {
                 "id": str(uuid.uuid4()),
                 "name": "Hot Towel Shave",
                 "description": "Traditional hot towel shave with premium products",
                 "duration": 45,
-                "price": 40.00
+                "base_price": 40.00
             },
             {
                 "id": str(uuid.uuid4()),
                 "name": "Kids Haircut",
                 "description": "Haircut for children under 12",
                 "duration": 30,
-                "price": 20.00
+                "base_price": 20.00
             },
             {
                 "id": str(uuid.uuid4()),
                 "name": "Senior Haircut",
                 "description": "Haircut for seniors (65+)",
                 "duration": 45,
-                "price": 28.00
+                "base_price": 28.00
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Mustache Trim",
+                "description": "Professional mustache grooming and styling",
+                "duration": 20,
+                "base_price": 15.00
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "name": "Hair Wash & Style",
+                "description": "Deep cleansing wash with professional styling",
+                "duration": 30,
+                "base_price": 22.00
             }
         ]
         await db.services.insert_many(default_services)
+        
+        # Store service IDs for barber service assignment
+        for service in default_services:
+            service_ids[service["name"]] = service["id"]
+    else:
+        # Get existing service IDs
+        services = await db.services.find({}, {"_id": 0, "id": 1, "name": 1}).to_list(1000)
+        for service in services:
+            service_ids[service["name"]] = service["id"]
+
+    # Initialize barber services if not exists
+    existing_barber_services = await db.barber_services.count_documents({})
+    if existing_barber_services == 0:
+        # Get barber IDs
+        barbers_data = await db.barbers.find({}, {"_id": 0, "id": 1, "name": 1}).to_list(1000)
+        
+        # Define barber-specific services and pricing
+        barber_service_assignments = {
+            "Oxy": {  # Master barber - premium pricing, all services
+                "Classic Haircut": 40.00,
+                "Beard Trim & Style": 28.00,
+                "Premium Cut & Beard": 65.00,
+                "Hot Towel Shave": 45.00,
+                "Kids Haircut": 25.00,
+                "Senior Haircut": 32.00,
+                "Mustache Trim": 18.00,
+                "Hair Wash & Style": 25.00
+            },
+            "Helga": {  # Modern specialist - competitive pricing, modern focus
+                "Classic Haircut": 35.00,
+                "Beard Trim & Style": 30.00,  # Higher for precision work
+                "Premium Cut & Beard": 60.00,
+                "Kids Haircut": 22.00,
+                "Senior Haircut": 28.00,
+                "Hair Wash & Style": 24.00
+                # Note: Doesn't offer Hot Towel Shave or Mustache Trim
+            }
+        }
+        
+        barber_services_to_create = []
+        for barber in barbers_data:
+            barber_name = barber["name"]
+            if barber_name in barber_service_assignments:
+                for service_name, price in barber_service_assignments[barber_name].items():
+                    if service_name in service_ids:
+                        barber_services_to_create.append({
+                            "id": str(uuid.uuid4()),
+                            "barber_id": barber["id"],
+                            "service_id": service_ids[service_name],
+                            "price": price,
+                            "is_available": True
+                        })
+        
+        if barber_services_to_create:
+            await db.barber_services.insert_many(barber_services_to_create)
     
     barber_count = await db.barbers.count_documents({})
     service_count = await db.services.count_documents({})
