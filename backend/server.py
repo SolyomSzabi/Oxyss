@@ -529,6 +529,21 @@ async def initialize_services():
     result = await initialize_data()
     return {"message": result["message"], "services_initialized": True}
 
+# Migration endpoint to update existing services
+@api_router.post("/migrate-services")
+async def migrate_services():
+    """Migrate existing services from 'price' to 'base_price' field"""
+    # Update all services that have 'price' but not 'base_price'
+    result = await db.services.update_many(
+        {"price": {"$exists": True}, "base_price": {"$exists": False}},
+        [{"$set": {"base_price": "$price"}}, {"$unset": "price"}]
+    )
+    
+    return {
+        "message": "Services migrated successfully",
+        "updated_count": result.modified_count
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
