@@ -584,6 +584,7 @@ const Booking = () => {
                         serviceName: '',
                         barberId: '',
                         barberName: '',
+                        barberServiceId: '',
                         appointmentDate: null,
                         appointmentTime: '',
                         customerName: '',
