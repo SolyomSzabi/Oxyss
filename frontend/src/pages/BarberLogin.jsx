@@ -40,10 +40,8 @@ const BarberLogin = () => {
       const response = await axios.post(`${API}/auth/login`, formData);
       
       if (response.data) {
-        // Store authentication data
-        localStorage.setItem('barber_token', response.data.access_token);
-        localStorage.setItem('barber_id', response.data.barber_id);
-        localStorage.setItem('barber_name', response.data.barber_name);
+        // Use the context login function to update state immediately
+        login(response.data.access_token, response.data.barber_id, response.data.barber_name);
         
         toast.success(`Welcome back, ${response.data.barber_name}!`);
         navigate('/barber-dashboard');
