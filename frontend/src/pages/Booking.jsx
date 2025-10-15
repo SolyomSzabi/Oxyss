@@ -85,6 +85,27 @@ const Booking = () => {
     }
   };
 
+  const fetchAvailableSlots = async (barberId, date, serviceId) => {
+    if (!barberId || !date || !serviceId) return;
+    
+    try {
+      setLoadingSlots(true);
+      const response = await axios.get(`${API}/barbers/${barberId}/available-slots`, {
+        params: {
+          date: format(date, 'yyyy-MM-dd'),
+          service_id: serviceId
+        }
+      });
+      setAvailableSlots(response.data.slots || []);
+    } catch (err) {
+      console.error('Error fetching available slots:', err);
+      toast.error('Failed to load available time slots');
+      setAvailableSlots([]);
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
   const handleServiceSelect = (barberServiceId) => {
     const barberService = services.find(s => s.id === barberServiceId);
     setBookingData(prev => ({
