@@ -83,10 +83,16 @@ def prepare_for_mongo(data):
         data['date'] = data['date'].isoformat()
     if isinstance(data.get('appointment_date'), date):
         data['appointment_date'] = data['appointment_date'].isoformat()
+    if isinstance(data.get('break_date'), date):
+        data['break_date'] = data['break_date'].isoformat()
     if isinstance(data.get('time'), time):
         data['time'] = data['time'].strftime('%H:%M:%S')
     if isinstance(data.get('appointment_time'), time):
         data['appointment_time'] = data['appointment_time'].strftime('%H:%M:%S')
+    if isinstance(data.get('start_time'), time):
+        data['start_time'] = data['start_time'].strftime('%H:%M:%S')
+    if isinstance(data.get('end_time'), time):
+        data['end_time'] = data['end_time'].strftime('%H:%M:%S')
     return data
 
 def parse_from_mongo(item):
