@@ -530,7 +530,28 @@ async def get_today_appointments():
 
 @api_router.post("/appointments", response_model=Appointment)
 async def create_appointment(appointment_data: AppointmentCreate):
+    # Get service duration for availability check
+    service = await db.services.find_one({"id": appointment_data.service_id}, {"_id": 0})
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    
+    # Check availability
+    availability = await check_barber_availability(
+        appointment_data.barber_id,
+        appointment_data.appointment_date.isoformat(),
+        appointment_data.appointment_time.strftime('%H:%M'),
+        service["duration"]
+    )
+    
+    if not availability["available"]:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Time slot not available: {availability['reason']}"
+        )
+    
     appointment_dict = appointment_data.model_dump()
+    # Set status to confirmed directly (no pending state)
+    appointment_dict["status"] = "confirmed"
     appointment_obj = Appointment(**appointment_dict)
     
     # Prepare for MongoDB storage
