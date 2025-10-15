@@ -344,62 +344,24 @@ const BarberDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold font-heading text-zinc-900 mb-4">
-              Barber Dashboard
-            </h1>
-            <p className="text-xl text-zinc-600">
-              Manage your appointments and schedule
-            </p>
+          <div className="mb-8 flex justify-between items-start">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold font-heading text-zinc-900 mb-4">
+                Welcome, {barberData.name}
+              </h1>
+              <p className="text-xl text-zinc-600">
+                Manage your appointments and schedule
+              </p>
+            </div>
+            <Button 
+              variant="outline" 
+              onClick={handleLogout}
+              className="text-zinc-600 hover:text-zinc-900"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
           </div>
-
-          {/* Barber Selection */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Users className="h-5 w-5 mr-2" />
-                Select Barber
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Select value={selectedBarber} onValueChange={setSelectedBarber}>
-                <SelectTrigger className="w-full md:w-auto" data-testid="barber-select">
-                  <SelectValue placeholder="Choose a barber" />
-                </SelectTrigger>
-                <SelectContent>
-                  {barbers.map(barber => (
-                    <SelectItem key={barber.id} value={barber.id}>
-                      {barber.name} - {barber.experience_years}+ years
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              {selectedBarberData && (
-                <div className="mt-4 p-4 bg-yellow-50 rounded-lg">
-                  <div className="flex items-start space-x-3">
-                    <img 
-                      src={selectedBarberData.image_url} 
-                      alt={selectedBarberData.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-zinc-900">{selectedBarberData.name}</h3>
-                      <p className="text-sm text-zinc-600 mb-2">{selectedBarberData.description}</p>
-                      <div className="flex space-x-2">
-                        <Badge variant="outline">{selectedBarberData.experience_years}+ years</Badge>
-                        {selectedBarberData.specialties.slice(0, 2).map((specialty, idx) => (
-                          <Badge key={idx} variant="secondary" className="text-xs">
-                            {specialty}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
 
           <Tabs defaultValue="today" className="w-full">
             <TabsList className="grid w-full grid-cols-2 md:grid-cols-3">
