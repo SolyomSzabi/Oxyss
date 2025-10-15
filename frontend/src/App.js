@@ -21,22 +21,25 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <div className="App min-h-screen bg-zinc-50">
-      <BrowserRouter>
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/booking" element={<Booking />} />
-            <Route path="/barber-dashboard" element={<BarberDashboard />} />
-          </Routes>
-        </main>
-        <Footer />
-        <Toaster />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/booking" element={<Booking />} />
+              <Route path="/barber-login" element={<BarberLogin />} />
+              <Route path="/barber-dashboard" element={<BarberDashboard />} />
+            </Routes>
+          </main>
+          <Footer />
+          <Toaster />
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }
