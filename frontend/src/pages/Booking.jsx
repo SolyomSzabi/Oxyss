@@ -445,7 +445,7 @@ const Booking = () => {
                       <h3 className="font-semibold text-zinc-900 mb-3">Your Selection:</h3>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-zinc-700"><strong>Service:</strong> {selectedServiceDetails.name}</span>
+                          <span className="text-zinc-700"><strong>Service:</strong> {selectedServiceDetails.service_name}</span>
                           <div className="flex items-center space-x-2">
                             <Badge variant="secondary">{selectedServiceDetails.duration} min</Badge>
                             <span className="font-semibold text-green-600">${selectedServiceDetails.price}</span>
@@ -476,28 +476,51 @@ const Booking = () => {
                       />
                     </div>
 
-                    {/* Time Slots */}
+                    {/* Available Time Slots */}
                     <div>
                       <Label className="text-lg font-semibold text-zinc-900 mb-4 block">
-                        Select Time
+                        Available Time Slots
                       </Label>
-                      <div className="grid grid-cols-3 gap-2 max-h-80 overflow-y-auto">
-                        {timeSlots.map((time) => (
-                          <Button
-                            key={time}
-                            variant={bookingData.appointmentTime === time ? "default" : "outline"}
-                            onClick={() => handleTimeSelect(time)}
-                            className={`text-sm ${
-                              bookingData.appointmentTime === time
-                                ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                                : 'border-zinc-300 hover:bg-zinc-50'
-                            }`}
-                            data-testid={`time-slot-${time}`}
-                          >
-                            {time}
-                          </Button>
-                        ))}
-                      </div>
+                      {!bookingData.appointmentDate ? (
+                        <div className="text-center py-8 text-zinc-500">
+                          <Calendar className="h-12 w-12 mx-auto mb-4 text-zinc-300" />
+                          <p>Please select a date first</p>
+                        </div>
+                      ) : loadingSlots ? (
+                        <div className="text-center py-8">
+                          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-yellow-600" />
+                          <p className="text-zinc-600">Loading available slots...</p>
+                        </div>
+                      ) : availableSlots.length === 0 ? (
+                        <div className="text-center py-8 text-zinc-500">
+                          <Clock className="h-12 w-12 mx-auto mb-4 text-zinc-300" />
+                          <p>No available slots for selected date</p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
+                          {availableSlots.map((slot) => (
+                            <Button
+                              key={slot.time}
+                              variant={bookingData.appointmentTime === slot.time ? "default" : "outline"}
+                              onClick={() => slot.available && handleTimeSelect(slot.time)}
+                              disabled={!slot.available}
+                              className={`text-sm ${
+                                bookingData.appointmentTime === slot.time
+                                  ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                                  : slot.available 
+                                    ? 'border-zinc-300 hover:bg-zinc-50'
+                                    : 'border-red-200 bg-red-50 text-red-400 cursor-not-allowed'
+                              }`}
+                              data-testid={`time-slot-${slot.time}`}
+                            >
+                              {slot.time}
+                              {!slot.available && (
+                                <span className="block text-xs mt-1">Unavailable</span>
+                              )}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
