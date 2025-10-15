@@ -28,6 +28,9 @@ export const AuthProvider = ({ children }) => {
         name: barberName,
         token: token
       });
+    } else {
+      setIsAuthenticated(false);
+      setBarberData(null);
     }
     setLoading(false);
   }, []);
