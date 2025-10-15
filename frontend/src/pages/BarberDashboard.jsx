@@ -20,7 +20,11 @@ import {
   Loader2,
   Filter,
   RefreshCw,
-  Users
+  Users,
+  LogOut,
+  Plus,
+  Coffee,
+  Trash2
 } from 'lucide-react';
 import { format, isToday, isTomorrow, parseISO } from 'date-fns';
 import { toast } from 'sonner';
