@@ -42,11 +42,6 @@ const BarberDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState({});
   const [showBreakForm, setShowBreakForm] = useState(false);
-  const [filters, setFilters] = useState({
-    status: '',
-    dateFrom: '',
-    dateTo: ''
-  });
   const [breakForm, setBreakForm] = useState({
     break_date: '',
     start_time: '',
