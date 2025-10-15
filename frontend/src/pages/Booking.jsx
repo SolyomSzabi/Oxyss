@@ -379,53 +379,6 @@ const Booking = () => {
 
                   {/* Selection Summary */}
                   {bookingData.barberId && bookingData.serviceId && (
-                    <div>
-                      <h3 className="text-lg font-semibold text-zinc-900 mb-4">
-                        Choose Your Barber
-                      </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {barbers.map((barber) => (
-                          <div
-                            key={barber.id}
-                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                              bookingData.barberId === barber.id
-                                ? 'border-yellow-600 bg-yellow-50'
-                                : 'border-zinc-200 hover:border-zinc-300'
-                            }`}
-                            onClick={() => handleBarberSelect(barber.id)}
-                            data-testid={`barber-option-${barber.id}`}
-                          >
-                            <div className="flex items-start space-x-3">
-                              <img 
-                                src={barber.image_url} 
-                                alt={barber.name}
-                                className="w-12 h-12 rounded-full object-cover"
-                              />
-                              <div className="flex-1">
-                                <h4 className="font-semibold text-zinc-900 mb-1">{barber.name}</h4>
-                                <p className="text-sm text-zinc-600 mb-2">{barber.description}</p>
-                                <div className="flex items-center space-x-2">
-                                  <Badge variant="outline" className="text-xs">
-                                    {barber.experience_years}+ years
-                                  </Badge>
-                                </div>
-                                <div className="flex flex-wrap gap-1 mt-2">
-                                  {barber.specialties.slice(0, 2).map((specialty, idx) => (
-                                    <Badge key={idx} variant="secondary" className="text-xs bg-zinc-100 text-zinc-600">
-                                      {specialty}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Selection Summary */}
-                  {bookingData.serviceId && bookingData.barberId && (
                     <div className="bg-green-50 p-4 rounded-lg">
                       <h4 className="font-semibold text-green-800 mb-2">Selection Summary</h4>
                       <div className="text-sm text-green-700">
