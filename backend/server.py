@@ -504,8 +504,9 @@ async def get_available_slots(barber_id: str, date: str, service_id: str):
     
     # Generate all possible 30-minute time slots
     slots = []
-    current_time = datetime.combine(date.today(), business_start)
-    end_time = datetime.combine(date.today(), business_end)
+    date_obj = datetime.fromisoformat(date).date()
+    current_time = datetime.combine(date_obj, business_start)
+    end_time = datetime.combine(date_obj, business_end)
     
     while current_time + timedelta(minutes=duration) <= end_time:
         slot_time = current_time.time()
