@@ -49,20 +49,18 @@ const BarberDashboard = () => {
     title: 'Break'
   });
 
-  // Handle authentication and data fetching
   useEffect(() => {
     if (isAuthenticated && barberData) {
       fetchData();
-    } else if (!isAuthenticated && !loading) {
-      navigate('/barber-login');
-    }
-  }, [isAuthenticated, barberData, loading, navigate]);
-
-  useEffect(() => {
-    if (isAuthenticated && barberData) {
-      fetchBarberAppointments();
     }
   }, [isAuthenticated, barberData]);
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      navigate('/barber-login');
+    }
+  }, [isAuthenticated, loading, navigate]);
 
   const getAuthHeaders = () => ({
     headers: {
