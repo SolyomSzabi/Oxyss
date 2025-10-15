@@ -799,12 +799,15 @@ async def initialize_data():
     barber_count = await db.barbers.count_documents({})
     service_count = await db.services.count_documents({})
     barber_service_count = await db.barber_services.count_documents({})
+    auth_count = await db.barber_auth.count_documents({})
     
     return {
         "message": "Data initialized successfully",
         "barbers_count": barber_count,
         "services_count": service_count,
-        "barber_services_count": barber_service_count
+        "barber_services_count": barber_service_count,
+        "barber_auth_count": auth_count,
+        "default_credentials": "Use email: {barber}@oxyssbarbershop.com, password: barber123"
     }
 
 # Legacy endpoint for backward compatibility
