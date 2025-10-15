@@ -139,7 +139,7 @@ const BarberDashboard = () => {
     try {
       await axios.patch(`${API}/appointments/${appointmentId}`, {
         status: newStatus
-      });
+      }, getAuthHeaders());
       
       toast.success(`Appointment ${newStatus} successfully`);
       
@@ -152,6 +152,48 @@ const BarberDashboard = () => {
     } finally {
       setUpdating(prev => ({ ...prev, [appointmentId]: false }));
     }
+  };
+
+  const handleBreakSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API}/breaks`, {
+        ...breakForm,
+        barber_id: barberData.id
+      }, getAuthHeaders());
+      
+      toast.success('Break added successfully');
+      setShowBreakForm(false);
+      setBreakForm({
+        break_date: '',
+        start_time: '',
+        end_time: '',
+        title: 'Break'
+      });
+      await fetchBarberBreaks();
+    } catch (error) {
+      console.error('Error creating break:', error);
+      toast.error('Failed to create break');
+    }
+  };
+
+  const handleDeleteBreak = async (breakId) => {
+    if (!window.confirm('Are you sure you want to delete this break?')) return;
+    
+    try {
+      await axios.delete(`${API}/breaks/${breakId}`, getAuthHeaders());
+      toast.success('Break deleted successfully');
+      await fetchBarberBreaks();
+    } catch (error) {
+      console.error('Error deleting break:', error);
+      toast.error('Failed to delete break');
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/barber-login');
+    toast.success('Logged out successfully');
   };
 
   const getStatusIcon = (status) => {
