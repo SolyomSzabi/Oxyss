@@ -34,17 +34,33 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const BarberDashboard = () => {
-  const [barbers, setBarbers] = useState([]);
-  const [selectedBarber, setSelectedBarber] = useState('');
+  const { isAuthenticated, barberData, logout } = useAuth();
+  const navigate = useNavigate();
+  
   const [appointments, setAppointments] = useState([]);
   const [todayAppointments, setTodayAppointments] = useState([]);
+  const [breaks, setBreaks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState({});
+  const [showBreakForm, setShowBreakForm] = useState(false);
   const [filters, setFilters] = useState({
     status: '',
     dateFrom: '',
     dateTo: ''
   });
+  const [breakForm, setBreakForm] = useState({
+    break_date: '',
+    start_time: '',
+    end_time: '',
+    title: 'Break'
+  });
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      navigate('/barber-login');
+    }
+  }, [isAuthenticated, loading, navigate]);
 
   useEffect(() => {
     fetchBarbers();
