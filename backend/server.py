@@ -125,6 +125,48 @@ class BarberServiceWithDetails(BaseModel):
     service_description: str
     duration: int
 
+class BarberLogin(BaseModel):
+    email: str
+    password: str
+
+class BarberAuth(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    barber_id: str
+    email: EmailStr
+    password_hash: str
+    is_active: bool = True
+
+class BarberAuthCreate(BaseModel):
+    barber_id: str
+    email: EmailStr
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    barber_id: str
+    barber_name: str
+
+class BarberBreak(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    barber_id: str
+    break_date: date
+    start_time: time
+    end_time: time
+    title: str = "Break"
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class BarberBreakCreate(BaseModel):
+    barber_id: str
+    break_date: date
+    start_time: time
+    end_time: time
+    title: str = "Break"
+
 class Appointment(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
