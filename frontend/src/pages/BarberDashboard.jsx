@@ -62,7 +62,7 @@ const BarberDashboard = () => {
     if (isAuthenticated && barberData) {
       fetchBarberAppointments();
     }
-  }, [filters, isAuthenticated, barberData]);
+  }, [isAuthenticated, barberData]);
 
   const getAuthHeaders = () => ({
     headers: {
