@@ -438,7 +438,7 @@ const Booking = () => {
                       </Label>
                       {!bookingData.appointmentDate ? (
                         <div className="text-center py-8 text-zinc-500">
-                          <Calendar className="h-12 w-12 mx-auto mb-4 text-zinc-300" />
+                          <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-zinc-300" />
                           <p>Please select a date first</p>
                         </div>
                       ) : loadingSlots ? (
