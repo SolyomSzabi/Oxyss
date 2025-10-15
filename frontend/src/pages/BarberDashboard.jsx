@@ -96,12 +96,7 @@ const BarberDashboard = () => {
 
   const fetchBarberAppointments = async () => {
     try {
-      const params = new URLSearchParams();
-      if (filters.status) params.append('status', filters.status);
-      if (filters.dateFrom) params.append('date_from', filters.dateFrom);
-      if (filters.dateTo) params.append('date_to', filters.dateTo);
-
-      const url = `${API}/barbers/${barberData.id}/appointments${params.toString() ? '?' + params.toString() : ''}`;
+      const url = `${API}/barbers/${barberData.id}/appointments`;
       const response = await axios.get(url, getAuthHeaders());
       setAppointments(response.data);
     } catch (error) {
