@@ -18,7 +18,6 @@ import {
   AlertCircle, 
   XCircle, 
   Loader2,
-  Filter,
   RefreshCw,
   Users,
   LogOut,
