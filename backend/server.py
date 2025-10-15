@@ -100,10 +100,16 @@ def parse_from_mongo(item):
         item['date'] = datetime.fromisoformat(item['date']).date()
     if isinstance(item.get('appointment_date'), str):
         item['appointment_date'] = datetime.fromisoformat(item['appointment_date']).date()
+    if isinstance(item.get('break_date'), str):
+        item['break_date'] = datetime.fromisoformat(item['break_date']).date()
     if isinstance(item.get('time'), str):
         item['time'] = datetime.strptime(item['time'], '%H:%M:%S').time()
     if isinstance(item.get('appointment_time'), str):
         item['appointment_time'] = datetime.strptime(item['appointment_time'], '%H:%M:%S').time()
+    if isinstance(item.get('start_time'), str):
+        item['start_time'] = datetime.strptime(item['start_time'], '%H:%M:%S').time()
+    if isinstance(item.get('end_time'), str):
+        item['end_time'] = datetime.strptime(item['end_time'], '%H:%M:%S').time()
     return item
 
 # Models
