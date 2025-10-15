@@ -414,9 +414,7 @@ const BarberDashboard = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span>
-                      {selectedBarberData?.name}'s Appointments
-                    </span>
+                    <span>My Appointments</span>
                     <Button 
                       size="sm" 
                       variant="outline" 
@@ -429,12 +427,7 @@ const BarberDashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {!selectedBarber ? (
-                    <div className="text-center py-8 text-zinc-500">
-                      <Users className="h-12 w-12 mx-auto mb-4 text-zinc-300" />
-                      <p>Please select a barber to view appointments</p>
-                    </div>
-                  ) : appointments.length === 0 ? (
+                  {appointments.length === 0 ? (
                     <div className="text-center py-8 text-zinc-500" data-testid="no-appointments">
                       <Calendar className="h-12 w-12 mx-auto mb-4 text-zinc-300" />
                       <p>No appointments found for the selected criteria</p>
