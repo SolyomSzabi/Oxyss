@@ -108,12 +108,20 @@ const Booking = () => {
 
   const handleServiceSelect = (barberServiceId) => {
     const barberService = services.find(s => s.id === barberServiceId);
+    const newServiceId = barberService?.service_id || '';
+    
     setBookingData(prev => ({
       ...prev,
-      serviceId: barberService?.service_id || '',
+      serviceId: newServiceId,
       serviceName: barberService?.service_name || '',
-      barberServiceId: barberServiceId
+      barberServiceId: barberServiceId,
+      appointmentTime: '' // Reset time when service changes
     }));
+    
+    // Fetch available slots if we have date and barber selected
+    if (bookingData.barberId && bookingData.appointmentDate && newServiceId) {
+      fetchAvailableSlots(bookingData.barberId, bookingData.appointmentDate, newServiceId);
+    }
   };
 
   const handleBarberSelect = (barberId) => {
