@@ -133,8 +133,14 @@ const Booking = () => {
   const handleDateSelect = (date) => {
     setBookingData(prev => ({
       ...prev,
-      appointmentDate: date
+      appointmentDate: date,
+      appointmentTime: '' // Reset time when date changes
     }));
+    
+    // Fetch available slots if we have barber and service selected
+    if (bookingData.barberId && bookingData.serviceId) {
+      fetchAvailableSlots(bookingData.barberId, date, bookingData.serviceId);
+    }
   };
 
   const handleTimeSelect = (time) => {
