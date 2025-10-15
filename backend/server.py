@@ -377,6 +377,104 @@ async def get_services_by_barber(barber_id: str):
     """Get all services offered by a specific barber with their pricing"""
     return await get_barber_services(barber_id)
 
+# Break management endpoints
+@api_router.get("/barbers/{barber_id}/breaks", response_model=List[BarberBreak])
+async def get_barber_breaks(barber_id: str, date_from: Optional[str] = None, date_to: Optional[str] = None):
+    query_filter = {"barber_id": barber_id}
+    
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["$gte"] = date_from
+        if date_to:
+            date_filter["$lte"] = date_to
+        if date_filter:
+            query_filter["break_date"] = date_filter
+    
+    breaks = await db.barber_breaks.find(query_filter, {"_id": 0}).sort("break_date", 1).to_list(1000)
+    
+    for break_item in breaks:
+        break_item = parse_from_mongo(break_item)
+        if isinstance(break_item['created_at'], str):
+            break_item['created_at'] = datetime.fromisoformat(break_item['created_at'])
+    
+    return breaks
+
+@api_router.post("/breaks", response_model=BarberBreak)
+async def create_barber_break(break_data: BarberBreakCreate, current_barber: dict = Depends(get_current_barber)):
+    # Verify barber can only create breaks for themselves
+    if break_data.barber_id != current_barber["id"]:
+        raise HTTPException(status_code=403, detail="Can only create breaks for yourself")
+    
+    break_dict = break_data.model_dump()
+    break_obj = BarberBreak(**break_dict)
+    
+    doc = prepare_for_mongo(break_obj.model_dump())
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.barber_breaks.insert_one(doc)
+    return break_obj
+
+@api_router.delete("/breaks/{break_id}")
+async def delete_barber_break(break_id: str, current_barber: dict = Depends(get_current_barber)):
+    # Find the break first to verify ownership
+    break_item = await db.barber_breaks.find_one({"id": break_id}, {"_id": 0})
+    if not break_item:
+        raise HTTPException(status_code=404, detail="Break not found")
+    
+    if break_item["barber_id"] != current_barber["id"]:
+        raise HTTPException(status_code=403, detail="Can only delete your own breaks")
+    
+    result = await db.barber_breaks.delete_one({"id": break_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Break not found")
+    
+    return {"message": "Break deleted successfully"}
+
+# Availability checking
+@api_router.get("/barbers/{barber_id}/availability")
+async def check_barber_availability(barber_id: str, date: str, start_time: str, duration: int):
+    """Check if a barber is available at a specific date and time"""
+    appointment_date = date
+    start_time_obj = datetime.strptime(start_time, '%H:%M').time()
+    
+    # Calculate end time
+    start_datetime = datetime.combine(datetime.fromisoformat(date).date(), start_time_obj)
+    end_datetime = start_datetime + timedelta(minutes=duration)
+    end_time_obj = end_datetime.time()
+    
+    # Check for existing appointments
+    existing_appointments = await db.appointments.find({
+        "barber_id": barber_id,
+        "appointment_date": appointment_date,
+        "status": {"$in": ["confirmed", "pending"]}
+    }, {"_id": 0}).to_list(1000)
+    
+    # Check for breaks
+    existing_breaks = await db.barber_breaks.find({
+        "barber_id": barber_id,
+        "break_date": appointment_date
+    }, {"_id": 0}).to_list(1000)
+    
+    # Check time conflicts
+    for appointment in existing_appointments:
+        appt_start = datetime.strptime(appointment["appointment_time"][:5], '%H:%M').time()
+        # Assuming average 45 minutes for existing appointments
+        appt_end_datetime = datetime.combine(datetime.fromisoformat(date).date(), appt_start) + timedelta(minutes=45)
+        appt_end = appt_end_datetime.time()
+        
+        if (start_time_obj < appt_end and end_time_obj > appt_start):
+            return {"available": False, "reason": "Time slot conflicts with existing appointment"}
+    
+    for break_item in existing_breaks:
+        break_start = datetime.strptime(break_item["start_time"][:5], '%H:%M').time()
+        break_end = datetime.strptime(break_item["end_time"][:5], '%H:%M').time()
+        
+        if (start_time_obj < break_end and end_time_obj > break_start):
+            return {"available": False, "reason": f"Time slot conflicts with break: {break_item['title']}"}
+    
+    return {"available": True, "reason": "Time slot available"}
+
 # Appointments endpoints
 @api_router.get("/appointments", response_model=List[Appointment])
 async def get_appointments():
