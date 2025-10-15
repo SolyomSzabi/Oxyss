@@ -487,6 +487,53 @@ async def check_barber_availability(barber_id: str, date: str, start_time: str, 
     
     return {"available": True, "reason": "Time slot available"}
 
+@api_router.get("/barbers/{barber_id}/available-slots")
+async def get_available_slots(barber_id: str, date: str, service_id: str):
+    """Get all available time slots for a barber on a specific date for a specific service"""
+    
+    # Get service duration
+    service = await db.services.find_one({"id": service_id}, {"_id": 0})
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    
+    duration = service["duration"]
+    
+    # Define business hours (9 AM to 7 PM)
+    business_start = time(9, 0)
+    business_end = time(19, 0)
+    
+    # Generate all possible 30-minute time slots
+    slots = []
+    current_time = datetime.combine(date.today(), business_start)
+    end_time = datetime.combine(date.today(), business_end)
+    
+    while current_time + timedelta(minutes=duration) <= end_time:
+        slot_time = current_time.time()
+        
+        # Check availability for this slot
+        availability = await check_barber_availability(
+            barber_id, 
+            date, 
+            slot_time.strftime('%H:%M'), 
+            duration
+        )
+        
+        slots.append({
+            "time": slot_time.strftime('%H:%M'),
+            "available": availability["available"],
+            "reason": availability.get("reason", "")
+        })
+        
+        # Move to next 30-minute slot
+        current_time += timedelta(minutes=30)
+    
+    return {
+        "date": date,
+        "barber_id": barber_id,
+        "service_duration": duration,
+        "slots": slots
+    }
+
 # Appointments endpoints
 @api_router.get("/appointments", response_model=List[Appointment])
 async def get_appointments():
