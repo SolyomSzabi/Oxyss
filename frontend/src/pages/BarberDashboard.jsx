@@ -55,17 +55,14 @@ const BarberDashboard = () => {
     title: 'Break'
   });
 
-  // Redirect if not authenticated
+  // Handle authentication and data fetching
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/barber-login');
-      return;
-    }
-    
     if (isAuthenticated && barberData) {
       fetchData();
+    } else if (!isAuthenticated && !loading) {
+      navigate('/barber-login');
     }
-  }, [isAuthenticated, barberData, navigate]);
+  }, [isAuthenticated, barberData, loading, navigate]);
 
   useEffect(() => {
     if (isAuthenticated && barberData) {
