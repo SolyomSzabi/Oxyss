@@ -777,6 +777,25 @@ async def initialize_data():
         if barber_services_to_create:
             await db.barber_services.insert_many(barber_services_to_create)
     
+    # Initialize barber authentication if not exists
+    existing_auth = await db.barber_auth.count_documents({})
+    if existing_auth == 0:
+        barbers_data = await db.barbers.find({}, {"_id": 0, "id": 1, "name": 1}).to_list(1000)
+        
+        auth_data_to_create = []
+        for barber in barbers_data:
+            barber_name = barber["name"].lower()
+            auth_data_to_create.append({
+                "id": str(uuid.uuid4()),
+                "barber_id": barber["id"],
+                "email": f"{barber_name}@oxyssbarbershop.com",
+                "password_hash": get_password_hash("barber123"),  # Default password
+                "is_active": True
+            })
+        
+        if auth_data_to_create:
+            await db.barber_auth.insert_many(auth_data_to_create)
+    
     barber_count = await db.barbers.count_documents({})
     service_count = await db.services.count_documents({})
     barber_service_count = await db.barber_services.count_documents({})
