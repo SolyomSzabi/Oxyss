@@ -22,6 +22,8 @@ const Booking = () => {
 
   const [services, setServices] = useState([]);
   const [barbers, setBarbers] = useState([]);
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
