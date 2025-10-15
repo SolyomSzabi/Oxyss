@@ -250,6 +250,53 @@ class ContactMessageCreate(BaseModel):
 async def root():
     return {"message": "Oxy'ss Barbershop API"}
 
+# Authentication endpoints
+@api_router.post("/auth/login", response_model=Token)
+async def login_barber(barber_login: BarberLogin):
+    # Find barber auth by email
+    barber_auth = await db.barber_auth.find_one({"email": barber_login.email}, {"_id": 0})
+    if not barber_auth or not verify_password(barber_login.password, barber_auth["password_hash"]):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Get barber details
+    barber = await db.barbers.find_one({"id": barber_auth["barber_id"]}, {"_id": 0})
+    if not barber:
+        raise HTTPException(status_code=404, detail="Barber not found")
+    
+    access_token = create_access_token(data={"sub": barber_auth["barber_id"]})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "barber_id": barber_auth["barber_id"],
+        "barber_name": barber["name"]
+    }
+
+@api_router.post("/auth/create", response_model=BarberAuth)
+async def create_barber_auth(barber_auth_data: BarberAuthCreate):
+    # Check if email already exists
+    existing = await db.barber_auth.find_one({"email": barber_auth_data.email})
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Check if barber exists
+    barber = await db.barbers.find_one({"id": barber_auth_data.barber_id})
+    if not barber:
+        raise HTTPException(status_code=404, detail="Barber not found")
+    
+    hashed_password = get_password_hash(barber_auth_data.password)
+    auth_dict = barber_auth_data.model_dump()
+    auth_dict["password_hash"] = hashed_password
+    del auth_dict["password"]
+    
+    auth_obj = BarberAuth(**auth_dict)
+    doc = auth_obj.model_dump()
+    await db.barber_auth.insert_one(doc)
+    return auth_obj
+
 # Barbers endpoints
 @api_router.get("/barbers", response_model=List[Barber])
 async def get_barbers():
