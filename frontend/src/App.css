@@ -226,3 +226,34 @@ html {
     transform: translateY(0); 
   }
 }
+
+/* Calendar fixes */
+.calendar-container {
+  position: relative;
+  z-index: 1;
+}
+
+.calendar-container .rdp {
+  position: relative;
+  z-index: 2;
+}
+
+/* Prevent calendar duplication/shadow issues */
+.rdp {
+  --rdp-cell-size: 2.5rem;
+  --rdp-caption-font-size: 1.125rem;
+  --rdp-accent-color: #D4AF37;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: #f3f4f6;
+}
+
+.rdp-day_selected {
+  background-color: var(--rdp-accent-color) !important;
+  color: white !important;
+}
+
+.rdp-day_selected:hover {
+  background-color: #B8941F !important;
+}
