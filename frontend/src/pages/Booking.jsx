@@ -419,14 +419,16 @@ const Booking = () => {
                       <Label className="text-lg font-semibold text-zinc-900 mb-4 block">
                         Select Date
                       </Label>
-                      <Calendar
-                        mode="single"
-                        selected={bookingData.appointmentDate}
-                        onSelect={handleDateSelect}
-                        disabled={(date) => date < new Date() || date.getDay() === 0} // Disable past dates and Sundays
-                        className="rounded-md border bg-white"
-                        data-testid="appointment-calendar"
-                      />
+                      <div className="calendar-container">
+                        <Calendar
+                          mode="single"
+                          selected={bookingData.appointmentDate}
+                          onSelect={handleDateSelect}
+                          disabled={(date) => date < new Date() || date.getDay() === 0} // Disable past dates and Sundays
+                          className="rounded-md border bg-white relative z-10"
+                          data-testid="appointment-calendar"
+                        />
+                      </div>
                     </div>
 
                     {/* Available Time Slots */}
