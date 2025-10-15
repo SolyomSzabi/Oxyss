@@ -80,10 +80,25 @@ const BarberDashboard = () => {
     }
   });
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      await Promise.all([
+        fetchTodayAppointments(),
+        fetchBarberAppointments(),
+        fetchBarberBreaks()
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchTodayAppointments = async () => {
     try {
       const response = await axios.get(`${API}/appointments/today`);
-      setTodayAppointments(response.data);
+      // Filter for current barber's appointments
+      const myAppointments = response.data.filter(apt => apt.barber_id === barberData.id);
+      setTodayAppointments(myAppointments);
     } catch (error) {
       console.error('Error fetching today appointments:', error);
     }
@@ -96,12 +111,26 @@ const BarberDashboard = () => {
       if (filters.dateFrom) params.append('date_from', filters.dateFrom);
       if (filters.dateTo) params.append('date_to', filters.dateTo);
 
-      const url = `${API}/barbers/${selectedBarber}/appointments${params.toString() ? '?' + params.toString() : ''}`;
-      const response = await axios.get(url);
+      const url = `${API}/barbers/${barberData.id}/appointments${params.toString() ? '?' + params.toString() : ''}`;
+      const response = await axios.get(url, getAuthHeaders());
       setAppointments(response.data);
     } catch (error) {
       console.error('Error fetching barber appointments:', error);
-      toast.error('Failed to load appointments');
+      if (error.response?.status === 401) {
+        logout();
+        navigate('/barber-login');
+      } else {
+        toast.error('Failed to load appointments');
+      }
+    }
+  };
+
+  const fetchBarberBreaks = async () => {
+    try {
+      const response = await axios.get(`${API}/barbers/${barberData.id}/breaks`, getAuthHeaders());
+      setBreaks(response.data);
+    } catch (error) {
+      console.error('Error fetching barber breaks:', error);
     }
   };
 
