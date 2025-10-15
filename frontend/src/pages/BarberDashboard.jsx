@@ -323,7 +323,7 @@ const BarberDashboard = () => {
     </Card>
   );
 
-  if (loading) {
+  if (loading || !isAuthenticated || !barberData) {
     return (
       <div className="min-h-screen bg-zinc-50 pt-16 flex items-center justify-center">
         <div className="text-center">
