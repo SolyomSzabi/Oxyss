@@ -443,6 +443,137 @@ const BarberDashboard = () => {
               </Card>
             </TabsContent>
 
+            {/* Breaks Management */}
+            <TabsContent value="breaks">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Manage Breaks</span>
+                    <Button 
+                      onClick={() => setShowBreakForm(true)}
+                      className="bg-yellow-600 hover:bg-yellow-700"
+                      data-testid="add-break-btn"
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Add Break
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {/* Add Break Form */}
+                  {showBreakForm && (
+                    <Card className="mb-6 border-yellow-200">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Add New Break</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <form onSubmit={handleBreakSubmit} className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="break_date">Date</Label>
+                              <Input
+                                type="date"
+                                id="break_date"
+                                value={breakForm.break_date}
+                                onChange={(e) => setBreakForm(prev => ({ ...prev, break_date: e.target.value }))}
+                                required
+                                data-testid="break-date-input"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="title">Title</Label>
+                              <Input
+                                type="text"
+                                id="title"
+                                placeholder="Lunch break, Personal time, etc."
+                                value={breakForm.title}
+                                onChange={(e) => setBreakForm(prev => ({ ...prev, title: e.target.value }))}
+                                required
+                                data-testid="break-title-input"
+                              />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="start_time">Start Time</Label>
+                              <Input
+                                type="time"
+                                id="start_time"
+                                value={breakForm.start_time}
+                                onChange={(e) => setBreakForm(prev => ({ ...prev, start_time: e.target.value }))}
+                                required
+                                data-testid="break-start-input"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="end_time">End Time</Label>
+                              <Input
+                                type="time"
+                                id="end_time"
+                                value={breakForm.end_time}
+                                onChange={(e) => setBreakForm(prev => ({ ...prev, end_time: e.target.value }))}
+                                required
+                                data-testid="break-end-input"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button type="submit" className="bg-yellow-600 hover:bg-yellow-700" data-testid="save-break-btn">
+                              Save Break
+                            </Button>
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              onClick={() => setShowBreakForm(false)}
+                              data-testid="cancel-break-btn"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </form>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Current Breaks */}
+                  {breaks.length === 0 ? (
+                    <div className="text-center py-8 text-zinc-500" data-testid="no-breaks">
+                      <Coffee className="h-12 w-12 mx-auto mb-4 text-zinc-300" />
+                      <p>No breaks scheduled</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {breaks.map(breakItem => (
+                        <Card key={breakItem.id} className="border-orange-200" data-testid={`break-card-${breakItem.id}`}>
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-3">
+                                <Coffee className="h-5 w-5 text-orange-600" />
+                                <div>
+                                  <h4 className="font-semibold text-zinc-900">{breakItem.title}</h4>
+                                  <p className="text-sm text-zinc-600">
+                                    {formatAppointmentDate(breakItem.break_date)} • {breakItem.start_time.slice(0, 5)} - {breakItem.end_time.slice(0, 5)}
+                                  </p>
+                                </div>
+                              </div>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleDeleteBreak(breakItem.id)}
+                                data-testid={`delete-break-${breakItem.id}`}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             {/* Filters */}
             <TabsContent value="filters">
               <Card>
