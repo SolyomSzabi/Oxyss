@@ -63,30 +63,22 @@ const BarberDashboard = () => {
   }, [isAuthenticated, loading, navigate]);
 
   useEffect(() => {
-    fetchBarbers();
-    fetchTodayAppointments();
-  }, []);
+    if (isAuthenticated && barberData) {
+      fetchData();
+    }
+  }, [isAuthenticated, barberData]);
 
   useEffect(() => {
-    if (selectedBarber) {
+    if (isAuthenticated && barberData && filters) {
       fetchBarberAppointments();
     }
-  }, [selectedBarber, filters]);
+  }, [filters]);
 
-  const fetchBarbers = async () => {
-    try {
-      const response = await axios.get(`${API}/barbers`);
-      setBarbers(response.data);
-      if (response.data.length > 0) {
-        setSelectedBarber(response.data[0].id);
-      }
-    } catch (error) {
-      console.error('Error fetching barbers:', error);
-      toast.error('Failed to load barbers');
-    } finally {
-      setLoading(false);
+  const getAuthHeaders = () => ({
+    headers: {
+      Authorization: `Bearer ${barberData?.token}`
     }
-  };
+  });
 
   const fetchTodayAppointments = async () => {
     try {
