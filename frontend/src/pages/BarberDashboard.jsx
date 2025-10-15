@@ -364,9 +364,10 @@ const BarberDashboard = () => {
           </div>
 
           <Tabs defaultValue="today" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
               <TabsTrigger value="today" data-testid="today-tab">Today's Schedule</TabsTrigger>
               <TabsTrigger value="appointments" data-testid="appointments-tab">All Appointments</TabsTrigger>
+              <TabsTrigger value="breaks" data-testid="breaks-tab">Manage Breaks</TabsTrigger>
               <TabsTrigger value="filters" data-testid="filters-tab">Filters</TabsTrigger>
             </TabsList>
 
