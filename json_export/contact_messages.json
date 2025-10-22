@@ -1,0 +1,30 @@
+{
+	"_id": {
+		"$oid": "68e6652cd73cf612fb36c62d"
+	},
+	"id": "5869bf8b-0fb0-4caf-b82d-f12f2c694d24",
+	"name": "Jane Smith",
+	"email": "jane.smith@example.com",
+	"message": "Hi, I would like to know about your beard trimming services.",
+	"created_at": "2025-10-08T13:20:44.588027+00:00"
+}
+{
+	"_id": {
+		"$oid": "68e66592d73cf612fb36c62f"
+	},
+	"id": "ed9301f3-b6c2-49bc-b523-fca77fedbca1",
+	"name": "Jane Smith",
+	"email": "jane.smith@example.com",
+	"message": "This is a test contact message from the API test suite.",
+	"created_at": "2025-10-08T13:22:26.185443+00:00"
+}
+{
+	"_id": {
+		"$oid": "68e66693d73cf612fb36c631"
+	},
+	"id": "857eef88-1aa4-4719-af53-e3c1d7fc8cb4",
+	"name": "Test Navigation User",
+	"email": "navtest@example.com",
+	"message": "Testing contact form via navigation from homepage.",
+	"created_at": "2025-10-08T13:26:43.395507+00:00"
+}
