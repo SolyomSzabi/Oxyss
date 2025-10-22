@@ -894,6 +894,31 @@ async def migrate_services():
 # Include the router in the main app
 app.include_router(api_router)
 
+# === TEMPORARY EXPORT ROUTE (for migration) ===
+from fastapi import APIRouter
+from fastapi.responses import JSONResponse
+from pymongo import MongoClient
+import os
+
+export_router = APIRouter()
+
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+DB_NAME = os.getenv("DB_NAME", "test_database")
+
+client = MongoClient(MONGO_URL)
+db = client[DB_NAME]
+
+@export_router.get("/__export_db")
+def export_database():
+    data = {}
+    for collection_name in db.list_collection_names():
+        documents = list(db[collection_name].find({}, {"_id": 0}))
+        data[collection_name] = documents
+    return JSONResponse(content=data)
+
+app.include_router(export_router)
+# === END EXPORT ROUTE ===
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
