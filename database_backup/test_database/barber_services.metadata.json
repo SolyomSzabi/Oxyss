@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"5e36f9655d684c8c931d9b54a0eacfc3","collectionName":"barber_services","type":"collection"}
