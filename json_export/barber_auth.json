@@ -1,0 +1,30 @@
+{
+	"_id": {
+		"$oid": "68f018d7efe754d18e2ac151"
+	},
+	"id": "d9e82031-035e-4a8b-947a-9ba7eb2c2a37",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"email": "oxy@oxyssbarbershop.com",
+	"password_hash": "$2b$12$wKu/oxMqOpMfP/fqyZl9N.bSyhoNbOwSQm5hIe1JKvA2klyGvfX3a",
+	"is_active": true
+}
+{
+	"_id": {
+		"$oid": "68f018d7efe754d18e2ac152"
+	},
+	"id": "7b427e41-6c77-4367-a416-d34c53ca6b22",
+	"barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+	"email": "helga@oxyssbarbershop.com",
+	"password_hash": "$2b$12$kVAKEe7MSaoVAb.qdYUkTeF.n0v9Lr9hidlP0EgYuj52sA6/B5l3y",
+	"is_active": true
+}
+{
+	"_id": {
+		"$oid": "68f018d7efe754d18e2ac153"
+	},
+	"id": "bd0684f0-67fe-4a39-9207-2c58222e1726",
+	"barber_id": "b4f70f36-35ef-4e93-8ad7-6eaced548347",
+	"email": "marcus@oxyssbarbershop.com",
+	"password_hash": "$2b$12$IdjaetpVg3BU9OXcaQtqTeB8fPxK7BJgeDIbO4DVFIJeqtVx9Qvbe",
+	"is_active": true
+}

@@ -1,0 +1,120 @@
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c007b"
+	},
+	"id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+	"name": "Classic Haircut",
+	"description": "Traditional men's haircut with wash and style",
+	"duration": 45,
+	"base_price": 35.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c007c"
+	},
+	"id": "d6d263e9-3c87-4c69-b5aa-2c53c3629d77",
+	"name": "Beard Trim & Style",
+	"description": "Professional beard trimming and styling",
+	"duration": 30,
+	"base_price": 25.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c007d"
+	},
+	"id": "ceae8f66-1620-4c46-9423-45f3ccb4481a",
+	"name": "Premium Cut & Beard",
+	"description": "Complete grooming package with haircut and beard service",
+	"duration": 75,
+	"base_price": 55.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c007e"
+	},
+	"id": "1241c68b-cdfd-4d15-b3a2-587ab34cbd9c",
+	"name": "Hot Towel Shave",
+	"description": "Traditional hot towel shave with premium products",
+	"duration": 45,
+	"base_price": 40.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c007f"
+	},
+	"id": "cbef4f6e-08b8-43ec-a83d-6d3a96e236c1",
+	"name": "Kids Haircut",
+	"description": "Haircut for children under 12",
+	"duration": 30,
+	"base_price": 20.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c0080"
+	},
+	"id": "e1c80def-6d53-43aa-a5e7-18fca35639a0",
+	"name": "Senior Haircut",
+	"description": "Haircut for seniors (65+)",
+	"duration": 45,
+	"base_price": 28.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c0081"
+	},
+	"id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+	"name": "Classic Haircut",
+	"description": "Traditional men's haircut with wash and style",
+	"duration": 45,
+	"base_price": 35.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c0082"
+	},
+	"id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+	"name": "Beard Trim & Style",
+	"description": "Professional beard trimming and styling",
+	"duration": 30,
+	"base_price": 25.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c0083"
+	},
+	"id": "9dbae8ab-f2c6-4825-9f60-49f43912e96d",
+	"name": "Premium Cut & Beard",
+	"description": "Complete grooming package with haircut and beard service",
+	"duration": 75,
+	"base_price": 55.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c0084"
+	},
+	"id": "650714b1-af43-4b77-a68d-7382dc07bb04",
+	"name": "Hot Towel Shave",
+	"description": "Traditional hot towel shave with premium products",
+	"duration": 45,
+	"base_price": 40.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c0085"
+	},
+	"id": "7d072e5c-1d17-4165-b6f9-2d5973474048",
+	"name": "Kids Haircut",
+	"description": "Haircut for children under 12",
+	"duration": 30,
+	"base_price": 20.0
+}
+{
+	"_id": {
+		"$oid": "68e664d89b7be301490c0086"
+	},
+	"id": "f26cc11f-81c1-4078-bda0-f78d698478b7",
+	"name": "Senior Haircut",
+	"description": "Haircut for seniors (65+)",
+	"duration": 45,
+	"base_price": 28.0
+}

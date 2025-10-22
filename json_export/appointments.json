@@ -1,0 +1,198 @@
+{
+	"_id": {
+		"$oid": "68e66526d73cf612fb36c62c"
+	},
+	"id": "64c5c1cd-9b36-4cb8-b6f8-10fc3606e95e",
+	"customer_name": "John Doe",
+	"customer_email": "john.doe@example.com",
+	"customer_phone": "555-123-4567",
+	"service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+	"service_name": "Classic Haircut",
+	"appointment_date": "2024-12-20",
+	"appointment_time": "10:30:00",
+	"status": "pending",
+	"created_at": "2025-10-08T13:20:38.168072+00:00"
+}
+{
+	"_id": {
+		"$oid": "68e66592d73cf612fb36c62e"
+	},
+	"id": "ba9fe96a-1933-4080-92b7-0f315a55c117",
+	"customer_name": "John Doe",
+	"customer_email": "john.doe@example.com",
+	"customer_phone": "(555) 123-4567",
+	"service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+	"service_name": "Test Service",
+	"appointment_date": "2024-12-20",
+	"appointment_time": "14:30:00",
+	"status": "confirmed",
+	"created_at": "2025-10-08T13:22:26.017919+00:00"
+}
+{
+	"_id": {
+		"$oid": "68e665e9d73cf612fb36c630"
+	},
+	"id": "9fae920d-8f51-4bff-80ee-d4f142d77d60",
+	"customer_name": "Test Customer",
+	"customer_email": "test@example.com",
+	"customer_phone": "(555) 123-4567",
+	"service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+	"service_name": "Classic Haircut",
+	"appointment_date": "2025-10-09",
+	"appointment_time": "09:00:00",
+	"status": "pending",
+	"created_at": "2025-10-08T13:23:53.115601+00:00"
+}
+{
+	"_id": {
+		"$oid": "68ed840b170dc8f7ac26dc03"
+	},
+	"id": "e602eadb-7169-484d-a7d5-e3a54bbe9385",
+	"customer_name": "John Smith",
+	"customer_email": "john.smith@example.com",
+	"customer_phone": "555-123-4567",
+	"service_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"service_name": "Classic Haircut",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"barber_name": "Oxy",
+	"appointment_date": "2024-12-21",
+	"appointment_time": "14:30:00",
+	"status": "pending",
+	"created_at": "2025-10-13T22:58:19.451337+00:00"
+}
+{
+	"_id": {
+		"$oid": "68ed87c21339ede3d6732f1e"
+	},
+	"id": "27af32c3-9fb7-4584-9a31-73591fc057f5",
+	"customer_name": "Szabolcs-Csaba Solyom",
+	"customer_email": "deadfunszabyy@gmail.com",
+	"customer_phone": "0757630225",
+	"service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+	"service_name": "Classic Haircut",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"barber_name": "Oxy",
+	"appointment_date": "2025-10-15",
+	"appointment_time": "09:00:00",
+	"status": "completed",
+	"created_at": "2025-10-13T23:14:10.794188+00:00"
+}
+{
+	"_id": {
+		"$oid": "68ed89921339ede3d6732f1f"
+	},
+	"id": "aba11c63-4312-490c-9507-88c4fcdaeb0d",
+	"customer_name": "Maria Solyom",
+	"customer_email": "deadfunszabyy@gmail.com",
+	"customer_phone": "0757630225",
+	"service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+	"service_name": "Classic Haircut",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"barber_name": "Oxy",
+	"appointment_date": "2025-10-15",
+	"appointment_time": "09:00:00",
+	"status": "cancelled",
+	"created_at": "2025-10-13T23:21:54.122963+00:00"
+}
+{
+	"_id": {
+		"$oid": "68ee2e4fe14da9eac2ef8274"
+	},
+	"id": "707f5bd8-b1f6-4d33-89e5-47befad7b60d",
+	"customer_name": "Jane Doe",
+	"customer_email": "jane.doe@example.com",
+	"customer_phone": "555-987-6543",
+	"service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+	"service_name": "Beard Trim & Style",
+	"barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+	"barber_name": "Helga",
+	"appointment_date": "2024-12-22",
+	"appointment_time": "11:00:00",
+	"status": "pending",
+	"created_at": "2025-10-14T11:04:47.334233+00:00"
+}
+{
+	"_id": {
+		"$oid": "68f01900efe754d18e2ac154"
+	},
+	"id": "219906f7-2525-47a0-9947-ab0937d66c29",
+	"customer_name": "Test Customer",
+	"customer_email": "test@example.com",
+	"customer_phone": "555-000-0000",
+	"service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+	"service_name": "Classic Haircut",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"barber_name": "Oxy",
+	"appointment_date": "2024-12-23",
+	"appointment_time": "10:00:00",
+	"status": "confirmed",
+	"created_at": "2025-10-15T21:58:24.133150+00:00"
+}
+{
+	"_id": {
+		"$oid": "68f01af9efe754d18e2ac155"
+	},
+	"id": "4a9ac5f6-1352-4386-9b8f-9d9d1f9dbe12",
+	"customer_name": "Szabolcs-Csaba Solyom",
+	"customer_email": "deadfunszabyy@gmail.com",
+	"customer_phone": "0757630225",
+	"service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+	"service_name": "Classic Haircut",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"barber_name": "Oxy",
+	"appointment_date": "2025-10-18",
+	"appointment_time": "11:00:00",
+	"status": "confirmed",
+	"created_at": "2025-10-15T22:06:49.099756+00:00"
+}
+{
+	"_id": {
+		"$oid": "68f02350ecfbe546346e99a4"
+	},
+	"id": "4187dab9-fc24-49f0-adf7-7b2dc87ab0f2",
+	"customer_name": "Szabolcs-Csaba Solyom",
+	"customer_email": "deadfunszabyy@gmail.com",
+	"customer_phone": "0757630225",
+	"service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+	"service_name": "Classic Haircut",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"barber_name": "Oxy",
+	"appointment_date": "2025-10-17",
+	"appointment_time": "14:30:00",
+	"status": "confirmed",
+	"created_at": "2025-10-15T22:42:24.390475+00:00"
+}
+{
+	"_id": {
+		"$oid": "68f024acecfbe546346e99a5"
+	},
+	"id": "477a1bd4-1cf3-4a84-9fd9-7f3e3c9d9ee9",
+	"customer_name": "Szabolcs-Csaba Solyom",
+	"customer_email": "deadfunszabyy@gmail.com",
+	"customer_phone": "0757630225",
+	"service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+	"service_name": "Beard Trim & Style",
+	"barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+	"barber_name": "Helga",
+	"appointment_date": "2025-10-17",
+	"appointment_time": "16:30:00",
+	"status": "confirmed",
+	"created_at": "2025-10-15T22:48:12.457028+00:00"
+}
+{
+	"_id": {
+		"$oid": "68f15d0171c6ba9adb14cbc2"
+	},
+	"id": "d0fef386-9f1d-42f7-b804-5c5a71a46c56",
+	"customer_name": "Szabolcs-Csaba Solyom",
+	"customer_email": "deadfunszabyy@gmail.com",
+	"customer_phone": "0757630225",
+	"service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+	"service_name": "Beard Trim & Style",
+	"barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+	"barber_name": "Oxy",
+	"appointment_date": "2025-10-18",
+	"appointment_time": "15:30:00",
+	"status": "confirmed",
+	"created_at": "2025-10-16T21:00:49.619287+00:00"
+}
