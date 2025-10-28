@@ -35,6 +35,7 @@ function App() {
               <Route path="/booking" element={<Booking />} />
               <Route path="/barber-login" element={<BarberLogin />} />
               <Route path="/barber-dashboard" element={<BarberDashboard />} />
+              <Route path="/all-appointments" element={<AllAppointments />} />
             </Routes>
           </main>
           <Footer />
