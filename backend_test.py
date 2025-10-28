@@ -458,59 +458,89 @@ class BarbershopAPITester:
             return False
 
     def run_all_tests(self):
-        """Run comprehensive API test suite"""
+        """Run comprehensive API test suite for Oxy'ss Barbershop"""
         print("🧪 Starting Oxy'ss Barbershop API Test Suite")
-        print("=" * 50)
+        print("=" * 60)
         
         # Test basic connectivity
         if not self.test_api_root():
             print("❌ API is not accessible. Stopping tests.")
             return False
             
-        # Initialize services
-        self.test_init_services()
+        # Initialize data (barbers, services, auth)
+        print("\n📋 Testing Data Initialization...")
+        init_success, init_data = self.test_init_data()
         
-        # Test services
+        # Test barber endpoints
+        print("\n👨‍💼 Testing Barber Endpoints...")
+        barbers_success, barbers = self.test_get_barbers()
+        
+        barber_id = None
+        if barbers_success and barbers:
+            barber_id = barbers[0]['id']
+            self.test_get_barber_by_id(barber_id)
+            self.test_barber_services(barber_id)
+        
+        # Test service endpoints
+        print("\n✂️ Testing Service Endpoints...")
         services_success, services = self.test_get_services()
-        service_id = None
         
+        service_id = None
+        service_name = None
         if services_success and services:
             service_id = services[0]['id']
-        else:
-            # Create a service for testing
-            create_success, created_service = self.test_create_service()
-            if create_success and created_service:
-                service_id = created_service['id']
+            service_name = services[0]['name']
         
-        # Test appointments
+        # Test authentication
+        print("\n🔐 Testing Authentication...")
+        auth_success, auth_data = self.test_barber_login()
+        
+        # Test availability checking
+        if barber_id and service_id:
+            print("\n📅 Testing Availability...")
+            self.test_available_slots(barber_id, service_id)
+        
+        # Test appointment endpoints
+        print("\n📝 Testing Appointment Endpoints...")
         appointment_id = None
-        if service_id:
-            appointment_success, appointment = self.test_create_appointment(service_id)
+        if barber_id and service_id and service_name:
+            appointment_success, appointment = self.test_create_appointment(barber_id, service_id, service_name)
             if appointment_success and appointment:
                 appointment_id = appointment['id']
-                
-        self.test_get_appointments()
         
-        if appointment_id:
-            self.test_get_appointment_by_id(appointment_id)
-            self.test_update_appointment_status(appointment_id)
+        self.test_get_today_appointments()
+        
+        # Test authenticated barber endpoints
+        if auth_success and self.barber_id:
+            print("\n🔒 Testing Authenticated Endpoints...")
+            self.test_get_barber_appointments(self.barber_id)
+            self.test_create_barber_break(self.barber_id)
+            self.test_get_barber_breaks(self.barber_id)
         
         # Test contact messages
+        print("\n📧 Testing Contact Messages...")
         self.test_create_contact_message()
         self.test_get_contact_messages()
         
         # Print summary
-        print("\n" + "=" * 50)
+        print("\n" + "=" * 60)
         print(f"📊 Test Summary: {self.tests_passed}/{self.tests_run} tests passed")
         
         success_rate = (self.tests_passed / self.tests_run * 100) if self.tests_run > 0 else 0
         print(f"📈 Success Rate: {success_rate:.1f}%")
         
+        # Print failed tests
+        failed_tests = [test for test in self.test_results if not test['success']]
+        if failed_tests:
+            print(f"\n❌ Failed Tests ({len(failed_tests)}):")
+            for test in failed_tests:
+                print(f"   • {test['test_name']}: {test['details']}")
+        
         if self.tests_passed == self.tests_run:
-            print("🎉 All tests passed!")
+            print("\n🎉 All tests passed! MongoDB connection fix successful.")
             return True
         else:
-            print("⚠️  Some tests failed. Check the details above.")
+            print(f"\n⚠️  {len(failed_tests)} tests failed. Check the details above.")
             return False
 
 def main():
