@@ -3,8 +3,8 @@
 import requests
 import sys
 import json
-from datetime import datetime, date
-from typing import Dict, Any
+from datetime import datetime, date, timedelta
+from typing import Dict, Any, Optional
 
 class BarbershopAPITester:
     def __init__(self, base_url="https://oxyssbarbershop.preview.emergentagent.com"):
@@ -13,6 +13,9 @@ class BarbershopAPITester:
         self.tests_run = 0
         self.tests_passed = 0
         self.test_results = []
+        self.auth_token = None
+        self.barber_id = None
+        self.barber_name = None
 
     def log_test(self, name: str, success: bool, details: str = ""):
         """Log test result"""
