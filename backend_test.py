@@ -219,20 +219,15 @@ class BarbershopAPITester:
             self.log_test("Get Services", False, f"Error: {str(e)}")
             return False, []
 
-    def test_create_service(self):
-        """Test creating a new service"""
+    def test_available_slots(self, barber_id: str, service_id: str):
+        """Test checking available slots for booking"""
         try:
-            test_service = {
-                "name": "Test Service",
-                "description": "A test service for API testing",
-                "duration": 30,
-                "price": 25.0
-            }
+            # Test for tomorrow's date
+            tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
             
-            response = requests.post(
-                f"{self.api_url}/services", 
-                json=test_service,
-                headers={"Content-Type": "application/json"},
+            response = requests.get(
+                f"{self.api_url}/barbers/{barber_id}/available-slots",
+                params={"date": tomorrow, "service_id": service_id},
                 timeout=10
             )
             
@@ -240,20 +235,18 @@ class BarbershopAPITester:
             details = f"Status: {response.status_code}"
             
             if success:
-                created_service = response.json()
-                details += f", Created service ID: {created_service.get('id')}"
+                slots_data = response.json()
+                slots = slots_data.get('slots', [])
+                available_slots = [slot for slot in slots if slot.get('available')]
+                details += f", Date: {slots_data.get('date')}, Total slots: {len(slots)}, Available: {len(available_slots)}"
                 
-                # Validate created service
-                for key, value in test_service.items():
-                    if created_service.get(key) != value:
-                        success = False
-                        details += f", Mismatch in {key}: expected {value}, got {created_service.get(key)}"
-                        break
-                        
-            self.log_test("Create Service", success, details)
+                if slots:
+                    details += f", Duration: {slots_data.get('service_duration')} min"
+                
+            self.log_test("Get Available Slots", success, details)
             return success, response.json() if success else None
         except Exception as e:
-            self.log_test("Create Service", False, f"Error: {str(e)}")
+            self.log_test("Get Available Slots", False, f"Error: {str(e)}")
             return False, None
 
     def test_create_appointment(self, service_id: str):
