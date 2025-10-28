@@ -249,17 +249,22 @@ class BarbershopAPITester:
             self.log_test("Get Available Slots", False, f"Error: {str(e)}")
             return False, None
 
-    def test_create_appointment(self, service_id: str):
-        """Test creating an appointment"""
+    def test_create_appointment(self, barber_id: str, service_id: str, service_name: str):
+        """Test creating an appointment with barber selection"""
         try:
+            # Use tomorrow's date and a reasonable time
+            tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+            
             test_appointment = {
-                "customer_name": "John Doe",
-                "customer_email": "john.doe@example.com",
-                "customer_phone": "(555) 123-4567",
+                "customer_name": "Sarah Johnson",
+                "customer_email": "sarah.johnson@example.com",
+                "customer_phone": "(555) 987-6543",
                 "service_id": service_id,
-                "service_name": "Test Service",
-                "appointment_date": "2024-12-20",
-                "appointment_time": "14:30:00"
+                "service_name": service_name,
+                "barber_id": barber_id,
+                "barber_name": self.barber_name or "Test Barber",
+                "appointment_date": tomorrow,
+                "appointment_time": "10:00:00"
             }
             
             response = requests.post(
@@ -276,6 +281,13 @@ class BarbershopAPITester:
                 appointment = response.json()
                 details += f", Appointment ID: {appointment.get('id')}"
                 details += f", Status: {appointment.get('status')}"
+                details += f", Barber: {appointment.get('barber_name')}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details += f", Response: {response.text}"
                 
             self.log_test("Create Appointment", success, details)
             return success, response.json() if success else None
