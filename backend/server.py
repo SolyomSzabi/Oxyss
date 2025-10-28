@@ -605,6 +605,27 @@ async def get_barber_appointments(barber_id: str, status: Optional[str] = None, 
     
     return appointments
 
+@api_router.get("/barbers/{barber_id}/appointments/today", response_model=List[Appointment])
+async def get_barber_today_appointments(barber_id: str, current_barber: dict = Depends(get_current_barber)):
+    # For all staff view, allow any authenticated barber to see all appointments
+    # No restriction on barber_id check for this endpoint
+    
+    today = datetime.now(timezone.utc).date().isoformat()
+    query_filter = {
+        "barber_id": barber_id,
+        "appointment_date": today
+    }
+    
+    appointments = await db.appointments.find(query_filter, {"_id": 0}).sort("appointment_time", 1).to_list(1000)
+    
+    # Parse dates and times from MongoDB
+    for appointment in appointments:
+        appointment = parse_from_mongo(appointment)
+        if isinstance(appointment['created_at'], str):
+            appointment['created_at'] = datetime.fromisoformat(appointment['created_at'])
+    
+    return appointments
+
 @api_router.get("/appointments/today", response_model=List[Appointment])
 async def get_today_appointments():
     today = datetime.now(timezone.utc).date().isoformat()
