@@ -51,6 +51,76 @@ class BarbershopAPITester:
             self.log_test("API Root Endpoint", False, f"Error: {str(e)}")
             return False
 
+    def test_init_data(self):
+        """Test data initialization endpoint"""
+        try:
+            response = requests.post(f"{self.api_url}/init-data", timeout=10)
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            if success:
+                data = response.json()
+                details += f", Barbers: {data.get('barbers_count')}, Services: {data.get('services_count')}"
+                details += f", Auth accounts: {data.get('barber_auth_count')}"
+            self.log_test("Initialize Data", success, details)
+            return success, response.json() if success else None
+        except Exception as e:
+            self.log_test("Initialize Data", False, f"Error: {str(e)}")
+            return False, None
+
+    def test_get_barbers(self):
+        """Test getting all barbers - should return Oxy, Helga, Marcus"""
+        try:
+            response = requests.get(f"{self.api_url}/barbers", timeout=10)
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                barbers = response.json()
+                details += f", Found {len(barbers)} barbers"
+                
+                # Check for expected barbers
+                barber_names = [b.get('name') for b in barbers]
+                expected_barbers = ['Oxy', 'Helga']  # Based on init-data
+                
+                for expected in expected_barbers:
+                    if expected not in barber_names:
+                        success = False
+                        details += f", Missing barber: {expected}"
+                
+                if success and barbers:
+                    details += f", Barbers: {', '.join(barber_names)}"
+                    # Validate barber structure
+                    barber = barbers[0]
+                    required_fields = ['id', 'name', 'description', 'experience_years', 'specialties']
+                    missing_fields = [field for field in required_fields if field not in barber]
+                    if missing_fields:
+                        success = False
+                        details += f", Missing fields: {missing_fields}"
+                
+            self.log_test("Get Barbers", success, details)
+            return success, response.json() if success else []
+        except Exception as e:
+            self.log_test("Get Barbers", False, f"Error: {str(e)}")
+            return False, []
+
+    def test_get_barber_by_id(self, barber_id: str):
+        """Test getting specific barber details"""
+        try:
+            response = requests.get(f"{self.api_url}/barbers/{barber_id}", timeout=10)
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                barber = response.json()
+                details += f", Barber: {barber.get('name')}, Experience: {barber.get('experience_years')} years"
+                details += f", Specialties: {len(barber.get('specialties', []))}"
+                
+            self.log_test("Get Barber by ID", success, details)
+            return success, response.json() if success else None
+        except Exception as e:
+            self.log_test("Get Barber by ID", False, f"Error: {str(e)}")
+            return False, None
+
     def test_init_services(self):
         """Test service initialization"""
         try:
