@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
 import BarberDashboard from "./pages/BarberDashboard";
 import BarberLogin from "./pages/BarberLogin";
+import AllAppointments from "./pages/AllAppointments";
 import { AuthProvider } from "./contexts/AuthContext";
 
 // Import components
