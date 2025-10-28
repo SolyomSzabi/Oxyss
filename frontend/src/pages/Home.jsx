@@ -142,13 +142,15 @@ const Home = () => {
                     <span className="text-2xl font-bold text-yellow-600">
                       {service.price}
                     </span>
-                    <Button 
-                      size="sm" 
-                      className="bg-zinc-900 hover:bg-zinc-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                      data-testid={`book-service-btn-${index}`}
-                    >
-                      Book Now
-                    </Button>
+                    <Link to="/booking">
+                      <Button 
+                        size="sm" 
+                        className="bg-zinc-900 hover:bg-zinc-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                        data-testid={`book-service-btn-${index}`}
+                      >
+                        Book Now
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
