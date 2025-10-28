@@ -548,6 +548,10 @@ def main():
     tester = BarbershopAPITester()
     success = tester.run_all_tests()
     
+    # Create test reports directory if it doesn't exist
+    import os
+    os.makedirs("/app/test_reports", exist_ok=True)
+    
     # Save detailed results
     results_file = "/app/test_reports/backend_api_results.json"
     with open(results_file, 'w') as f:
@@ -555,8 +559,10 @@ def main():
             "summary": {
                 "total_tests": tester.tests_run,
                 "passed_tests": tester.tests_passed,
+                "failed_tests": tester.tests_run - tester.tests_passed,
                 "success_rate": (tester.tests_passed / tester.tests_run * 100) if tester.tests_run > 0 else 0,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
+                "mongodb_fix_verified": success
             },
             "detailed_results": tester.test_results
         }, f, indent=2)
