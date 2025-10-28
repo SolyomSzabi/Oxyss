@@ -340,14 +340,24 @@ const BarberDashboard = () => {
                 Manage your appointments and schedule
               </p>
             </div>
-            <Button 
-              variant="outline" 
-              onClick={handleLogout}
-              className="text-zinc-600 hover:text-zinc-900"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+            <div className="flex space-x-3">
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/all-appointments')}
+                className="text-zinc-600 hover:text-zinc-900"
+              >
+                <Users className="h-4 w-4 mr-2" />
+                All Staff Schedule
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={handleLogout}
+                className="text-zinc-600 hover:text-zinc-900"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
 
           <Tabs defaultValue="today" className="w-full">
