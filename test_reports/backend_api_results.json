@@ -1,64 +1,102 @@
 {
   "summary": {
-    "total_tests": 9,
-    "passed_tests": 9,
+    "total_tests": 15,
+    "passed_tests": 15,
+    "failed_tests": 0,
     "success_rate": 100.0,
-    "timestamp": "2025-10-08T13:22:26.230217"
+    "timestamp": "2025-10-28T13:26:06.042655",
+    "mongodb_fix_verified": true
   },
   "detailed_results": [
     {
       "test_name": "API Root Endpoint",
       "success": true,
       "details": "Status: 200, Response: {'message': \"Oxy'ss Barbershop API\"}",
-      "timestamp": "2025-10-08T13:22:25.857542"
+      "timestamp": "2025-10-28T13:26:05.076049"
     },
     {
-      "test_name": "Initialize Services",
+      "test_name": "Initialize Data",
       "success": true,
-      "details": "Status: 200, Response: {'message': 'Services already initialized'}",
-      "timestamp": "2025-10-08T13:22:25.938544"
+      "details": "Status: 200, Barbers: 3, Services: 12, Auth accounts: 3",
+      "timestamp": "2025-10-28T13:26:05.132579"
+    },
+    {
+      "test_name": "Get Barbers",
+      "success": true,
+      "details": "Status: 200, Found 3 barbers, Barbers: Oxy, Helga, Marcus",
+      "timestamp": "2025-10-28T13:26:05.176685"
+    },
+    {
+      "test_name": "Get Barber by ID",
+      "success": true,
+      "details": "Status: 200, Barber: Oxy, Experience: 15 years, Specialties: 4",
+      "timestamp": "2025-10-28T13:26:05.215628"
+    },
+    {
+      "test_name": "Get Barber Services",
+      "success": true,
+      "details": "Status: 200, Found 6 services for barber, Example: Classic Haircut - $40.0",
+      "timestamp": "2025-10-28T13:26:05.263120"
     },
     {
       "test_name": "Get Services",
       "success": true,
       "details": "Status: 200, Found 12 services, Service example: Classic Haircut - $35.0",
-      "timestamp": "2025-10-08T13:22:25.979690"
+      "timestamp": "2025-10-28T13:26:05.300838"
+    },
+    {
+      "test_name": "Barber Login",
+      "success": true,
+      "details": "Status: 200, Logged in as: Oxy, Token type: bearer",
+      "timestamp": "2025-10-28T13:26:05.659299"
+    },
+    {
+      "test_name": "Get Available Slots",
+      "success": true,
+      "details": "Status: 200, Date: 2025-10-29, Total slots: 19, Available: 19, Duration: 45 min",
+      "timestamp": "2025-10-28T13:26:05.725452"
     },
     {
       "test_name": "Create Appointment",
       "success": true,
-      "details": "Status: 200, Appointment ID: ba9fe96a-1933-4080-92b7-0f315a55c117, Status: pending",
-      "timestamp": "2025-10-08T13:22:26.022695"
+      "details": "Status: 200, Appointment ID: e3f35e5a-0e23-423a-9723-466759023b0f, Status: confirmed, Barber: Oxy",
+      "timestamp": "2025-10-28T13:26:05.787122"
     },
     {
-      "test_name": "Get Appointments",
+      "test_name": "Get Today's Appointments",
       "success": true,
-      "details": "Status: 200, Found 2 appointments",
-      "timestamp": "2025-10-08T13:22:26.065724"
+      "details": "Status: 200, Found 0 appointments for today",
+      "timestamp": "2025-10-28T13:26:05.828916"
     },
     {
-      "test_name": "Get Appointment by ID",
+      "test_name": "Get Barber Appointments",
       "success": true,
-      "details": "Status: 200, Customer: John Doe",
-      "timestamp": "2025-10-08T13:22:26.106625"
+      "details": "Status: 200, Found 8 appointments for barber, Latest: John Smith on 2024-12-21",
+      "timestamp": "2025-10-28T13:26:05.869588"
     },
     {
-      "test_name": "Update Appointment Status",
+      "test_name": "Create Barber Break",
       "success": true,
-      "details": "Status: 200, Message: Appointment status updated successfully",
-      "timestamp": "2025-10-08T13:22:26.145733"
+      "details": "Status: 200, Break ID: 72ed97a5-18d5-4ee4-ae28-78f12583098f, Title: Lunch Break, Date: 2025-10-29",
+      "timestamp": "2025-10-28T13:26:05.911592"
+    },
+    {
+      "test_name": "Get Barber Breaks",
+      "success": true,
+      "details": "Status: 200, Found 4 breaks for barber, Latest: Break on 2025-10-16",
+      "timestamp": "2025-10-28T13:26:05.949628"
     },
     {
       "test_name": "Create Contact Message",
       "success": true,
-      "details": "Status: 200, Message ID: ed9301f3-b6c2-49bc-b523-fca77fedbca1",
-      "timestamp": "2025-10-08T13:22:26.190311"
+      "details": "Status: 200, Message ID: 0115e941-62cf-45b3-b6e8-28e91ef35294, From: Michael Rodriguez",
+      "timestamp": "2025-10-28T13:26:05.998681"
     },
     {
       "test_name": "Get Contact Messages",
       "success": true,
-      "details": "Status: 200, Found 2 messages",
-      "timestamp": "2025-10-08T13:22:26.229348"
+      "details": "Status: 200, Found 4 messages",
+      "timestamp": "2025-10-28T13:26:06.041686"
     }
   ]
 }
