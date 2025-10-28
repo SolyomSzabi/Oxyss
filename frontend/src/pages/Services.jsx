@@ -25,7 +25,19 @@ const Services = () => {
       await axios.post(`${API}/init-services`);
       // Then fetch all services
       const response = await axios.get(`${API}/services`);
-      setServices(response.data);
+      
+      // Remove duplicate services by name, keeping the first occurrence
+      const uniqueServices = [];
+      const seenNames = new Set();
+      
+      for (const service of response.data) {
+        if (!seenNames.has(service.name)) {
+          seenNames.add(service.name);
+          uniqueServices.push(service);
+        }
+      }
+      
+      setServices(uniqueServices);
     } catch (err) {
       setError('Failed to load services');
       console.error('Error fetching services:', err);
