@@ -414,9 +414,9 @@ class BarbershopAPITester:
         """Test creating a contact message"""
         try:
             test_message = {
-                "name": "Jane Smith",
-                "email": "jane.smith@example.com",
-                "message": "This is a test contact message from the API test suite."
+                "name": "Michael Rodriguez",
+                "email": "michael.rodriguez@example.com",
+                "message": "I'd like to schedule a consultation for a premium haircut and beard styling. What are your available times this week?"
             }
             
             response = requests.post(
@@ -432,6 +432,7 @@ class BarbershopAPITester:
             if success:
                 message = response.json()
                 details += f", Message ID: {message.get('id')}"
+                details += f", From: {message.get('name')}"
                 
             self.log_test("Create Contact Message", success, details)
             return success, response.json() if success else None
