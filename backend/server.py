@@ -48,14 +48,15 @@ export_router = APIRouter()
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
 DB_NAME = os.getenv("DB_NAME", "test_database")
 
-client = MongoClient(MONGO_URL)
-db = client[DB_NAME]
+# Use separate variables for sync export client to avoid overwriting async client
+export_client = MongoClient(MONGO_URL)
+export_db = export_client[DB_NAME]
 
 @export_router.get("/__export_db")
 def export_database():
     data = {}
-    for collection_name in db.list_collection_names():
-        documents = list(db[collection_name].find({}, {"_id": 0}))
+    for collection_name in export_db.list_collection_names():
+        documents = list(export_db[collection_name].find({}, {"_id": 0}))
         data[collection_name] = documents
     return JSONResponse(content=data)
 
