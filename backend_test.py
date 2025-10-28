@@ -344,29 +344,27 @@ class BarbershopAPITester:
             self.log_test("Get Today's Appointments", False, f"Error: {str(e)}")
             return False
 
-    def test_get_appointment_by_id(self, appointment_id: str):
-        """Test getting specific appointment"""
+    def test_create_barber_break(self, barber_id: str):
+        """Test creating a barber break (requires authentication)"""
         try:
-            response = requests.get(f"{self.api_url}/appointments/{appointment_id}", timeout=10)
-            success = response.status_code == 200
-            details = f"Status: {response.status_code}"
+            headers = self.get_auth_headers()
+            headers["Content-Type"] = "application/json"
             
-            if success:
-                appointment = response.json()
-                details += f", Customer: {appointment.get('customer_name')}"
-                
-            self.log_test("Get Appointment by ID", success, details)
-            return success
-        except Exception as e:
-            self.log_test("Get Appointment by ID", False, f"Error: {str(e)}")
-            return False
-
-    def test_update_appointment_status(self, appointment_id: str):
-        """Test updating appointment status"""
-        try:
-            response = requests.patch(
-                f"{self.api_url}/appointments/{appointment_id}",
-                params={"status": "confirmed"},
+            # Create break for tomorrow
+            tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+            
+            break_data = {
+                "barber_id": barber_id,
+                "break_date": tomorrow,
+                "start_time": "12:00:00",
+                "end_time": "13:00:00",
+                "title": "Lunch Break"
+            }
+            
+            response = requests.post(
+                f"{self.api_url}/breaks",
+                json=break_data,
+                headers=headers,
                 timeout=10
             )
             
@@ -374,14 +372,43 @@ class BarbershopAPITester:
             details = f"Status: {response.status_code}"
             
             if success:
-                result = response.json()
-                details += f", Message: {result.get('message')}"
+                break_obj = response.json()
+                details += f", Break ID: {break_obj.get('id')}"
+                details += f", Title: {break_obj.get('title')}"
+                details += f", Date: {break_obj.get('break_date')}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details += f", Response: {response.text}"
                 
-            self.log_test("Update Appointment Status", success, details)
-            return success
+            self.log_test("Create Barber Break", success, details)
+            return success, response.json() if success else None
         except Exception as e:
-            self.log_test("Update Appointment Status", False, f"Error: {str(e)}")
-            return False
+            self.log_test("Create Barber Break", False, f"Error: {str(e)}")
+            return False, None
+
+    def test_get_barber_breaks(self, barber_id: str):
+        """Test getting barber breaks"""
+        try:
+            response = requests.get(f"{self.api_url}/barbers/{barber_id}/breaks", timeout=10)
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                breaks = response.json()
+                details += f", Found {len(breaks)} breaks for barber"
+                
+                if breaks:
+                    latest_break = breaks[0]
+                    details += f", Latest: {latest_break.get('title')} on {latest_break.get('break_date')}"
+                
+            self.log_test("Get Barber Breaks", success, details)
+            return success, response.json() if success else []
+        except Exception as e:
+            self.log_test("Get Barber Breaks", False, f"Error: {str(e)}")
+            return False, []
 
     def test_create_contact_message(self):
         """Test creating a contact message"""
