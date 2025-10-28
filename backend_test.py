@@ -295,21 +295,53 @@ class BarbershopAPITester:
             self.log_test("Create Appointment", False, f"Error: {str(e)}")
             return False, None
 
-    def test_get_appointments(self):
-        """Test getting all appointments"""
+    def test_get_barber_appointments(self, barber_id: str):
+        """Test getting barber appointments (requires authentication)"""
         try:
-            response = requests.get(f"{self.api_url}/appointments", timeout=10)
+            headers = self.get_auth_headers()
+            response = requests.get(
+                f"{self.api_url}/barbers/{barber_id}/appointments",
+                headers=headers,
+                timeout=10
+            )
+            
             success = response.status_code == 200
             details = f"Status: {response.status_code}"
             
             if success:
                 appointments = response.json()
-                details += f", Found {len(appointments)} appointments"
+                details += f", Found {len(appointments)} appointments for barber"
                 
-            self.log_test("Get Appointments", success, details)
+                if appointments:
+                    details += f", Latest: {appointments[0].get('customer_name')} on {appointments[0].get('appointment_date')}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details += f", Response: {response.text}"
+                
+            self.log_test("Get Barber Appointments", success, details)
+            return success, response.json() if success else []
+        except Exception as e:
+            self.log_test("Get Barber Appointments", False, f"Error: {str(e)}")
+            return False, []
+
+    def test_get_today_appointments(self):
+        """Test getting today's appointments"""
+        try:
+            response = requests.get(f"{self.api_url}/appointments/today", timeout=10)
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                appointments = response.json()
+                details += f", Found {len(appointments)} appointments for today"
+                
+            self.log_test("Get Today's Appointments", success, details)
             return success
         except Exception as e:
-            self.log_test("Get Appointments", False, f"Error: {str(e)}")
+            self.log_test("Get Today's Appointments", False, f"Error: {str(e)}")
             return False
 
     def test_get_appointment_by_id(self, appointment_id: str):
