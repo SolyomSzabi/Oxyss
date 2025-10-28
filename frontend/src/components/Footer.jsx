@@ -117,13 +117,7 @@ const Footer = () => {
           <p className="text-zinc-400 text-sm">
             © 2024 Oxy'ss Barbershop. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link to="/privacy" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
-              Terms of Service
-            </Link>
+          <div className="mt-4 md:mt-0">
             <Link to="/barber-login" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
               Staff Login
             </Link>
