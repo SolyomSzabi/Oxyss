@@ -161,54 +161,56 @@ const AllAppointments = () => {
         </div>
       </section>
 
-      {/* Appointments by Barber */}
+      {/* Appointments by Barber - Column Layout */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
-          {barbers.map((barber) => (
-            <Card key={barber.id} className="overflow-hidden">
-              <CardHeader className="bg-zinc-900 text-white">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
+        {barbers.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-zinc-600">No barbers found</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {barbers.map((barber) => (
+              <Card key={barber.id} className="overflow-hidden flex flex-col h-full">
+                <CardHeader className="bg-zinc-900 text-white pb-4">
+                  <div className="flex flex-col items-center text-center space-y-3">
                     {barber.image_url && (
                       <img
                         src={barber.image_url}
                         alt={barber.name}
-                        className="w-12 h-12 rounded-full object-cover"
+                        className="w-16 h-16 rounded-full object-cover border-2 border-yellow-600"
                       />
                     )}
                     <div>
-                      <CardTitle className="text-xl">{barber.name}</CardTitle>
+                      <CardTitle className="text-xl mb-1">{barber.name}</CardTitle>
                       <p className="text-sm text-gray-300">
-                        {barber.appointments.length} appointment{barber.appointments.length !== 1 ? 's' : ''} today
+                        {barber.appointments.length} appointment{barber.appointments.length !== 1 ? 's' : ''}
                       </p>
                     </div>
+                    <Badge 
+                      variant={barber.is_available ? "success" : "secondary"}
+                      className={barber.is_available ? "bg-green-600" : "bg-gray-600"}
+                    >
+                      {barber.is_available ? "Available" : "Unavailable"}
+                    </Badge>
                   </div>
-                  <Badge 
-                    variant={barber.is_available ? "success" : "secondary"}
-                    className={barber.is_available ? "bg-green-600" : "bg-gray-600"}
-                  >
-                    {barber.is_available ? "Available" : "Unavailable"}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                {barber.appointments.length === 0 ? (
-                  <div className="p-8 text-center text-zinc-500">
-                    No appointments scheduled for today
-                  </div>
-                ) : (
-                  <div className="divide-y">
-                    {barber.appointments
-                      .sort((a, b) => a.time.localeCompare(b.time))
-                      .map((appointment, index) => (
-                        <div
-                          key={appointment.id}
-                          className="p-4 hover:bg-zinc-50 transition-colors"
-                        >
-                          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                </CardHeader>
+                <CardContent className="p-0 flex-1 overflow-y-auto" style={{ maxHeight: '600px' }}>
+                  {barber.appointments.length === 0 ? (
+                    <div className="p-6 text-center text-zinc-500 text-sm">
+                      No appointments scheduled for today
+                    </div>
+                  ) : (
+                    <div className="divide-y">
+                      {barber.appointments
+                        .sort((a, b) => a.time.localeCompare(b.time))
+                        .map((appointment) => (
+                          <div
+                            key={appointment.id}
+                            className="p-4 hover:bg-zinc-50 transition-colors"
+                          >
                             {/* Time */}
-                            <div className="flex items-center space-x-2">
-                              <Clock className="h-4 w-4 text-yellow-600" />
+                            <div className="flex items-center space-x-2 mb-3">
+                              <Clock className="h-4 w-4 text-yellow-600 flex-shrink-0" />
                               <div>
                                 <div className="font-semibold text-zinc-900">
                                   {formatTime(appointment.time)}
@@ -220,21 +222,18 @@ const AllAppointments = () => {
                             </div>
 
                             {/* Customer */}
-                            <div className="flex items-center space-x-2">
-                              <User className="h-4 w-4 text-zinc-400" />
-                              <div>
-                                <div className="font-medium text-zinc-900">
+                            <div className="flex items-start space-x-2 mb-2">
+                              <User className="h-4 w-4 text-zinc-400 flex-shrink-0 mt-0.5" />
+                              <div className="flex-1 min-w-0">
+                                <div className="font-medium text-zinc-900 text-sm truncate">
                                   {appointment.customer_name}
-                                </div>
-                                <div className="text-xs text-zinc-500">
-                                  Customer
                                 </div>
                               </div>
                             </div>
 
                             {/* Service */}
-                            <div>
-                              <div className="font-medium text-zinc-900">
+                            <div className="mb-2 pl-6">
+                              <div className="font-medium text-zinc-900 text-sm">
                                 {appointment.service_name}
                               </div>
                               <div className="text-xs text-zinc-500">
@@ -243,35 +242,29 @@ const AllAppointments = () => {
                             </div>
 
                             {/* Contact */}
-                            <div className="text-sm text-zinc-600 space-y-1">
+                            <div className="text-xs text-zinc-600 space-y-1 pl-6">
                               <div className="flex items-center space-x-1">
-                                <Phone className="h-3 w-3" />
-                                <span>{appointment.customer_phone}</span>
+                                <Phone className="h-3 w-3 flex-shrink-0" />
+                                <span className="truncate">{appointment.customer_phone}</span>
                               </div>
                               <div className="flex items-center space-x-1">
-                                <Mail className="h-3 w-3" />
+                                <Mail className="h-3 w-3 flex-shrink-0" />
                                 <span className="truncate">{appointment.customer_email}</span>
                               </div>
                             </div>
+
+                            {appointment.notes && (
+                              <div className="mt-3 p-2 bg-yellow-50 rounded text-xs text-zinc-700">
+                                <strong>Notes:</strong> {appointment.notes}
+                              </div>
+                            )}
                           </div>
-
-                          {appointment.notes && (
-                            <div className="mt-3 p-2 bg-yellow-50 rounded text-sm text-zinc-700">
-                              <strong>Notes:</strong> {appointment.notes}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {barbers.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-zinc-600">No barbers found</p>
+                        ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
           </div>
         )}
       </section>
