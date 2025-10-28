@@ -121,20 +121,75 @@ class BarbershopAPITester:
             self.log_test("Get Barber by ID", False, f"Error: {str(e)}")
             return False, None
 
-    def test_init_services(self):
-        """Test service initialization"""
+    def test_barber_services(self, barber_id: str):
+        """Test getting barber-specific services with custom pricing"""
         try:
-            response = requests.post(f"{self.api_url}/init-services", timeout=10)
+            response = requests.get(f"{self.api_url}/barbers/{barber_id}/services", timeout=10)
             success = response.status_code == 200
             details = f"Status: {response.status_code}"
+            
             if success:
-                data = response.json()
-                details += f", Response: {data}"
-            self.log_test("Initialize Services", success, details)
-            return success
+                services = response.json()
+                details += f", Found {len(services)} services for barber"
+                
+                if services:
+                    service = services[0]
+                    required_fields = ['id', 'barber_id', 'service_id', 'price', 'service_name', 'duration']
+                    missing_fields = [field for field in required_fields if field not in service]
+                    if missing_fields:
+                        success = False
+                        details += f", Missing fields: {missing_fields}"
+                    else:
+                        details += f", Example: {service['service_name']} - ${service['price']}"
+                
+            self.log_test("Get Barber Services", success, details)
+            return success, response.json() if success else []
         except Exception as e:
-            self.log_test("Initialize Services", False, f"Error: {str(e)}")
-            return False
+            self.log_test("Get Barber Services", False, f"Error: {str(e)}")
+            return False, []
+
+    def test_barber_login(self, email: str = "oxy@oxyssbarbershop.com", password: str = "barber123"):
+        """Test barber authentication login"""
+        try:
+            login_data = {
+                "email": email,
+                "password": password
+            }
+            
+            response = requests.post(
+                f"{self.api_url}/auth/login",
+                json=login_data,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                auth_data = response.json()
+                self.auth_token = auth_data.get('access_token')
+                self.barber_id = auth_data.get('barber_id')
+                self.barber_name = auth_data.get('barber_name')
+                details += f", Logged in as: {self.barber_name}, Token type: {auth_data.get('token_type')}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details += f", Response: {response.text}"
+                
+            self.log_test("Barber Login", success, details)
+            return success, response.json() if success else None
+        except Exception as e:
+            self.log_test("Barber Login", False, f"Error: {str(e)}")
+            return False, None
+
+    def get_auth_headers(self):
+        """Get authorization headers for authenticated requests"""
+        if self.auth_token:
+            return {"Authorization": f"Bearer {self.auth_token}"}
+        return {}
 
     def test_get_services(self):
         """Test getting all services"""
