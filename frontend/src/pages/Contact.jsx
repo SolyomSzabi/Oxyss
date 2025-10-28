@@ -64,12 +64,6 @@ const Contact = () => {
       title: 'Email Us',
       details: ['info@oxyssbarbershop.com'],
       action: 'Send Email'
-    },
-    {
-      icon: <Clock className="h-6 w-6 text-yellow-600" />,
-      title: 'Hours',
-      details: ['Mon-Fri: 9AM - 8PM', 'Sat: 8AM - 6PM', 'Sun: 10AM - 4PM'],
-      action: ''
     }
   ];
 
