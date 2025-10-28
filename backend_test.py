@@ -192,7 +192,7 @@ class BarbershopAPITester:
         return {}
 
     def test_get_services(self):
-        """Test getting all services"""
+        """Test getting all base services"""
         try:
             response = requests.get(f"{self.api_url}/services", timeout=10)
             success = response.status_code == 200
@@ -205,13 +205,13 @@ class BarbershopAPITester:
                 # Validate service structure
                 if services:
                     service = services[0]
-                    required_fields = ['id', 'name', 'description', 'duration', 'price']
+                    required_fields = ['id', 'name', 'description', 'duration', 'base_price']
                     missing_fields = [field for field in required_fields if field not in service]
                     if missing_fields:
                         success = False
                         details += f", Missing fields: {missing_fields}"
                     else:
-                        details += f", Service example: {service['name']} - ${service['price']}"
+                        details += f", Service example: {service['name']} - ${service['base_price']}"
                 
             self.log_test("Get Services", success, details)
             return success, response.json() if success else []
