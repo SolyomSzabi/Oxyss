@@ -202,7 +202,11 @@ const AllAppointments = () => {
                   ) : (
                     <div className="divide-y">
                       {barber.appointments
-                        .sort((a, b) => a.time.localeCompare(b.time))
+                        .sort((a, b) => {
+                          const timeA = a.appointment_time || a.time || '00:00:00';
+                          const timeB = b.appointment_time || b.time || '00:00:00';
+                          return timeA.localeCompare(timeB);
+                        })
                         .map((appointment) => (
                           <div
                             key={appointment.id}
