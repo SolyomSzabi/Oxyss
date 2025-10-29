@@ -217,7 +217,7 @@ const AllAppointments = () => {
                               <Clock className="h-4 w-4 text-yellow-600 flex-shrink-0" />
                               <div>
                                 <div className="font-semibold text-zinc-900">
-                                  {formatTime(appointment.time)}
+                                  {formatTime(appointment.appointment_time || appointment.time)}
                                 </div>
                                 <div className="text-xs text-zinc-500">
                                   {appointment.duration} min
