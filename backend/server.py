@@ -201,6 +201,7 @@ class BarberServiceWithDetails(BaseModel):
     service_name: str
     service_description: str
     duration: int
+    category: str = "Men"
 
 class BarberLogin(BaseModel):
     email: str
