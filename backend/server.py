@@ -397,7 +397,8 @@ async def get_barber_services(barber_id: str):
             "is_available": 1,
             "service_name": "$service_info.name",
             "service_description": "$service_info.description",
-            "duration": "$service_info.duration"
+            "duration": "$service_info.duration",
+            "category": "$service_info.category"
         }}
     ]
     
