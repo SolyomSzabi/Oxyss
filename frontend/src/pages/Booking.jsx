@@ -345,33 +345,50 @@ const Booking = () => {
                           <p>Loading services...</p>
                         </div>
                       ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {services.map((service) => (
-                            <div
-                              key={service.id}
-                              className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                                bookingData.barberServiceId === service.id
-                                  ? 'border-yellow-600 bg-yellow-50'
-                                  : 'border-zinc-200 hover:border-zinc-300'
-                              }`}
-                              onClick={() => handleServiceSelect(service.id)}
-                              data-testid={`service-option-${service.id}`}
-                            >
-                              <h4 className="font-semibold text-zinc-900 mb-2">{service.service_name}</h4>
-                              <p className="text-sm text-zinc-600 mb-3">{service.service_description}</p>
-                              <div className="flex justify-between items-center">
-                                <div className="flex items-center space-x-3">
-                                  <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                                    <Clock className="h-3 w-3 mr-1" />
-                                    {service.duration} min
-                                  </Badge>
-                                  <div className="text-green-600 font-semibold text-sm">
-                                    From ${service.base_price}*
-                                  </div>
+                        <div className="space-y-8">
+                          {['Men', 'Women', 'Kids'].map((category) => {
+                            const categoryServices = services.filter(s => s.category === category);
+                            
+                            if (categoryServices.length === 0) return null;
+                            
+                            return (
+                              <div key={category}>
+                                <h4 className="text-md font-semibold text-zinc-700 mb-3 flex items-center">
+                                  <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                                    {category}'s Services
+                                  </span>
+                                </h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  {categoryServices.map((service) => (
+                                    <div
+                                      key={service.id}
+                                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                                        bookingData.barberServiceId === service.id
+                                          ? 'border-yellow-600 bg-yellow-50'
+                                          : 'border-zinc-200 hover:border-zinc-300'
+                                      }`}
+                                      onClick={() => handleServiceSelect(service.id)}
+                                      data-testid={`service-option-${service.id}`}
+                                    >
+                                      <h4 className="font-semibold text-zinc-900 mb-2">{service.service_name}</h4>
+                                      <p className="text-sm text-zinc-600 mb-3">{service.service_description}</p>
+                                      <div className="flex justify-between items-center">
+                                        <div className="flex items-center space-x-3">
+                                          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                                            <Clock className="h-3 w-3 mr-1" />
+                                            {service.duration} min
+                                          </Badge>
+                                          <div className="text-green-600 font-semibold text-sm">
+                                            ${service.price}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
                     </div>
