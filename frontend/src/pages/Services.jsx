@@ -94,52 +94,65 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* Services Grid by Category */}
       <section className="section-padding">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <Card 
-                key={service.id} 
-                className="service-card group hover:shadow-xl transition-all duration-300"
-                data-testid={`service-card-${service.id}`}
-              >
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <CardTitle className="text-xl font-semibold text-zinc-900">
-                      {service.name}
-                    </CardTitle>
-                    <Scissors className="h-5 w-5 text-yellow-600" />
-                  </div>
-                  <p className="text-zinc-600 leading-relaxed">
-                    {service.description}
-                  </p>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4 text-zinc-400" />
-                        <span className="text-sm text-zinc-600">{service.duration} min</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <DollarSign className="h-4 w-4 text-zinc-400" />
-                        <span className="text-lg font-bold text-yellow-600">From ${service.base_price}*</span>
-                      </div>
-                    </div>
-                  </div>
-                  <Link to="/booking" state={{ selectedService: service }}>
-                    <Button 
-                      className="w-full bg-zinc-900 hover:bg-zinc-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                      data-testid={`book-service-${service.id}`}
+          {['Men', 'Women', 'Kids'].map((category) => {
+            const categoryServices = services.filter(s => s.category === category);
+            
+            if (categoryServices.length === 0) return null;
+            
+            return (
+              <div key={category} className="mb-16 last:mb-0">
+                <h2 className="text-3xl font-bold font-heading text-zinc-900 mb-8 text-center">
+                  {category}'s Services
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {categoryServices.map((service) => (
+                    <Card 
+                      key={service.id} 
+                      className="service-card group hover:shadow-xl transition-all duration-300"
+                      data-testid={`service-card-${service.id}`}
                     >
-                      Book This Service
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <CardTitle className="text-xl font-semibold text-zinc-900">
+                            {service.name}
+                          </CardTitle>
+                          <Scissors className="h-5 w-5 text-yellow-600" />
+                        </div>
+                        <p className="text-zinc-600 leading-relaxed">
+                          {service.description}
+                        </p>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-1">
+                              <Clock className="h-4 w-4 text-zinc-400" />
+                              <span className="text-sm text-zinc-600">{service.duration} min</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <DollarSign className="h-4 w-4 text-zinc-400" />
+                              <span className="text-lg font-bold text-yellow-600">From ${service.base_price}*</span>
+                            </div>
+                          </div>
+                        </div>
+                        <Link to="/booking" state={{ selectedService: service }}>
+                          <Button 
+                            className="w-full bg-zinc-900 hover:bg-zinc-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                            data-testid={`book-service-${service.id}`}
+                          >
+                            Book This Service
+                          </Button>
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
