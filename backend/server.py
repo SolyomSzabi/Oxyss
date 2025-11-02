@@ -166,12 +166,14 @@ class Service(BaseModel):
     description: str
     duration: int  # in minutes
     base_price: float  # base price, can be overridden per barber
+    category: str = "Men"  # Men, Women, Kids
 
 class ServiceCreate(BaseModel):
     name: str
     description: str
     duration: int
     base_price: float
+    category: str = "Men"
 
 class BarberService(BaseModel):
     model_config = ConfigDict(extra="ignore")
