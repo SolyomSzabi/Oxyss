@@ -418,7 +418,7 @@ const Booking = () => {
                           <span className="text-zinc-700"><strong>Service:</strong> {selectedServiceDetails.service_name}</span>
                           <div className="flex items-center space-x-2">
                             <Badge variant="secondary">{selectedServiceDetails.duration} min</Badge>
-                            <span className="font-semibold text-green-600">${selectedServiceDetails.price}</span>
+                            <span className="font-semibold text-green-600">{selectedServiceDetails.price} RON</span>
                           </div>
                         </div>
                         {bookingData.barberName && (
