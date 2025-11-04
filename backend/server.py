@@ -9,14 +9,22 @@ from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone, date, time, timedelta
+import pytz
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends, HTTPException, status
-from passlib.context import CryptContext
-from jose import JWTError, jwt
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Depends, HTTPException, status
+
+# Romanian timezone
+ROMANIAN_TZ = pytz.timezone('Europe/Bucharest')
+
+def get_romanian_now():
+    """Get current datetime in Romanian timezone"""
+    return datetime.now(ROMANIAN_TZ)
+
+def get_romanian_today():
+    """Get today's date in Romanian timezone"""
+    return get_romanian_now().date()
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
