@@ -640,7 +640,7 @@ async def get_barber_today_appointments(barber_id: str, current_barber: dict = D
 
 @api_router.get("/appointments/today", response_model=List[Appointment])
 async def get_today_appointments():
-    today = datetime.now(timezone.utc).date().isoformat()
+    today = get_romanian_today().isoformat()
     appointments = await db.appointments.find({"appointment_date": today}, {"_id": 0}).sort("appointment_time", 1).to_list(1000)
     
     # Parse dates and times from MongoDB
