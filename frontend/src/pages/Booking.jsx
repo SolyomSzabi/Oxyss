@@ -517,7 +517,7 @@ const Booking = () => {
                       <p><strong>Date:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>Time:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>Duration:</strong> {selectedServiceDetails?.duration} minutes</p>
-                      <p><strong>Price:</strong> ${selectedServiceDetails?.price}</p>
+                      <p><strong>Price:</strong> {selectedServiceDetails?.price} RON</p>
                     </div>
                   </div>
 
