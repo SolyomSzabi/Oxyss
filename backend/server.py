@@ -622,7 +622,7 @@ async def get_barber_today_appointments(barber_id: str, current_barber: dict = D
     # For all staff view, allow any authenticated barber to see all appointments
     # No restriction on barber_id check for this endpoint
     
-    today = datetime.now(timezone.utc).date().isoformat()
+    today = get_romanian_today().isoformat()
     query_filter = {
         "barber_id": barber_id,
         "appointment_date": today
