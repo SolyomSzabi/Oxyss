@@ -379,7 +379,7 @@ const Booking = () => {
                                             {service.duration} min
                                           </Badge>
                                           <div className="text-green-600 font-semibold text-sm">
-                                            ${service.price}
+                                            {service.price} RON
                                           </div>
                                         </div>
                                       </div>
