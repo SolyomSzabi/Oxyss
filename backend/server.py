@@ -488,6 +488,16 @@ async def check_barber_availability(barber_id: str, date: str, start_time: str, 
     appointment_date = date
     start_time_obj = datetime.strptime(start_time, '%H:%M').time()
     
+    # Check if the slot is in the past (Romanian timezone)
+    appointment_datetime = datetime.fromisoformat(f"{date}T{start_time}:00")
+    romanian_now = get_romanian_now()
+    
+    # If appointment is today, check if time has passed
+    if date == get_romanian_today().isoformat():
+        appointment_datetime_ro = ROMANIAN_TZ.localize(appointment_datetime)
+        if appointment_datetime_ro <= romanian_now:
+            return {"available": False, "reason": "Time slot is in the past"}
+    
     # Calculate end time
     start_datetime = datetime.combine(datetime.fromisoformat(date).date(), start_time_obj)
     end_datetime = start_datetime + timedelta(minutes=duration)
