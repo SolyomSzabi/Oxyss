@@ -9,19 +9,19 @@ const Home = () => {
   const services = [
     {
       name: 'Classic Haircut',
-      price: '$35',
+      price: '35 RON',
       duration: '45 min',
       description: 'Traditional men\'s haircut with wash and style'
     },
     {
       name: 'Beard Trim & Style',
-      price: '$25',
+      price: '25 RON',
       duration: '30 min',
       description: 'Professional beard trimming and styling'
     },
     {
       name: 'Premium Cut & Beard',
-      price: '$55',
+      price: '55 RON',
       duration: '75 min',
       description: 'Complete grooming package'
     }
