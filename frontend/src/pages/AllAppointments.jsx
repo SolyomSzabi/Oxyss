@@ -79,13 +79,15 @@ const AllAppointments = () => {
   };
 
   const getTodayString = () => {
-    const today = new Date();
-    return today.toLocaleDateString('en-US', { 
+    // Get Romanian timezone date
+    const today = new Date().toLocaleDateString('ro-RO', { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
-      day: 'numeric' 
+      day: 'numeric',
+      timeZone: 'Europe/Bucharest'
     });
+    return today.charAt(0).toUpperCase() + today.slice(1); // Capitalize first letter
   };
 
   const getTotalAppointments = () => {
