@@ -243,7 +243,7 @@ const AllAppointments = () => {
                                 {appointment.service_name}
                               </div>
                               <div className="text-xs text-zinc-500">
-                                ${appointment.price}
+                                {appointment.price} RON
                               </div>
                             </div>
 
