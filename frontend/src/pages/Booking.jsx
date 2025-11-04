@@ -441,7 +441,16 @@ const Booking = () => {
                           mode="single"
                           selected={bookingData.appointmentDate}
                           onSelect={handleDateSelect}
-                          disabled={(date) => date < new Date() || date.getDay() === 0} // Disable past dates and Sundays
+                          disabled={(date) => {
+                            // Get today at midnight for accurate comparison
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            const checkDate = new Date(date);
+                            checkDate.setHours(0, 0, 0, 0);
+                            
+                            // Disable past dates (before today) and Sundays
+                            return checkDate < today || date.getDay() === 0;
+                          }}
                           className="rounded-md border bg-white relative z-10"
                           data-testid="appointment-calendar"
                         />
