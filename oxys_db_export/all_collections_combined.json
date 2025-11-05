@@ -1,0 +1,648 @@
+{
+  "services": [
+    {
+      "id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "name": "Classic Haircut",
+      "description": "Traditional men's haircut with wash and style",
+      "duration": 45,
+      "base_price": 35.0,
+      "category": "Men"
+    },
+    {
+      "id": "d6d263e9-3c87-4c69-b5aa-2c53c3629d77",
+      "name": "Beard Trim & Style",
+      "description": "Professional beard trimming and styling",
+      "duration": 30,
+      "base_price": 25.0,
+      "category": "Men"
+    },
+    {
+      "id": "ceae8f66-1620-4c46-9423-45f3ccb4481a",
+      "name": "Premium Cut & Beard",
+      "description": "Complete grooming package with haircut and beard service",
+      "duration": 75,
+      "base_price": 55.0,
+      "category": "Men"
+    },
+    {
+      "id": "1241c68b-cdfd-4d15-b3a2-587ab34cbd9c",
+      "name": "Hot Towel Shave",
+      "description": "Traditional hot towel shave with premium products",
+      "duration": 45,
+      "base_price": 40.0,
+      "category": "Men"
+    },
+    {
+      "id": "cbef4f6e-08b8-43ec-a83d-6d3a96e236c1",
+      "name": "Kids Haircut",
+      "description": "Haircut for children under 12",
+      "duration": 30,
+      "base_price": 20.0,
+      "category": "Kids"
+    },
+    {
+      "id": "e1c80def-6d53-43aa-a5e7-18fca35639a0",
+      "name": "Senior Haircut",
+      "description": "Haircut for seniors (65+)",
+      "duration": 45,
+      "base_price": 28.0,
+      "category": "Men"
+    },
+    {
+      "id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+      "name": "Classic Haircut",
+      "description": "Traditional men's haircut with wash and style",
+      "duration": 45,
+      "base_price": 35.0,
+      "category": "Men"
+    },
+    {
+      "id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "name": "Beard Trim & Style",
+      "description": "Professional beard trimming and styling",
+      "duration": 30,
+      "base_price": 25.0,
+      "category": "Men"
+    },
+    {
+      "id": "9dbae8ab-f2c6-4825-9f60-49f43912e96d",
+      "name": "Premium Cut & Beard",
+      "description": "Complete grooming package with haircut and beard service",
+      "duration": 75,
+      "base_price": 55.0,
+      "category": "Men"
+    },
+    {
+      "id": "650714b1-af43-4b77-a68d-7382dc07bb04",
+      "name": "Hot Towel Shave",
+      "description": "Traditional hot towel shave with premium products",
+      "duration": 45,
+      "base_price": 40.0,
+      "category": "Men"
+    },
+    {
+      "id": "7d072e5c-1d17-4165-b6f9-2d5973474048",
+      "name": "Kids Haircut",
+      "description": "Haircut for children under 12",
+      "duration": 30,
+      "base_price": 20.0,
+      "category": "Kids"
+    },
+    {
+      "id": "f26cc11f-81c1-4078-bda0-f78d698478b7",
+      "name": "Senior Haircut",
+      "description": "Haircut for seniors (65+)",
+      "duration": 45,
+      "base_price": 28.0,
+      "category": "Men"
+    }
+  ],
+  "barbers": [
+    {
+      "id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "name": "Oxy",
+      "description": "Master barber and founder with exceptional skills in classic and modern cuts",
+      "experience_years": 15,
+      "specialties": [
+        "Classic cuts",
+        "Fades",
+        "Beard styling",
+        "Hot towel shaves"
+      ],
+      "image_url": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+      "is_available": true
+    },
+    {
+      "id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "name": "Helga",
+      "description": "Expert stylist specializing in modern cuts and precision beard work",
+      "experience_years": 8,
+      "specialties": [
+        "Modern styles",
+        "Precision cuts",
+        "Beard trimming",
+        "Hair treatments"
+      ],
+      "image_url": "https://images.unsplash.com/photo-1594736797933-d0401ba5fe65?w=400&h=400&fit=crop&crop=face",
+      "is_available": true
+    },
+    {
+      "id": "b4f70f36-35ef-4e93-8ad7-6eaced548347",
+      "name": "Marcus",
+      "description": "Experienced barber specializing in traditional cuts and classic styling",
+      "experience_years": 12,
+      "specialties": [
+        "Traditional cuts",
+        "Pompadours",
+        "Classic shaves",
+        "Mustache grooming"
+      ],
+      "image_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+      "is_available": true
+    }
+  ],
+  "barber_services": [
+    {
+      "id": "76e3569d-fbb1-4109-9e9a-e3d00ca943b7",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+      "price": 40.0,
+      "is_available": true
+    },
+    {
+      "id": "fdf9b022-3c3e-4517-9756-4327dbea1adc",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "price": 28.0,
+      "is_available": true
+    },
+    {
+      "id": "0ef581ad-7111-4b0a-a3e6-353173963c8a",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "service_id": "9dbae8ab-f2c6-4825-9f60-49f43912e96d",
+      "price": 65.0,
+      "is_available": true
+    },
+    {
+      "id": "16f497e3-eae4-4e4c-b5ba-0983f9d53c2e",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "service_id": "650714b1-af43-4b77-a68d-7382dc07bb04",
+      "price": 45.0,
+      "is_available": true
+    },
+    {
+      "id": "9fe171fe-99a0-400e-bf5e-c78caa6fdbed",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "service_id": "7d072e5c-1d17-4165-b6f9-2d5973474048",
+      "price": 25.0,
+      "is_available": true
+    },
+    {
+      "id": "8c053564-5028-4318-87db-c527f425ac61",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "service_id": "f26cc11f-81c1-4078-bda0-f78d698478b7",
+      "price": 32.0,
+      "is_available": true
+    },
+    {
+      "id": "a9fbb5fc-9c0d-4d83-b7a1-3bd67795f8f0",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+      "price": 35.0,
+      "is_available": true
+    },
+    {
+      "id": "a820daa4-8502-41de-b844-9cc2e6f38b1b",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "price": 30.0,
+      "is_available": true
+    },
+    {
+      "id": "0e33b03e-951f-4a7b-b51c-e83ca0b6772d",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "service_id": "9dbae8ab-f2c6-4825-9f60-49f43912e96d",
+      "price": 60.0,
+      "is_available": true
+    },
+    {
+      "id": "d5afde9b-dac9-4abb-afaa-b296df4ff350",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "service_id": "7d072e5c-1d17-4165-b6f9-2d5973474048",
+      "price": 22.0,
+      "is_available": true
+    },
+    {
+      "id": "493635ca-f328-439d-a9fa-b994f5889e65",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "service_id": "f26cc11f-81c1-4078-bda0-f78d698478b7",
+      "price": 28.0,
+      "is_available": true
+    }
+  ],
+  "appointments": [
+    {
+      "id": "64c5c1cd-9b36-4cb8-b6f8-10fc3606e95e",
+      "customer_name": "John Doe",
+      "customer_email": "john.doe@example.com",
+      "customer_phone": "555-123-4567",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "appointment_date": "2024-12-20",
+      "appointment_time": "10:30:00",
+      "status": "pending",
+      "created_at": "2025-10-08T13:20:38.168072+00:00",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "ba9fe96a-1933-4080-92b7-0f315a55c117",
+      "customer_name": "John Doe",
+      "customer_email": "john.doe@example.com",
+      "customer_phone": "(555) 123-4567",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Test Service",
+      "appointment_date": "2024-12-20",
+      "appointment_time": "14:30:00",
+      "status": "confirmed",
+      "created_at": "2025-10-08T13:22:26.017919+00:00",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "9fae920d-8f51-4bff-80ee-d4f142d77d60",
+      "customer_name": "Test Customer",
+      "customer_email": "test@example.com",
+      "customer_phone": "(555) 123-4567",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "appointment_date": "2025-10-09",
+      "appointment_time": "09:00:00",
+      "status": "pending",
+      "created_at": "2025-10-08T13:23:53.115601+00:00",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "e602eadb-7169-484d-a7d5-e3a54bbe9385",
+      "customer_name": "John Smith",
+      "customer_email": "john.smith@example.com",
+      "customer_phone": "555-123-4567",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2024-12-21",
+      "appointment_time": "14:30:00",
+      "status": "pending",
+      "created_at": "2025-10-13T22:58:19.451337+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "27af32c3-9fb7-4584-9a31-73591fc057f5",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-15",
+      "appointment_time": "09:00:00",
+      "status": "completed",
+      "created_at": "2025-10-13T23:14:10.794188+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "aba11c63-4312-490c-9507-88c4fcdaeb0d",
+      "customer_name": "Maria Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-15",
+      "appointment_time": "09:00:00",
+      "status": "cancelled",
+      "created_at": "2025-10-13T23:21:54.122963+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "707f5bd8-b1f6-4d33-89e5-47befad7b60d",
+      "customer_name": "Jane Doe",
+      "customer_email": "jane.doe@example.com",
+      "customer_phone": "555-987-6543",
+      "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "service_name": "Beard Trim & Style",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "barber_name": "Helga",
+      "appointment_date": "2024-12-22",
+      "appointment_time": "11:00:00",
+      "status": "pending",
+      "created_at": "2025-10-14T11:04:47.334233+00:00",
+      "duration": 30,
+      "price": 25.0
+    },
+    {
+      "id": "219906f7-2525-47a0-9947-ab0937d66c29",
+      "customer_name": "Test Customer",
+      "customer_email": "test@example.com",
+      "customer_phone": "555-000-0000",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2024-12-23",
+      "appointment_time": "10:00:00",
+      "status": "confirmed",
+      "created_at": "2025-10-15T21:58:24.133150+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "4a9ac5f6-1352-4386-9b8f-9d9d1f9dbe12",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-18",
+      "appointment_time": "11:00:00",
+      "status": "confirmed",
+      "created_at": "2025-10-15T22:06:49.099756+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "4187dab9-fc24-49f0-adf7-7b2dc87ab0f2",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-17",
+      "appointment_time": "14:30:00",
+      "status": "confirmed",
+      "created_at": "2025-10-15T22:42:24.390475+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "477a1bd4-1cf3-4a84-9fd9-7f3e3c9d9ee9",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "service_name": "Beard Trim & Style",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "barber_name": "Helga",
+      "appointment_date": "2025-10-17",
+      "appointment_time": "16:30:00",
+      "status": "confirmed",
+      "created_at": "2025-10-15T22:48:12.457028+00:00",
+      "duration": 30,
+      "price": 25.0
+    },
+    {
+      "id": "d0fef386-9f1d-42f7-b804-5c5a71a46c56",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "service_name": "Beard Trim & Style",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-18",
+      "appointment_time": "15:30:00",
+      "status": "confirmed",
+      "created_at": "2025-10-16T21:00:49.619287+00:00",
+      "duration": 30,
+      "price": 25.0
+    },
+    {
+      "id": "e3f35e5a-0e23-423a-9723-466759023b0f",
+      "customer_name": "Sarah Johnson",
+      "customer_email": "sarah.johnson@example.com",
+      "customer_phone": "(555) 987-6543",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-29",
+      "appointment_time": "10:00:00",
+      "status": "confirmed",
+      "created_at": "2025-10-28T13:26:05.779672+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "d49b90b1-9cac-48d5-ab16-1f361cc9d352",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-29",
+      "appointment_time": "15:00:00",
+      "status": "confirmed",
+      "created_at": "2025-10-28T13:55:06.793199+00:00",
+      "duration": 45,
+      "price": 35.0
+    },
+    {
+      "id": "b0b07835-a647-467d-94cd-54bdd38054bf",
+      "customer_name": "Maria Solyom",
+      "customer_email": "asd@booking.com",
+      "customer_phone": "0757630225",
+      "service_id": "650714b1-af43-4b77-a68d-7382dc07bb04",
+      "service_name": "Hot Towel Shave",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-29",
+      "appointment_time": "18:00:00",
+      "status": "confirmed",
+      "created_at": "2025-10-28T13:55:30.123295+00:00",
+      "duration": 45,
+      "price": 40.0
+    },
+    {
+      "id": "7fe2187a-de39-45be-9468-b89635214e92",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "service_name": "Beard Trim & Style",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "barber_name": "Helga",
+      "appointment_date": "2025-10-29",
+      "appointment_time": "10:30:00",
+      "status": "confirmed",
+      "created_at": "2025-10-28T13:55:41.644141+00:00",
+      "duration": 30,
+      "price": 25.0
+    },
+    {
+      "id": "ea94fabb-d118-418d-b9d9-d05e58f5f61f",
+      "customer_name": "Test Customer",
+      "customer_email": "test@example.com",
+      "customer_phone": "555-9999",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-10-28",
+      "appointment_time": "10:00:00",
+      "duration": 45,
+      "price": 35.0,
+      "status": "confirmed",
+      "created_at": "2025-10-28T22:40:20.129635+00:00"
+    },
+    {
+      "id": "93c6a47d-5fce-479e-981a-88056c317e19",
+      "customer_name": "Jane Smith",
+      "customer_email": "jane@example.com",
+      "customer_phone": "555-8888",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "barber_name": "Helga",
+      "appointment_date": "2025-10-28",
+      "appointment_time": "14:30:00",
+      "duration": 45,
+      "price": 35.0,
+      "status": "confirmed",
+      "created_at": "2025-10-28T22:40:20.133092+00:00"
+    },
+    {
+      "id": "a9ef9f75-1663-4bfc-b652-23c076105494",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+      "service_name": "Beard Trim & Style",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-11-01",
+      "appointment_time": "11:00:00",
+      "status": "confirmed",
+      "created_at": "2025-10-31T12:55:49.929514+00:00"
+    },
+    {
+      "id": "3782494b-8cae-4536-a33f-af496b3abd3b",
+      "customer_name": "Ion Popescu",
+      "customer_email": "ion.popescu@example.ro",
+      "customer_phone": "0721-555-999",
+      "service_id": "b5a81fce-8d76-4837-a7df-46d658881e1c",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-11-05",
+      "appointment_time": "14:00:00",
+      "duration": 45,
+      "price": 35.0,
+      "status": "confirmed",
+      "created_at": "2025-11-05T00:57:07.237711+02:00"
+    },
+    {
+      "id": "17cc2053-cb5c-4cb6-84f1-e33efbaf6ae4",
+      "customer_name": "Szabolcs-Csaba Solyom",
+      "customer_email": "deadfunszabyy@gmail.com",
+      "customer_phone": "0757630225",
+      "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+      "service_name": "Classic Haircut",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "barber_name": "Oxy",
+      "appointment_date": "2025-11-06",
+      "appointment_time": "09:00:00",
+      "status": "confirmed",
+      "created_at": "2025-11-04T23:01:00.311604+00:00"
+    }
+  ],
+  "barber_breaks": [
+    {
+      "id": "27f76ff9-f3e4-43a9-a793-7ea1a376fe4e",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "break_date": "2025-10-16",
+      "start_time": "01:24:00",
+      "end_time": "06:26:00",
+      "title": "Break",
+      "created_at": "2025-10-15T22:21:16.881421+00:00"
+    },
+    {
+      "id": "6ed0cb8d-7f25-414a-92b9-d59a9eb53d08",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "break_date": "2025-10-16",
+      "start_time": "10:21:00",
+      "end_time": "15:21:00",
+      "title": "Break",
+      "created_at": "2025-10-15T22:22:00.003958+00:00"
+    },
+    {
+      "id": "f4db48c7-3791-4063-9d4c-2a6a52872939",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "break_date": "2025-10-17",
+      "start_time": "15:23:00",
+      "end_time": "22:23:00",
+      "title": "Break",
+      "created_at": "2025-10-15T22:23:36.105823+00:00"
+    },
+    {
+      "id": "72ed97a5-18d5-4ee4-ae28-78f12583098f",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "break_date": "2025-10-29",
+      "start_time": "12:00:00",
+      "end_time": "13:00:00",
+      "title": "Lunch Break",
+      "created_at": "2025-10-28T13:26:05.903849+00:00"
+    }
+  ],
+  "barber_auth": [
+    {
+      "id": "d9e82031-035e-4a8b-947a-9ba7eb2c2a37",
+      "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+      "email": "oxy@oxyssbarbershop.com",
+      "password_hash": "$2b$12$wKu/oxMqOpMfP/fqyZl9N.bSyhoNbOwSQm5hIe1JKvA2klyGvfX3a",
+      "is_active": true
+    },
+    {
+      "id": "7b427e41-6c77-4367-a416-d34c53ca6b22",
+      "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+      "email": "helga@oxyssbarbershop.com",
+      "password_hash": "$2b$12$kVAKEe7MSaoVAb.qdYUkTeF.n0v9Lr9hidlP0EgYuj52sA6/B5l3y",
+      "is_active": true
+    },
+    {
+      "id": "bd0684f0-67fe-4a39-9207-2c58222e1726",
+      "barber_id": "b4f70f36-35ef-4e93-8ad7-6eaced548347",
+      "email": "marcus@oxyssbarbershop.com",
+      "password_hash": "$2b$12$IdjaetpVg3BU9OXcaQtqTeB8fPxK7BJgeDIbO4DVFIJeqtVx9Qvbe",
+      "is_active": true
+    }
+  ],
+  "contact_messages": [
+    {
+      "id": "5869bf8b-0fb0-4caf-b82d-f12f2c694d24",
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "message": "Hi, I would like to know about your beard trimming services.",
+      "created_at": "2025-10-08T13:20:44.588027+00:00"
+    },
+    {
+      "id": "ed9301f3-b6c2-49bc-b523-fca77fedbca1",
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "message": "This is a test contact message from the API test suite.",
+      "created_at": "2025-10-08T13:22:26.185443+00:00"
+    },
+    {
+      "id": "857eef88-1aa4-4719-af53-e3c1d7fc8cb4",
+      "name": "Test Navigation User",
+      "email": "navtest@example.com",
+      "message": "Testing contact form via navigation from homepage.",
+      "created_at": "2025-10-08T13:26:43.395507+00:00"
+    },
+    {
+      "id": "0115e941-62cf-45b3-b6e8-28e91ef35294",
+      "name": "Michael Rodriguez",
+      "email": "michael.rodriguez@example.com",
+      "message": "I'd like to schedule a consultation for a premium haircut and beard styling. What are your available times this week?",
+      "created_at": "2025-10-28T13:26:05.987207+00:00"
+    }
+  ]
+}

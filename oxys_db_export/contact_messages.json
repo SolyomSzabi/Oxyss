@@ -1,0 +1,30 @@
+[
+  {
+    "id": "5869bf8b-0fb0-4caf-b82d-f12f2c694d24",
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "message": "Hi, I would like to know about your beard trimming services.",
+    "created_at": "2025-10-08T13:20:44.588027+00:00"
+  },
+  {
+    "id": "ed9301f3-b6c2-49bc-b523-fca77fedbca1",
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "message": "This is a test contact message from the API test suite.",
+    "created_at": "2025-10-08T13:22:26.185443+00:00"
+  },
+  {
+    "id": "857eef88-1aa4-4719-af53-e3c1d7fc8cb4",
+    "name": "Test Navigation User",
+    "email": "navtest@example.com",
+    "message": "Testing contact form via navigation from homepage.",
+    "created_at": "2025-10-08T13:26:43.395507+00:00"
+  },
+  {
+    "id": "0115e941-62cf-45b3-b6e8-28e91ef35294",
+    "name": "Michael Rodriguez",
+    "email": "michael.rodriguez@example.com",
+    "message": "I'd like to schedule a consultation for a premium haircut and beard styling. What are your available times this week?",
+    "created_at": "2025-10-28T13:26:05.987207+00:00"
+  }
+]
