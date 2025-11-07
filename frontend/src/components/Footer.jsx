@@ -89,12 +89,12 @@ const Footer = () => {
               <li className="flex items-center space-x-3">
                 <MapPin className="h-4 w-4 text-yellow-400" />
                 <span className="text-zinc-300 text-sm">
-                  123 Style Street<br />Downtown, NY 10001
+                  Crasna, Sălaj, Romania
                 </span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-yellow-400" />
-                <span className="text-zinc-300 text-sm">(555) 123-4567</span>
+                <span className="text-zinc-300 text-sm">+40 75 064 0039</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-yellow-400" />
@@ -105,7 +105,6 @@ const Footer = () => {
                 <div className="text-zinc-300 text-sm">
                   <p>Mon-Fri: 9AM - 8PM</p>
                   <p>Sat: 8AM - 6PM</p>
-                  <p>Sun: 10AM - 4PM</p>
                 </div>
               </li>
             </ul>
@@ -115,7 +114,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-zinc-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-zinc-400 text-sm">
-            © 2024 Oxy'ss Barbershop. All rights reserved.
+            © 2025 Oxy'ss Barbershop. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
             <Link to="/barber-login" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
