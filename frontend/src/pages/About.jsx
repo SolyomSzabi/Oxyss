@@ -14,22 +14,22 @@ const About = () => {
   ];
 
   const team = [
-    {
-      name: 'Marcus Rodriguez',
-      role: 'Master Barber & Owner',
-      experience: '15+ years',
-      specialty: 'Classic cuts & styling',
-      description: 'Founded Oxy\'ss with a vision of combining traditional barbering with modern techniques.',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
-    },
-    {
-      name: 'James Thompson',
-      role: 'Senior Barber',
-      experience: '8+ years',
-      specialty: 'Beard grooming & fades',
-      description: 'Specializes in precision fades and contemporary styling with an eye for detail.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face'
-    },
+    // {
+    //   name: 'Marcus Rodriguez',
+    //   role: 'Master Barber & Owner',
+    //   experience: '15+ years',
+    //   specialty: 'Classic cuts & styling',
+    //   description: 'Founded Oxy\'ss with a vision of combining traditional barbering with modern techniques.',
+    //   image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'
+    // },
+    // {
+    //   name: 'James Thompson',
+    //   role: 'Senior Barber',
+    //   experience: '8+ years',
+    //   specialty: 'Beard grooming & fades',
+    //   description: 'Specializes in precision fades and contemporary styling with an eye for detail.',
+    //   image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face'
+    // },
     {
       name: 'David Chen',
       role: 'Barber',
