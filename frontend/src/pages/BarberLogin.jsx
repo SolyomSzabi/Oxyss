@@ -137,7 +137,7 @@ const BarberLogin = () => {
               </Button>
             </form>
 
-            <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
+            {/* <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
               <h4 className="font-semibold text-yellow-800 mb-2">Demo Credentials</h4>
               <div className="text-sm text-yellow-700 space-y-1">
                 <p><strong>Oxy:</strong> oxy@oxyssbarbershop.com</p>
@@ -145,7 +145,7 @@ const BarberLogin = () => {
                 <p><strong>Marcus:</strong> marcus@oxyssbarbershop.com</p>
                 <p><strong>Password:</strong> barber123</p>
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-6 text-center">
               <Link to="/" className="text-zinc-600 hover:text-yellow-600 text-sm transition-colors">
