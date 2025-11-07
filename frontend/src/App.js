@@ -18,12 +18,14 @@ import { AuthProvider } from "./contexts/AuthContext";
 // Import components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <div className="App min-h-screen bg-zinc-50">
       <AuthProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Navbar />
           <main>
             <Routes>
