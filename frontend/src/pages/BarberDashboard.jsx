@@ -314,6 +314,65 @@ const BarberDashboard = () => {
               </div>
             </div>
           </div>
+          
+          {/* Duration Section */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-zinc-700">Duration</span>
+              {appointment.status === 'confirmed' && !editingDuration[appointment.id] && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleEditDuration(appointment.id, appointment.duration)}
+                  className="h-6 px-2"
+                >
+                  <Edit2 className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+            
+            {editingDuration[appointment.id] ? (
+              <div className="flex items-center space-x-2">
+                <Input
+                  type="number"
+                  min="15"
+                  max={appointment.duration}
+                  step="15"
+                  value={newDurations[appointment.id] || appointment.duration}
+                  onChange={(e) => handleDurationChange(appointment.id, e.target.value)}
+                  className="w-20 h-8 text-sm"
+                />
+                <span className="text-xs text-zinc-600">min</span>
+                <Button
+                  size="sm"
+                  onClick={() => handleSaveDuration(appointment.id, appointment.duration)}
+                  disabled={updating[appointment.id]}
+                  className="h-6 px-2 bg-green-600 hover:bg-green-700"
+                >
+                  {updating[appointment.id] ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Save className="h-3 w-3" />
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleCancelEditDuration(appointment.id)}
+                  className="h-6 px-2"
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Badge variant="outline" className="bg-zinc-50">
+                  <Clock className="h-3 w-3 mr-1" />
+                  {appointment.duration} min
+                </Badge>
+              </div>
+            )}
+          </div>
         </div>
 
         {appointment.status === 'pending' && (
