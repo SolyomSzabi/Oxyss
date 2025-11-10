@@ -131,7 +131,10 @@ const AllAppointments = () => {
     const top = (startMinutes / (10 * 60)) * 100; // Percentage from top
     const height = (duration / (10 * 60)) * 100; // Height as percentage
     
-    return { top: `${top}%`, height: `${height}%` };
+    return { 
+      top: `${top}%`, 
+      height: `calc(${height}% - 4px)` // Subtract 4px for gap between appointments
+    };
   };
 
   if (loading) {
