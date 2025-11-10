@@ -297,44 +297,45 @@ const AllAppointments = () => {
                       return (
                         <div
                           key={appointment.id}
-                          className={`absolute w-full px-1 z-10 mb-1`}
+                          className={`absolute w-full px-0.5 z-10`}
                           style={{
                             top: position.top,
                             height: position.height,
-                            minHeight: isVeryShort ? '50px' : '60px' // Much smaller minimum
+                            minHeight: '48px' // Consistent minimum
                           }}
-                          title={`${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.customer_phone} - ${appointment.price} RON`}
+                          title={`${formatTime(appointment.appointment_time || appointment.time)} - ${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.price} RON - ${appointment.customer_phone}`}
                         >
                           <div
-                            className={`h-full rounded-md p-1.5 shadow-lg border-l-4 border-2 flex flex-col justify-between ${
+                            className={`h-full rounded p-1 shadow-md border-l-4 border ${
                               isPast
                                 ? 'bg-green-50 border-green-500 border-green-200'
                                 : 'bg-blue-50 border-blue-500 border-blue-200'
                             }`}
                           >
-                            {/* Top Row: Time + Duration */}
-                            <div className="flex items-start justify-between">
-                              <div className="text-[10px] font-bold text-zinc-900 truncate flex-1 leading-tight">
-                                {formatTime(appointment.appointment_time || appointment.time)}
+                            {/* Compact single layout */}
+                            <div className="h-full flex flex-col justify-between text-[9px] leading-tight">
+                              {/* Row 1: Time + Duration */}
+                              <div className="flex items-center justify-between font-bold text-zinc-900 mb-0.5">
+                                <span className="truncate">{formatTime(appointment.appointment_time || appointment.time)}</span>
+                                <span className="ml-1 bg-white px-1 rounded border border-zinc-300 flex-shrink-0 text-[8px]">{duration}m</span>
                               </div>
-                              <div className="text-[9px] font-bold bg-white px-1 py-0.5 rounded text-zinc-700 border border-zinc-300 ml-1 flex-shrink-0 leading-none">
-                                {duration}m
-                              </div>
-                            </div>
-                            
-                            {/* Middle: Customer + Service */}
-                            <div className="flex-1 min-h-0 overflow-hidden">
-                              <div className="text-[10px] font-semibold text-zinc-900 truncate leading-tight">
+                              
+                              {/* Row 2: Customer name */}
+                              <div className="font-semibold text-zinc-900 truncate">
                                 {appointment.customer_name}
                               </div>
-                              <div className="text-[9px] text-zinc-700 truncate leading-tight">
-                                {appointment.service_name}
+                              
+                              {/* Row 3: Service - only show if space allows */}
+                              {!isVeryShort && (
+                                <div className="text-zinc-700 truncate text-[8px]">
+                                  {appointment.service_name}
+                                </div>
+                              )}
+                              
+                              {/* Row 4: Price */}
+                              <div className="font-bold text-yellow-800 bg-yellow-100 inline-block px-1 rounded self-start text-[8px] mt-auto">
+                                {appointment.price || '?'} RON
                               </div>
-                            </div>
-                            
-                            {/* Bottom: Price */}
-                            <div className="text-[9px] font-bold text-yellow-800 bg-yellow-100 inline-block px-1 py-0.5 rounded self-start leading-none">
-                              {appointment.price || 'N/A'} RON
                             </div>
                           </div>
                         </div>
