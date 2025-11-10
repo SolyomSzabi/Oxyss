@@ -287,50 +287,51 @@ const AllAppointments = () => {
                     {barber.appointments.map((appointment) => {
                       const position = getAppointmentPosition(
                         appointment.appointment_time || appointment.time,
-                        appointment.duration
+                        appointment.duration || 45 // Default to 45 if missing
                       );
                       const isPast = isAppointmentPast(appointment.appointment_time || appointment.time);
                       
                       // Determine if appointment is very short (less than 45 minutes)
-                      const isShort = appointment.duration < 45;
+                      const duration = appointment.duration || 45;
+                      const isShort = duration < 45;
 
                       return (
                         <div
                           key={appointment.id}
-                          className={`absolute w-full px-1 z-10`}
+                          className={`absolute w-full px-1 z-10 mb-1`}
                           style={{
                             top: position.top,
                             height: position.height,
-                            minHeight: isShort ? '80px' : '90px' // Increased minimum height
+                            minHeight: isShort ? '85px' : '95px' // Increased minimum height
                           }}
-                          title={`${appointment.customer_name} - ${appointment.service_name} (${appointment.duration} min) - ${appointment.customer_phone}`}
+                          title={`${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.customer_phone}`}
                         >
                           <div
-                            className={`h-full rounded p-2 shadow-md border-l-4 overflow-hidden ${
+                            className={`h-full rounded-md p-2 shadow-lg border-l-4 border-2 ${
                               isPast
-                                ? 'bg-green-50 border-green-500'
-                                : 'bg-blue-50 border-blue-500'
+                                ? 'bg-green-50 border-green-500 border-green-200'
+                                : 'bg-blue-50 border-blue-500 border-blue-200'
                             }`}
                           >
                             <div className="flex items-start justify-between mb-1">
                               <div className="text-xs font-bold text-zinc-900 truncate flex-1">
                                 {formatTime(appointment.appointment_time || appointment.time)}
                               </div>
-                              <div className="text-xs font-semibold text-zinc-700 ml-1 flex-shrink-0">
-                                {appointment.duration}m
+                              <div className="text-[10px] font-bold bg-white px-1.5 py-0.5 rounded text-zinc-700 border border-zinc-300 ml-1 flex-shrink-0">
+                                {duration}min
                               </div>
                             </div>
                             
-                            <div className="text-xs font-medium text-zinc-800 truncate leading-tight">
+                            <div className="text-xs font-semibold text-zinc-900 truncate leading-tight">
                               {appointment.customer_name}
                             </div>
                             
-                            <div className="text-xs text-zinc-600 truncate leading-tight mt-0.5">
+                            <div className="text-[10px] text-zinc-700 truncate leading-tight mt-1">
                               {appointment.service_name}
                             </div>
                             
-                            <div className="text-xs font-semibold text-yellow-700 mt-0.5">
-                              {appointment.price} RON
+                            <div className="text-xs font-bold text-yellow-800 mt-1 bg-yellow-100 inline-block px-1.5 py-0.5 rounded">
+                              {appointment.price || 'N/A'} RON
                             </div>
                           </div>
                         </div>
