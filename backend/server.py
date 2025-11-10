@@ -737,6 +737,40 @@ async def update_appointment_status_body(appointment_id: str, status_update: Sta
         raise HTTPException(status_code=404, detail="Appointment not found")
     return {"message": "Appointment status updated successfully", "status": status_update.status}
 
+@api_router.patch("/appointments/{appointment_id}/duration")
+async def update_appointment_duration(appointment_id: str, duration_update: dict, current_barber: dict = Depends(get_current_barber)):
+    """Update appointment duration - only the assigned barber can reduce their appointment time"""
+    
+    # Verify appointment exists and belongs to this barber
+    appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    if appointment["barber_id"] != current_barber["id"]:
+        raise HTTPException(status_code=403, detail="Can only modify your own appointments")
+    
+    new_duration = duration_update.get("duration")
+    if not new_duration or new_duration < 15:
+        raise HTTPException(status_code=400, detail="Duration must be at least 15 minutes")
+    
+    # Don't allow increasing duration, only reducing
+    if new_duration > appointment["duration"]:
+        raise HTTPException(status_code=400, detail="Can only reduce duration, not increase")
+    
+    result = await db.appointments.update_one(
+        {"id": appointment_id},
+        {"$set": {"duration": new_duration}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    return {
+        "message": "Appointment duration updated successfully", 
+        "duration": new_duration,
+        "appointment_id": appointment_id
+    }
+
 # Contact messages endpoints
 @api_router.post("/contact", response_model=ContactMessage)
 async def create_contact_message(message_data: ContactMessageCreate):
