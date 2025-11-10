@@ -1,0 +1,351 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Calendar, Clock, User, Loader2, ArrowLeft } from 'lucide-react';
+import axios from 'axios';
+import { useAuth } from '@/contexts/AuthContext';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+const AllAppointments = () => {
+  const navigate = useNavigate();
+  const { barberData } = useAuth();
+  const [barbers, setBarbers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Business hours (9 AM to 7 PM)
+  const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i); // 9, 10, 11, ..., 18
+
+  useEffect(() => {
+    if (!barberData) {
+      navigate('/barber-login');
+      return;
+    }
+    fetchAllAppointments();
+
+    // Update current time every minute
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(timer);
+  }, [barberData, navigate]);
+
+  const fetchAllAppointments = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch all barbers
+      const barbersResponse = await axios.get(`${API}/barbers`);
+      const allBarbers = barbersResponse.data;
+
+      // Fetch today's appointments for each barber
+      const token = localStorage.getItem('barber_token');
+      const barbersWithAppointments = await Promise.all(
+        allBarbers.map(async (barber) => {
+          try {
+            const appointmentsResponse = await axios.get(
+              `${API}/barbers/${barber.id}/appointments/today`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              }
+            );
+            return {
+              ...barber,
+              appointments: appointmentsResponse.data || []
+            };
+          } catch (err) {
+            console.error(`Error fetching appointments for ${barber.name}:`, err);
+            return {
+              ...barber,
+              appointments: []
+            };
+          }
+        })
+      );
+
+      setBarbers(barbersWithAppointments);
+    } catch (err) {
+      setError('Failed to load appointments');
+      console.error('Error fetching appointments:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatTime = (timeString) => {
+    if (!timeString) return '';
+    const [hours, minutes] = timeString.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
+  };
+
+  const getTodayString = () => {
+    // Get Romanian timezone date
+    const today = new Date().toLocaleDateString('ro-RO', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      timeZone: 'Europe/Bucharest'
+    });
+    return today.charAt(0).toUpperCase() + today.slice(1);
+  };
+
+  const getTotalAppointments = () => {
+    return barbers.reduce((total, barber) => total + barber.appointments.length, 0);
+  };
+
+  const getCurrentTimePosition = () => {
+    const hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+    
+    if (hours < 9 || hours >= 19) return null; // Outside business hours
+    
+    const totalMinutes = (hours - 9) * 60 + minutes;
+    const totalBusinessMinutes = 10 * 60; // 10 hours
+    const percentage = (totalMinutes / totalBusinessMinutes) * 100;
+    
+    return percentage;
+  };
+
+  const isAppointmentPast = (appointmentTime) => {
+    const [hours, minutes] = appointmentTime.split(':').map(Number);
+    const appointmentDate = new Date();
+    appointmentDate.setHours(hours, minutes, 0, 0);
+    return appointmentDate < currentTime;
+  };
+
+  const getAppointmentPosition = (appointmentTime, duration) => {
+    const [hours, minutes] = appointmentTime.split(':').map(Number);
+    const startMinutes = (hours - 9) * 60 + minutes;
+    const top = (startMinutes / (10 * 60)) * 100; // Percentage from top
+    const height = (duration / (10 * 60)) * 100; // Height as percentage
+    
+    return { top: `${top}%`, height: `${height}%` };
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center pt-16">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-yellow-600" />
+          <p className="text-zinc-600">Loading schedule...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center pt-16">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <Button onClick={fetchAllAppointments} variant="outline">
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentTimePosition = getCurrentTimePosition();
+
+  return (
+    <div className="min-h-screen bg-zinc-50 pt-16">
+      {/* Header Section */}
+      <section className="bg-white border-b sticky top-16 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between mb-3">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/barber-dashboard')}
+              className="flex items-center space-x-2"
+              size="sm"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Back</span>
+            </Button>
+            <Button
+              onClick={fetchAllAppointments}
+              variant="outline"
+              size="sm"
+            >
+              Refresh
+            </Button>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold font-heading text-zinc-900 mb-1">
+                Today's Schedule - All Staff
+              </h1>
+              <div className="flex items-center space-x-2 text-sm text-zinc-600">
+                <Calendar className="h-4 w-4" />
+                <span>{getTodayString()}</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-yellow-600">
+                {getTotalAppointments()}
+              </div>
+              <div className="text-xs text-zinc-600">
+                Total Appointments
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline Calendar View */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          {/* Legend */}
+          <div className="p-4 border-b bg-zinc-50 flex items-center space-x-6 text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 bg-green-500 rounded"></div>
+              <span className="text-zinc-700">Completed</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 bg-blue-500 rounded"></div>
+              <span className="text-zinc-700">Upcoming</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-0.5 h-4 bg-red-500"></div>
+              <span className="text-zinc-700">Current Time</span>
+            </div>
+          </div>
+
+          {/* Calendar Grid */}
+          <div className="overflow-x-auto">
+            <div className="flex min-w-max">
+              {/* Time Column */}
+              <div className="w-20 flex-shrink-0 border-r bg-zinc-50">
+                <div className="h-12 border-b flex items-center justify-center font-semibold text-sm text-zinc-700">
+                  Time
+                </div>
+                {businessHours.map((hour) => (
+                  <div
+                    key={hour}
+                    className="h-24 border-b flex items-start justify-center pt-2 text-sm text-zinc-600"
+                  >
+                    {hour}:00
+                  </div>
+                ))}
+              </div>
+
+              {/* Barber Columns */}
+              {barbers.map((barber) => (
+                <div
+                  key={barber.id}
+                  className="flex-1 min-w-64 border-r relative"
+                >
+                  {/* Barber Header */}
+                  <div className="h-12 border-b bg-zinc-900 text-white flex items-center justify-center px-4">
+                    <div className="text-center">
+                      <div className="font-semibold text-sm">{barber.name}</div>
+                      <div className="text-xs text-gray-300">
+                        {barber.appointments.length} appointments
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Timeline Grid */}
+                  <div className="relative" style={{ height: `${businessHours.length * 96}px` }}>
+                    {/* Hour Lines */}
+                    {businessHours.map((hour, index) => (
+                      <div
+                        key={hour}
+                        className="absolute w-full border-b border-zinc-200"
+                        style={{ top: `${(index / businessHours.length) * 100}%`, height: '96px' }}
+                      ></div>
+                    ))}
+
+                    {/* Current Time Indicator */}
+                    {currentTimePosition !== null && (
+                      <div
+                        className="absolute w-full border-t-2 border-red-500 z-20"
+                        style={{ top: `${currentTimePosition}%` }}
+                      >
+                        <div className="absolute -top-2 -left-2 w-4 h-4 bg-red-500 rounded-full"></div>
+                      </div>
+                    )}
+
+                    {/* Appointments */}
+                    {barber.appointments.map((appointment) => {
+                      const position = getAppointmentPosition(
+                        appointment.appointment_time || appointment.time,
+                        appointment.duration
+                      );
+                      const isPast = isAppointmentPast(appointment.appointment_time || appointment.time);
+
+                      return (
+                        <div
+                          key={appointment.id}
+                          className={`absolute w-full px-1 z-10`}
+                          style={{
+                            top: position.top,
+                            height: position.height,
+                            minHeight: '60px'
+                          }}
+                        >
+                          <div
+                            className={`h-full rounded p-2 shadow-md border-l-4 overflow-hidden ${
+                              isPast
+                                ? 'bg-green-50 border-green-500'
+                                : 'bg-blue-50 border-blue-500'
+                            }`}
+                          >
+                            <div className="text-xs font-semibold text-zinc-900 truncate">
+                              {formatTime(appointment.appointment_time || appointment.time)}
+                            </div>
+                            <div className="text-xs font-medium text-zinc-800 truncate mt-1">
+                              {appointment.customer_name}
+                            </div>
+                            <div className="text-xs text-zinc-600 truncate">
+                              {appointment.service_name}
+                            </div>
+                            <div className="text-xs text-zinc-500 mt-1">
+                              {appointment.price} RON • {appointment.duration} min
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* Empty State */}
+                    {barber.appointments.length === 0 && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center text-zinc-400">
+                          <User className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                          <p className="text-sm">No appointments</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {barbers.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-zinc-600">No barbers found</p>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+};
+
+export default AllAppointments;
