@@ -226,10 +226,6 @@ const BarberDashboard = () => {
 
   const handleDurationChange = (appointmentId, value) => {
     setNewDurations({ ...newDurations, [appointmentId]: value });
-  }; {
-      console.error('Error deleting break:', error);
-      toast.error('Failed to delete break');
-    }
   };
 
   const handleLogout = () => {
