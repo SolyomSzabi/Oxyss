@@ -287,6 +287,9 @@ const AllAppointments = () => {
                         appointment.duration
                       );
                       const isPast = isAppointmentPast(appointment.appointment_time || appointment.time);
+                      
+                      // Determine if appointment is very short (less than 45 minutes)
+                      const isShort = appointment.duration < 45;
 
                       return (
                         <div
@@ -295,8 +298,9 @@ const AllAppointments = () => {
                           style={{
                             top: position.top,
                             height: position.height,
-                            minHeight: '60px'
+                            minHeight: isShort ? '80px' : '90px' // Increased minimum height
                           }}
+                          title={`${appointment.customer_name} - ${appointment.service_name} (${appointment.duration} min) - ${appointment.customer_phone}`}
                         >
                           <div
                             className={`h-full rounded p-2 shadow-md border-l-4 overflow-hidden ${
@@ -305,22 +309,25 @@ const AllAppointments = () => {
                                 : 'bg-blue-50 border-blue-500'
                             }`}
                           >
-                            <div className="text-xs font-bold text-zinc-900 truncate">
-                              {formatTime(appointment.appointment_time || appointment.time)}
+                            <div className="flex items-start justify-between mb-1">
+                              <div className="text-xs font-bold text-zinc-900 truncate flex-1">
+                                {formatTime(appointment.appointment_time || appointment.time)}
+                              </div>
+                              <div className="text-xs font-semibold text-zinc-700 ml-1 flex-shrink-0">
+                                {appointment.duration}m
+                              </div>
                             </div>
-                            <div className="text-xs font-medium text-zinc-800 truncate mt-1">
+                            
+                            <div className="text-xs font-medium text-zinc-800 truncate leading-tight">
                               {appointment.customer_name}
                             </div>
-                            <div className="text-xs text-zinc-600 truncate">
+                            
+                            <div className="text-xs text-zinc-600 truncate leading-tight mt-0.5">
                               {appointment.service_name}
                             </div>
-                            <div className="flex items-center justify-between mt-1">
-                              <div className="text-xs font-semibold text-zinc-700">
-                                {appointment.duration} min
-                              </div>
-                              <div className="text-xs text-zinc-600">
-                                {appointment.price} RON
-                              </div>
+                            
+                            <div className="text-xs font-semibold text-yellow-700 mt-0.5">
+                              {appointment.price} RON
                             </div>
                           </div>
                         </div>
