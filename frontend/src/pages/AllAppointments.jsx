@@ -292,7 +292,6 @@ const AllAppointments = () => {
                       const isPast = isAppointmentPast(appointment.appointment_time || appointment.time);
                       
                       const duration = appointment.duration || 45;
-                      const isVeryShort = duration <= 30; // 30 minutes or less
 
                       return (
                         <div
@@ -301,7 +300,7 @@ const AllAppointments = () => {
                           style={{
                             top: position.top,
                             height: position.height,
-                            minHeight: '48px' // Consistent minimum
+                            minHeight: '48px'
                           }}
                           title={`${formatTime(appointment.appointment_time || appointment.time)} - ${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.price} RON - ${appointment.customer_phone}`}
                         >
@@ -312,29 +311,37 @@ const AllAppointments = () => {
                                 : 'bg-blue-50 border-blue-500 border-blue-200'
                             }`}
                           >
-                            {/* Compact single layout */}
-                            <div className="h-full flex flex-col justify-between text-[9px] leading-tight">
-                              {/* Row 1: Time + Duration */}
-                              <div className="flex items-center justify-between font-bold text-zinc-900 mb-0.5">
-                                <span className="truncate">{formatTime(appointment.appointment_time || appointment.time)}</span>
-                                <span className="ml-1 bg-white px-1 rounded border border-zinc-300 flex-shrink-0 text-[8px]">{duration}m</span>
-                              </div>
-                              
-                              {/* Row 2: Customer name */}
-                              <div className="font-semibold text-zinc-900 truncate">
-                                {appointment.customer_name}
-                              </div>
-                              
-                              {/* Row 3: Service - only show if space allows */}
-                              {!isVeryShort && (
+                            {/* Layout: Time (left) | Duration+Price (right) */}
+                            <div className="h-full flex text-[9px] leading-tight">
+                              {/* Left side: Time, Customer, Service */}
+                              <div className="flex-1 flex flex-col justify-between min-w-0 pr-1">
+                                {/* Time */}
+                                <div className="font-bold text-zinc-900 truncate text-[9px]">
+                                  {formatTime(appointment.appointment_time || appointment.time)}
+                                </div>
+                                
+                                {/* Customer name */}
+                                <div className="font-semibold text-zinc-900 truncate">
+                                  {appointment.customer_name}
+                                </div>
+                                
+                                {/* Service */}
                                 <div className="text-zinc-700 truncate text-[8px]">
                                   {appointment.service_name}
                                 </div>
-                              )}
+                              </div>
                               
-                              {/* Row 4: Price */}
-                              <div className="font-bold text-yellow-800 bg-yellow-100 inline-block px-1 rounded self-start text-[8px] mt-auto">
-                                {appointment.price || '?'} RON
+                              {/* Right side: Duration + Price stacked */}
+                              <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                                {/* Duration badge */}
+                                <div className="bg-white px-1 py-0.5 rounded border border-zinc-300 font-bold text-zinc-700 text-[8px] leading-none">
+                                  {duration}m
+                                </div>
+                                
+                                {/* Price badge */}
+                                <div className="bg-yellow-100 px-1 py-0.5 rounded font-bold text-yellow-800 text-[8px] leading-none whitespace-nowrap">
+                                  {appointment.price || '?'} RON
+                                </div>
                               </div>
                             </div>
                           </div>
