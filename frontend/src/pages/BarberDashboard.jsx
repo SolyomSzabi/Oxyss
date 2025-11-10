@@ -178,6 +178,60 @@ const BarberDashboard = () => {
     }
   };
 
+  const handleEditDuration = (appointmentId, currentDuration) => {
+    setEditingDuration({ ...editingDuration, [appointmentId]: true });
+    setNewDurations({ ...newDurations, [appointmentId]: currentDuration });
+  };
+
+  const handleCancelEditDuration = (appointmentId) => {
+    setEditingDuration({ ...editingDuration, [appointmentId]: false });
+    setNewDurations({ ...newDurations, [appointmentId]: undefined });
+  };
+
+  const handleSaveDuration = async (appointmentId, originalDuration) => {
+    const newDuration = newDurations[appointmentId];
+    
+    if (!newDuration || newDuration < 15) {
+      toast.error('Duration must be at least 15 minutes');
+      return;
+    }
+
+    if (newDuration > originalDuration) {
+      toast.error('You can only reduce the duration, not increase it');
+      return;
+    }
+
+    try {
+      setUpdating({ ...updating, [appointmentId]: true });
+      
+      await axios.patch(
+        `${API}/appointments/${appointmentId}/duration`,
+        { duration: parseInt(newDuration) },
+        getAuthHeaders()
+      );
+
+      toast.success(`Duration updated to ${newDuration} minutes`);
+      setEditingDuration({ ...editingDuration, [appointmentId]: false });
+      
+      // Refresh appointments
+      await fetchTodayAppointments();
+      await fetchBarberAppointments();
+    } catch (error) {
+      console.error('Error updating duration:', error);
+      toast.error(error.response?.data?.detail || 'Failed to update duration');
+    } finally {
+      setUpdating({ ...updating, [appointmentId]: false });
+    }
+  };
+
+  const handleDurationChange = (appointmentId, value) => {
+    setNewDurations({ ...newDurations, [appointmentId]: value });
+  }; {
+      console.error('Error deleting break:', error);
+      toast.error('Failed to delete break');
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/barber-login');
