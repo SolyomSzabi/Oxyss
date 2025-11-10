@@ -266,6 +266,8 @@ class Appointment(BaseModel):
     barber_name: str
     appointment_date: date
     appointment_time: time
+    duration: int  # Duration in minutes
+    price: float  # Price in RON
     status: str = "pending"  # pending, confirmed, completed, cancelled
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
