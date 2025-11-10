@@ -550,7 +550,7 @@ async def get_available_slots(barber_id: str, date: str, service_id: str):
     business_start = time(9, 0)
     business_end = time(19, 0)
     
-    # Generate all possible 30-minute time slots
+    # Generate all possible 15-minute time slots
     slots = []
     date_obj = datetime.fromisoformat(date).date()
     current_time = datetime.combine(date_obj, business_start)
@@ -573,8 +573,8 @@ async def get_available_slots(barber_id: str, date: str, service_id: str):
             "reason": availability.get("reason", "")
         })
         
-        # Move to next 30-minute slot
-        current_time += timedelta(minutes=30)
+        # Move to next 15-minute slot
+        current_time += timedelta(minutes=15)
     
     return {
         "date": date,
