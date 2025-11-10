@@ -364,7 +364,7 @@ const BarberDashboard = () => {
               <div className="flex items-center space-x-2">
                 <Badge variant="outline" className="bg-zinc-50">
                   <Clock className="h-3 w-3 mr-1" />
-                  {appointment.duration} min
+                  {appointment.duration || 'N/A'} min
                 </Badge>
               </div>
             )}
