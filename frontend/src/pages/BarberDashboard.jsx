@@ -23,7 +23,10 @@ import {
   LogOut,
   Plus,
   Coffee,
-  Trash2
+  Trash2,
+  Edit2,
+  Save,
+  X
 } from 'lucide-react';
 import { format, isToday, isTomorrow, parseISO } from 'date-fns';
 import { toast } from 'sonner';
@@ -41,6 +44,8 @@ const BarberDashboard = () => {
   const [breaks, setBreaks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState({});
+  const [editingDuration, setEditingDuration] = useState({});
+  const [newDurations, setNewDurations] = useState({});
   const [showBreakForm, setShowBreakForm] = useState(false);
   const [breakForm, setBreakForm] = useState({
     break_date: '',
