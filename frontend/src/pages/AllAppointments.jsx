@@ -291,9 +291,8 @@ const AllAppointments = () => {
                       );
                       const isPast = isAppointmentPast(appointment.appointment_time || appointment.time);
                       
-                      // Determine if appointment is very short (less than 45 minutes)
                       const duration = appointment.duration || 45;
-                      const isShort = duration < 45;
+                      const isVeryShort = duration <= 30; // 30 minutes or less
 
                       return (
                         <div
@@ -302,35 +301,39 @@ const AllAppointments = () => {
                           style={{
                             top: position.top,
                             height: position.height,
-                            minHeight: isShort ? '85px' : '95px' // Increased minimum height
+                            minHeight: isVeryShort ? '50px' : '60px' // Much smaller minimum
                           }}
-                          title={`${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.customer_phone}`}
+                          title={`${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.customer_phone} - ${appointment.price} RON`}
                         >
                           <div
-                            className={`h-full rounded-md p-2 shadow-lg border-l-4 border-2 ${
+                            className={`h-full rounded-md p-1.5 shadow-lg border-l-4 border-2 flex flex-col justify-between ${
                               isPast
                                 ? 'bg-green-50 border-green-500 border-green-200'
                                 : 'bg-blue-50 border-blue-500 border-blue-200'
                             }`}
                           >
-                            <div className="flex items-start justify-between mb-1">
-                              <div className="text-xs font-bold text-zinc-900 truncate flex-1">
+                            {/* Top Row: Time + Duration */}
+                            <div className="flex items-start justify-between">
+                              <div className="text-[10px] font-bold text-zinc-900 truncate flex-1 leading-tight">
                                 {formatTime(appointment.appointment_time || appointment.time)}
                               </div>
-                              <div className="text-[10px] font-bold bg-white px-1.5 py-0.5 rounded text-zinc-700 border border-zinc-300 ml-1 flex-shrink-0">
-                                {duration}min
+                              <div className="text-[9px] font-bold bg-white px-1 py-0.5 rounded text-zinc-700 border border-zinc-300 ml-1 flex-shrink-0 leading-none">
+                                {duration}m
                               </div>
                             </div>
                             
-                            <div className="text-xs font-semibold text-zinc-900 truncate leading-tight">
-                              {appointment.customer_name}
+                            {/* Middle: Customer + Service */}
+                            <div className="flex-1 min-h-0 overflow-hidden">
+                              <div className="text-[10px] font-semibold text-zinc-900 truncate leading-tight">
+                                {appointment.customer_name}
+                              </div>
+                              <div className="text-[9px] text-zinc-700 truncate leading-tight">
+                                {appointment.service_name}
+                              </div>
                             </div>
                             
-                            <div className="text-[10px] text-zinc-700 truncate leading-tight mt-1">
-                              {appointment.service_name}
-                            </div>
-                            
-                            <div className="text-xs font-bold text-yellow-800 mt-1 bg-yellow-100 inline-block px-1.5 py-0.5 rounded">
+                            {/* Bottom: Price */}
+                            <div className="text-[9px] font-bold text-yellow-800 bg-yellow-100 inline-block px-1 py-0.5 rounded self-start leading-none">
                               {appointment.price || 'N/A'} RON
                             </div>
                           </div>
