@@ -1,0 +1,67 @@
+{
+  "summary": {
+    "test_type": "duration_price",
+    "total_tests": 9,
+    "passed_tests": 8,
+    "failed_tests": 1,
+    "success_rate": 88.88888888888889,
+    "timestamp": "2025-11-11T22:40:09.728697",
+    "mongodb_fix_verified": false
+  },
+  "detailed_results": [
+    {
+      "test_name": "API Root Endpoint",
+      "success": true,
+      "details": "Status: 200, Response: {'message': \"Oxy'ss Barbershop API\"}",
+      "timestamp": "2025-11-11T22:40:09.085885"
+    },
+    {
+      "test_name": "Initialize Data",
+      "success": true,
+      "details": "Status: 200, Barbers: 3, Services: 12, Auth accounts: 3",
+      "timestamp": "2025-11-11T22:40:09.132166"
+    },
+    {
+      "test_name": "Migrate Appointments",
+      "success": true,
+      "details": "Status: 200, Updated: 0, Skipped: 25, Errors: 0, Total: 25",
+      "timestamp": "2025-11-11T22:40:09.173159"
+    },
+    {
+      "test_name": "Barber Login",
+      "success": true,
+      "details": "Status: 200, Logged in as: Oxy, Token type: bearer",
+      "timestamp": "2025-11-11T22:40:09.437702"
+    },
+    {
+      "test_name": "Get Barbers",
+      "success": true,
+      "details": "Status: 200, Found 3 barbers, Barbers: Oxy, Helga, Marcus",
+      "timestamp": "2025-11-11T22:40:09.476088"
+    },
+    {
+      "test_name": "Get Services",
+      "success": true,
+      "details": "Status: 200, Found 12 services, Service example: Classic Haircut - $35.0",
+      "timestamp": "2025-11-11T22:40:09.520149"
+    },
+    {
+      "test_name": "Szabolcs-Csaba Solyom Appointment Test",
+      "success": false,
+      "details": "Create Status: 400, Error: Time slot not available: Time slot conflicts with existing appointment",
+      "timestamp": "2025-11-11T22:40:09.640630"
+    },
+    {
+      "test_name": "Today Appointments with Duration/Price",
+      "success": true,
+      "details": "Status: 200, Found 1 appointments for today, Appointment: Szabolcs-Csaba Solyom - Duration: 45min, Price: 40.0 RON, \u2705 Szabolcs appointment verified: 45min, 40.0 RON",
+      "timestamp": "2025-11-11T22:40:09.682195"
+    },
+    {
+      "test_name": "Create Appointment with Duration/Price",
+      "success": true,
+      "details": "Status: 200, Created appointment with Duration: 45min, Price: 35.0 RON, Service: Classic Haircut, Barber: Oxy",
+      "timestamp": "2025-11-11T22:40:09.727748"
+    }
+  ]
+}
