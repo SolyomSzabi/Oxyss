@@ -670,12 +670,21 @@ async def create_appointment(appointment_data: AppointmentCreate):
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
     
+    # Get barber-specific price or fall back to base price
+    barber_service = await db.barber_services.find_one(
+        {"barber_id": appointment_data.barber_id, "service_id": appointment_data.service_id},
+        {"_id": 0}
+    )
+    
+    price = barber_service["price"] if barber_service else service["base_price"]
+    duration = service["duration"]
+    
     # Check availability
     availability = await check_barber_availability(
         appointment_data.barber_id,
         appointment_data.appointment_date.isoformat(),
         appointment_data.appointment_time.strftime('%H:%M'),
-        service["duration"]
+        duration
     )
     
     if not availability["available"]:
@@ -687,6 +696,9 @@ async def create_appointment(appointment_data: AppointmentCreate):
     appointment_dict = appointment_data.model_dump()
     # Set status to confirmed directly (no pending state)
     appointment_dict["status"] = "confirmed"
+    # Add duration and price
+    appointment_dict["duration"] = duration
+    appointment_dict["price"] = price
     appointment_obj = Appointment(**appointment_dict)
     
     # Prepare for MongoDB storage
