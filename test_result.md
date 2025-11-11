@@ -213,6 +213,18 @@ backend:
         agent: "testing"
         comment: "VERIFIED: Contact message endpoints working correctly. POST /api/contact creates messages, GET /api/contact retrieves all messages. Proper data validation and storage."
 
+  - task: "Appointment Duration & Price Display"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: ✅ GET /api/appointments/today returns appointments with duration and price fields populated. ✅ POST /api/appointments creates appointments with correct duration (45min) and barber-specific pricing (Oxy: 40 RON, Helga: 35 RON). ✅ Migration endpoint processed 25 existing appointments successfully. ✅ Szabolcs-Csaba Solyom appointment at 10:00 verified: Duration=45min, Price=40 RON for Classic Haircut with Oxy. Backend APIs ready for All Staff Schedule timeline view and Barber Dashboard display."
+
 frontend:
   - task: "Booking Page - Barber Selection"
     implemented: true
