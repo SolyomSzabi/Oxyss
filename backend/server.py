@@ -1026,63 +1026,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Migration endpoint to update existing appointments with duration and price
-@api_router.post("/migrate-appointments")
-async def migrate_appointments():
-    """
-    Migrate existing appointments to add duration and price fields.
-    This should be called once to update all existing appointments.
-    """
-    updated_count = 0
-    skipped_count = 0
-    error_count = 0
-    
-    # Get all appointments
-    appointments = await db.appointments.find({}, {"_id": 0}).to_list(10000)
-    
-    for appointment in appointments:
-        try:
-            # Skip if already has both duration and price
-            if appointment.get('duration') is not None and appointment.get('price') is not None:
-                skipped_count += 1
-                continue
-            
-            # Get service information
-            service = await db.services.find_one({"id": appointment["service_id"]}, {"_id": 0})
-            if not service:
-                print(f"Service not found for appointment {appointment['id']}")
-                error_count += 1
-                continue
-            
-            # Get barber-specific price or use base price
-            barber_service = await db.barber_services.find_one(
-                {"barber_id": appointment["barber_id"], "service_id": appointment["service_id"]},
-                {"_id": 0}
-            )
-            
-            price = barber_service["price"] if barber_service else service["base_price"]
-            duration = service["duration"]
-            
-            # Update the appointment
-            await db.appointments.update_one(
-                {"id": appointment["id"]},
-                {"$set": {"duration": duration, "price": price}}
-            )
-            
-            updated_count += 1
-            
-        except Exception as e:
-            print(f"Error migrating appointment {appointment.get('id')}: {str(e)}")
-            error_count += 1
-    
-    return {
-        "message": "Migration completed",
-        "updated": updated_count,
-        "skipped": skipped_count,
-        "errors": error_count,
-        "total": len(appointments)
-    }
-
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
