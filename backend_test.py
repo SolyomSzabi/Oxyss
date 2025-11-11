@@ -831,17 +831,26 @@ class BarbershopAPITester:
 def main():
     """Main test execution"""
     tester = BarbershopAPITester()
-    success = tester.run_all_tests()
+    
+    # Check if we should run focused duration/price tests or full test suite
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--duration-price":
+        success = tester.run_duration_price_tests()
+        test_type = "duration_price"
+    else:
+        success = tester.run_all_tests()
+        test_type = "full_suite"
     
     # Create test reports directory if it doesn't exist
     import os
     os.makedirs("/app/test_reports", exist_ok=True)
     
     # Save detailed results
-    results_file = "/app/test_reports/backend_api_results.json"
+    results_file = f"/app/test_reports/backend_api_results_{test_type}.json"
     with open(results_file, 'w') as f:
         json.dump({
             "summary": {
+                "test_type": test_type,
                 "total_tests": tester.tests_run,
                 "passed_tests": tester.tests_passed,
                 "failed_tests": tester.tests_run - tester.tests_passed,
