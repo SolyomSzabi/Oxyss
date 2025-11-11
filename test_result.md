@@ -173,6 +173,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "VERIFIED: Appointment system fully functional. POST /api/appointments creates appointments with barber selection, GET /api/barbers/{id}/appointments returns barber appointments (requires auth), GET /api/appointments/today works, availability checking operational."
+      - working: true
+        agent: "testing"
+        comment: "DURATION & PRICE TESTING COMPLETED: ✅ GET /api/appointments/today returns appointments with duration and price fields populated. ✅ POST /api/appointments creates new appointments with correct duration (45min) and barber-specific pricing (Oxy: 40 RON, Helga: 35 RON for Classic Haircut). ✅ Migration endpoint worked correctly - 25 existing appointments processed. ✅ Szabolcs-Csaba Solyom appointment verified at 10:00 with Classic Haircut service showing correct Duration=45min, Price=40 RON."
 
   - task: "Break Management System"
     implemented: true
