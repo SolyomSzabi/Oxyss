@@ -457,6 +457,291 @@ class BarbershopAPITester:
             self.log_test("Get Contact Messages", False, f"Error: {str(e)}")
             return False
 
+    def test_migrate_appointments(self):
+        """Test the migration endpoint for existing appointments"""
+        try:
+            response = requests.post(f"{self.api_url}/migrate-appointments", timeout=10)
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                migration_data = response.json()
+                details += f", Updated: {migration_data.get('updated')}, Skipped: {migration_data.get('skipped')}"
+                details += f", Errors: {migration_data.get('errors')}, Total: {migration_data.get('total')}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details += f", Response: {response.text}"
+                
+            self.log_test("Migrate Appointments", success, details)
+            return success, response.json() if success else None
+        except Exception as e:
+            self.log_test("Migrate Appointments", False, f"Error: {str(e)}")
+            return False, None
+
+    def test_today_appointments_with_duration_price(self):
+        """Test GET /api/appointments/today returns appointments with duration and price fields"""
+        try:
+            response = requests.get(f"{self.api_url}/appointments/today", timeout=10)
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                appointments = response.json()
+                details += f", Found {len(appointments)} appointments for today"
+                
+                # Check if appointments have duration and price fields
+                for appointment in appointments:
+                    if 'duration' not in appointment or 'price' not in appointment:
+                        success = False
+                        details += f", Missing duration/price in appointment {appointment.get('id', 'unknown')}"
+                        break
+                    else:
+                        details += f", Appointment: {appointment.get('customer_name')} - Duration: {appointment.get('duration')}min, Price: {appointment.get('price')} RON"
+                        
+                        # Check for specific appointment mentioned in review request
+                        if appointment.get('customer_name') == 'Szabolcs-Csaba Solyom' and appointment.get('appointment_time', '').startswith('10:00'):
+                            if appointment.get('service_name') == 'Classic Haircut':
+                                expected_duration = 45
+                                expected_price = 40.0  # Based on Oxy's pricing
+                                if appointment.get('duration') != expected_duration:
+                                    success = False
+                                    details += f", WRONG DURATION: Expected {expected_duration}, got {appointment.get('duration')}"
+                                if appointment.get('price') != expected_price:
+                                    success = False
+                                    details += f", WRONG PRICE: Expected {expected_price}, got {appointment.get('price')}"
+                                if success:
+                                    details += f", ✅ Szabolcs appointment verified: {expected_duration}min, {expected_price} RON"
+                
+            self.log_test("Today Appointments with Duration/Price", success, details)
+            return success, response.json() if success else []
+        except Exception as e:
+            self.log_test("Today Appointments with Duration/Price", False, f"Error: {str(e)}")
+            return False, []
+
+    def test_create_appointment_with_duration_price(self, barber_id: str, service_id: str, service_name: str):
+        """Test POST /api/appointments creates appointments with correct duration and price"""
+        try:
+            # Use today's date for testing
+            today = datetime.now().strftime('%Y-%m-%d')
+            
+            test_appointment = {
+                "customer_name": "Test Customer Duration Price",
+                "customer_email": "test.duration@example.com",
+                "customer_phone": "(555) 123-4567",
+                "service_id": service_id,
+                "service_name": service_name,
+                "barber_id": barber_id,
+                "barber_name": self.barber_name or "Test Barber",
+                "appointment_date": today,
+                "appointment_time": "14:00:00"
+            }
+            
+            response = requests.post(
+                f"{self.api_url}/appointments",
+                json=test_appointment,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                appointment = response.json()
+                duration = appointment.get('duration')
+                price = appointment.get('price')
+                
+                if duration is None or price is None:
+                    success = False
+                    details += f", Missing duration or price fields"
+                else:
+                    details += f", Created appointment with Duration: {duration}min, Price: {price} RON"
+                    details += f", Service: {appointment.get('service_name')}, Barber: {appointment.get('barber_name')}"
+                    
+                    # Verify duration and price are reasonable
+                    if duration < 15 or duration > 120:
+                        success = False
+                        details += f", Invalid duration: {duration}"
+                    if price < 10 or price > 100:
+                        success = False
+                        details += f", Invalid price: {price}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details += f", Response: {response.text}"
+                
+            self.log_test("Create Appointment with Duration/Price", success, details)
+            return success, response.json() if success else None
+        except Exception as e:
+            self.log_test("Create Appointment with Duration/Price", False, f"Error: {str(e)}")
+            return False, None
+
+    def test_specific_appointment_szabolcs(self):
+        """Test for the specific appointment mentioned in review request"""
+        try:
+            # First, create the specific appointment if it doesn't exist
+            # Get Oxy's barber ID and Classic Haircut service ID
+            barbers_response = requests.get(f"{self.api_url}/barbers", timeout=10)
+            if barbers_response.status_code != 200:
+                self.log_test("Get Oxy Barber for Szabolcs Test", False, "Could not get barbers")
+                return False
+                
+            barbers = barbers_response.json()
+            oxy_barber = None
+            for barber in barbers:
+                if barber.get('name') == 'Oxy':
+                    oxy_barber = barber
+                    break
+                    
+            if not oxy_barber:
+                self.log_test("Find Oxy Barber", False, "Oxy barber not found")
+                return False
+                
+            # Get Classic Haircut service
+            services_response = requests.get(f"{self.api_url}/services", timeout=10)
+            if services_response.status_code != 200:
+                self.log_test("Get Services for Szabolcs Test", False, "Could not get services")
+                return False
+                
+            services = services_response.json()
+            classic_haircut = None
+            for service in services:
+                if service.get('name') == 'Classic Haircut':
+                    classic_haircut = service
+                    break
+                    
+            if not classic_haircut:
+                self.log_test("Find Classic Haircut Service", False, "Classic Haircut service not found")
+                return False
+                
+            # Create the specific appointment for today
+            today = datetime.now().strftime('%Y-%m-%d')
+            szabolcs_appointment = {
+                "customer_name": "Szabolcs-Csaba Solyom",
+                "customer_email": "szabolcs.solyom@example.com",
+                "customer_phone": "(555) 100-0000",
+                "service_id": classic_haircut['id'],
+                "service_name": "Classic Haircut",
+                "barber_id": oxy_barber['id'],
+                "barber_name": "Oxy",
+                "appointment_date": today,
+                "appointment_time": "10:00:00"
+            }
+            
+            create_response = requests.post(
+                f"{self.api_url}/appointments",
+                json=szabolcs_appointment,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            success = create_response.status_code == 200
+            details = f"Create Status: {create_response.status_code}"
+            
+            if success:
+                appointment = create_response.json()
+                duration = appointment.get('duration')
+                price = appointment.get('price')
+                
+                expected_duration = 45  # Classic Haircut duration
+                expected_price = 40.0   # Oxy's price for Classic Haircut
+                
+                if duration != expected_duration:
+                    success = False
+                    details += f", WRONG DURATION: Expected {expected_duration}, got {duration}"
+                if price != expected_price:
+                    success = False
+                    details += f", WRONG PRICE: Expected {expected_price}, got {price}"
+                    
+                if success:
+                    details += f", ✅ Szabolcs appointment created correctly: {duration}min, {price} RON"
+            else:
+                try:
+                    error_data = create_response.json()
+                    details += f", Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details += f", Response: {create_response.text}"
+                
+            self.log_test("Szabolcs-Csaba Solyom Appointment Test", success, details)
+            return success
+        except Exception as e:
+            self.log_test("Szabolcs-Csaba Solyom Appointment Test", False, f"Error: {str(e)}")
+            return False
+
+    def run_duration_price_tests(self):
+        """Run focused tests for appointment duration and price functionality"""
+        print("🧪 Starting Duration & Price Testing for Barber Dashboard")
+        print("=" * 60)
+        
+        # Test basic connectivity
+        if not self.test_api_root():
+            print("❌ API is not accessible. Stopping tests.")
+            return False
+            
+        # Initialize data (barbers, services, auth)
+        print("\n📋 Testing Data Initialization...")
+        init_success, init_data = self.test_init_data()
+        
+        # Test migration endpoint
+        print("\n🔄 Testing Appointment Migration...")
+        self.test_migrate_appointments()
+        
+        # Test authentication
+        print("\n🔐 Testing Authentication...")
+        auth_success, auth_data = self.test_barber_login()
+        
+        # Get barber and service data for testing
+        print("\n👨‍💼 Getting Barber and Service Data...")
+        barbers_success, barbers = self.test_get_barbers()
+        services_success, services = self.test_get_services()
+        
+        barber_id = None
+        service_id = None
+        service_name = None
+        if barbers_success and barbers and services_success and services:
+            barber_id = barbers[0]['id']
+            service_id = services[0]['id']
+            service_name = services[0]['name']
+        
+        # Test specific appointment creation and verification
+        print("\n📝 Testing Specific Appointment (Szabolcs-Csaba Solyom)...")
+        self.test_specific_appointment_szabolcs()
+        
+        # Test today's appointments endpoint
+        print("\n📅 Testing Today's Appointments with Duration/Price...")
+        self.test_today_appointments_with_duration_price()
+        
+        # Test creating new appointments with duration/price
+        if barber_id and service_id and service_name:
+            print("\n➕ Testing New Appointment Creation with Duration/Price...")
+            self.test_create_appointment_with_duration_price(barber_id, service_id, service_name)
+        
+        # Print summary
+        print("\n" + "=" * 60)
+        print(f"📊 Test Summary: {self.tests_passed}/{self.tests_run} tests passed")
+        
+        success_rate = (self.tests_passed / self.tests_run * 100) if self.tests_run > 0 else 0
+        print(f"📈 Success Rate: {success_rate:.1f}%")
+        
+        # Print failed tests
+        failed_tests = [test for test in self.test_results if not test['success']]
+        if failed_tests:
+            print(f"\n❌ Failed Tests ({len(failed_tests)}):")
+            for test in failed_tests:
+                print(f"   • {test['test_name']}: {test['details']}")
+        
+        if self.tests_passed == self.tests_run:
+            print("\n🎉 All duration/price tests passed! Appointment display should work correctly.")
+            return True
+        else:
+            print(f"\n⚠️  {len(failed_tests)} tests failed. Check the details above.")
+            return False
+
     def run_all_tests(self):
         """Run comprehensive API test suite for Oxy'ss Barbershop"""
         print("🧪 Starting Oxy'ss Barbershop API Test Suite")
