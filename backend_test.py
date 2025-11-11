@@ -7,7 +7,7 @@ from datetime import datetime, date, timedelta
 from typing import Dict, Any, Optional
 
 class BarbershopAPITester:
-    def __init__(self, base_url="https://oxyssbarbershop.preview.emergentagent.com"):
+    def __init__(self, base_url="https://barber-timeline.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
