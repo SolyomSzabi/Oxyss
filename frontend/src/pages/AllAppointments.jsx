@@ -460,19 +460,19 @@ const AllAppointments = () => {
           </DialogHeader>
           
           {editingAppointment && (
-            <div className="space-y-4 py-4">
+            <div className="space-y-4 py-4 bg-zinc-50/50 -mx-6 px-6 rounded-lg">
               <div className="space-y-2">
                 <div className="text-sm font-medium text-zinc-700">Appointment Details</div>
-                <div className="bg-zinc-50 p-3 rounded-lg space-y-1 text-sm">
-                  <div><span className="font-medium">Customer:</span> {editingAppointment.customer_name}</div>
-                  <div><span className="font-medium">Service:</span> {editingAppointment.service_name}</div>
-                  <div><span className="font-medium">Time:</span> {formatTime(editingAppointment.appointment_time)}</div>
-                  <div><span className="font-medium">Current Duration:</span> {editingAppointment.duration} minutes</div>
+                <div className="bg-white p-3 rounded-lg space-y-1 text-sm border border-zinc-200 shadow-sm">
+                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Customer:</span> {editingAppointment.customer_name}</div>
+                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Service:</span> {editingAppointment.service_name}</div>
+                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Time:</span> {formatTime(editingAppointment.appointment_time)}</div>
+                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Current Duration:</span> {editingAppointment.duration} minutes</div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="duration" className="text-sm font-medium text-zinc-700">
+                <label htmlFor="duration" className="text-sm font-medium text-zinc-900">
                   New Duration (minutes)
                 </label>
                 <div className="flex items-center space-x-2">
@@ -484,13 +484,13 @@ const AllAppointments = () => {
                     step="15"
                     value={newDuration}
                     onChange={(e) => setNewDuration(e.target.value)}
-                    className="flex-1 text-zinc-900 font-semibold"
+                    className="flex-1 text-zinc-900 font-semibold bg-white"
                     disabled={updating}
                   />
-                  <span className="text-sm text-zinc-600">min</span>
+                  <span className="text-sm font-medium text-zinc-700">min</span>
                 </div>
-                <p className="text-xs text-zinc-500">
-                  Minimum: 15 minutes | Maximum: {editingAppointment.duration} minutes
+                <p className="text-xs text-zinc-600 bg-blue-50 p-2 rounded border border-blue-100">
+                  <span className="font-medium">Range:</span> Minimum 15 minutes | Maximum {editingAppointment.duration} minutes
                 </p>
               </div>
             </div>
