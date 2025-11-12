@@ -225,6 +225,18 @@ backend:
         agent: "testing"
         comment: "VERIFIED: ✅ GET /api/appointments/today returns appointments with duration and price fields populated. ✅ POST /api/appointments creates appointments with correct duration (45min) and barber-specific pricing (Oxy: 40 RON, Helga: 35 RON). ✅ Migration endpoint processed 25 existing appointments successfully. ✅ Szabolcs-Csaba Solyom appointment at 10:00 verified: Duration=45min, Price=40 RON for Classic Haircut with Oxy. Backend APIs ready for All Staff Schedule timeline view and Barber Dashboard display."
 
+  - task: "Appointment Overlap Availability Logic"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: ✅ Appointment availability checking logic correctly uses actual appointment durations instead of hardcoded 45 minutes. ✅ John Anderson appointment on 2025-11-13 at 12:00 PM with Premium Cut & Beard shows correct 60-minute duration (reduced from 75). ✅ Overlapping time slots (12:15, 12:30, 12:45) properly BLOCKED with conflict messages. ✅ Valid time slots (11:00, 13:00) correctly AVAILABLE when no conflicts. ✅ Booking attempts at overlapping times correctly rejected. ✅ Valid bookings successful at non-conflicting times. ✅ check_barber_availability function uses appointment.get('duration', 45) correctly. Overlap detection logic is production-ready and handles duration-based conflicts accurately."
+
 frontend:
   - task: "Booking Page - Barber Selection"
     implemented: true
