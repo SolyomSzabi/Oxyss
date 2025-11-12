@@ -173,6 +173,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "VERIFIED: Appointment system fully functional. POST /api/appointments creates appointments with barber selection, GET /api/barbers/{id}/appointments returns barber appointments (requires auth), GET /api/appointments/today works, availability checking operational."
+      - working: true
+        agent: "testing"
+        comment: "DURATION & PRICE TESTING COMPLETED: ✅ GET /api/appointments/today returns appointments with duration and price fields populated. ✅ POST /api/appointments creates new appointments with correct duration (45min) and barber-specific pricing (Oxy: 40 RON, Helga: 35 RON for Classic Haircut). ✅ Migration endpoint worked correctly - 25 existing appointments processed. ✅ Szabolcs-Csaba Solyom appointment verified at 10:00 with Classic Haircut service showing correct Duration=45min, Price=40 RON."
 
   - task: "Break Management System"
     implemented: true
@@ -210,6 +213,30 @@ backend:
         agent: "testing"
         comment: "VERIFIED: Contact message endpoints working correctly. POST /api/contact creates messages, GET /api/contact retrieves all messages. Proper data validation and storage."
 
+  - task: "Appointment Duration & Price Display"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: ✅ GET /api/appointments/today returns appointments with duration and price fields populated. ✅ POST /api/appointments creates appointments with correct duration (45min) and barber-specific pricing (Oxy: 40 RON, Helga: 35 RON). ✅ Migration endpoint processed 25 existing appointments successfully. ✅ Szabolcs-Csaba Solyom appointment at 10:00 verified: Duration=45min, Price=40 RON for Classic Haircut with Oxy. Backend APIs ready for All Staff Schedule timeline view and Barber Dashboard display."
+
+  - task: "Appointment Overlap Availability Logic"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: ✅ Appointment availability checking logic correctly uses actual appointment durations instead of hardcoded 45 minutes. ✅ John Anderson appointment on 2025-11-13 at 12:00 PM with Premium Cut & Beard shows correct 60-minute duration (reduced from 75). ✅ Overlapping time slots (12:15, 12:30, 12:45) properly BLOCKED with conflict messages. ✅ Valid time slots (11:00, 13:00) correctly AVAILABLE when no conflicts. ✅ Booking attempts at overlapping times correctly rejected. ✅ Valid bookings successful at non-conflicting times. ✅ check_barber_availability function uses appointment.get('duration', 45) correctly. Overlap detection logic is production-ready and handles duration-based conflicts accurately."
+
 frontend:
   - task: "Booking Page - Barber Selection"
     implemented: true
@@ -235,6 +262,18 @@ frontend:
         agent: "main"
         comment: "Dashboard requires authentication - shows loading state when not logged in (expected behavior)"
 
+  - task: "All Staff Schedule - Duration Editing"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/AllAppointments.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: Duration editing functionality fully working on All Staff Schedule timeline view. ✅ Successfully logged in as oxy@oxyssbarbershop.com. ✅ Navigated to All Staff Schedule page. ✅ Found Szabolcs-Csaba Solyom appointment at 10:00 AM with Classic Haircut (45min). ✅ Duration badge clickable with edit icon. ✅ Edit dialog opens with correct appointment details (Customer: Szabolcs-Csaba Solyom, Service: Classic Haircut, Time: 10:00 AM, Current Duration: 45 minutes). ✅ Successfully changed duration from 45 to 30 minutes. ✅ Success toast message displayed: 'Duration updated to 30 minutes'. ✅ Timeline refreshed and shows updated duration (30m). ✅ Appointment block height adjusted to reflect new duration. ✅ Validation working: Error for duration < 15 minutes. ✅ Validation working: Error for duration > original (45). ✅ Cancel button closes dialog without changes. All aspects of duration editing feature working correctly."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
@@ -254,3 +293,9 @@ agent_communication:
     message: "Fixed critical MongoDB connection issue. The problem was in server.py where the export route's MongoClient was overwriting the AsyncIOMotorClient. Changed to use separate variable names (export_client/export_db). Backend is now functional. Need comprehensive backend testing to verify all endpoints work correctly."
   - agent: "testing"
     message: "COMPREHENSIVE BACKEND TESTING COMPLETED: All 15 API endpoints tested and working perfectly (100% success rate). MongoDB connection fix verified successful. Tested: barber endpoints (3 barbers: Oxy, Helga, Marcus), service endpoints (12 services), authentication (login working with oxy@oxyssbarbershop.com:barber123), appointment management, break management, availability checking, contact messages, and data initialization. Backend is fully functional and ready for production use."
+  - agent: "testing"
+    message: "APPOINTMENT DURATION & PRICE TESTING COMPLETED: ✅ All backend APIs for appointment display are working correctly. GET /api/appointments/today returns appointments with both duration and price fields populated. POST /api/appointments creates new appointments with correct duration and barber-specific pricing. Migration endpoint successfully processed 25 existing appointments. Verified specific appointment: Szabolcs-Csaba Solyom at 10:00 with Classic Haircut service shows Duration=45min, Price=40 RON (Oxy's pricing). Barber-specific pricing confirmed: Oxy charges 40 RON, Helga charges 35 RON for Classic Haircut. Backend ready for frontend dashboard display."
+  - agent: "testing"
+    message: "DURATION EDITING FUNCTIONALITY TESTING COMPLETED: ✅ All Staff Schedule timeline view duration editing feature fully functional. Successfully tested complete workflow: login → navigation → appointment selection → duration editing → validation → timeline update. All expected behaviors working correctly: clickable duration badges, edit dialog with appointment details, duration input validation (min 15, max original), success toast messages, timeline refresh with updated duration, visual appointment block resizing, and proper cancel functionality. Feature ready for production use."
+  - agent: "testing"
+    message: "APPOINTMENT OVERLAP AVAILABILITY TESTING COMPLETED: ✅ Appointment availability checking logic is working correctly with actual appointment durations. VERIFIED: John Anderson appointment on 2025-11-13 at 12:00 PM with Premium Cut & Beard service correctly shows 60 minutes duration (reduced from 75). TESTED: Overlapping time slots (12:15, 12:30, 12:45) are properly BLOCKED with 'Time slot conflicts with existing appointment' message. TESTED: Valid time slots (11:00, 13:00) are correctly AVAILABLE when no conflicts exist. CONFIRMED: System uses actual appointment duration from database (appointment.get('duration', 45)) instead of hardcoded 45 minutes. VERIFIED: Booking attempts at overlapping times are correctly rejected, while valid slots allow successful bookings. Availability checking logic is production-ready and handles duration-based conflicts accurately."

@@ -266,6 +266,8 @@ class Appointment(BaseModel):
     barber_name: str
     appointment_date: date
     appointment_time: time
+    duration: Optional[int] = None  # Duration in minutes (optional for backward compatibility)
+    price: Optional[float] = None  # Price in RON (optional for backward compatibility)
     status: str = "pending"  # pending, confirmed, completed, cancelled
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -519,8 +521,9 @@ async def check_barber_availability(barber_id: str, date: str, start_time: str, 
     # Check time conflicts
     for appointment in existing_appointments:
         appt_start = datetime.strptime(appointment["appointment_time"][:5], '%H:%M').time()
-        # Assuming average 45 minutes for existing appointments
-        appt_end_datetime = datetime.combine(datetime.fromisoformat(date).date(), appt_start) + timedelta(minutes=45)
+        # Use actual duration from appointment, fallback to 45 if not set
+        appt_duration = appointment.get("duration", 45)
+        appt_end_datetime = datetime.combine(datetime.fromisoformat(date).date(), appt_start) + timedelta(minutes=appt_duration)
         appt_end = appt_end_datetime.time()
         
         if (start_time_obj < appt_end and end_time_obj > appt_start):
@@ -550,7 +553,7 @@ async def get_available_slots(barber_id: str, date: str, service_id: str):
     business_start = time(9, 0)
     business_end = time(19, 0)
     
-    # Generate all possible 30-minute time slots
+    # Generate all possible 15-minute time slots
     slots = []
     date_obj = datetime.fromisoformat(date).date()
     current_time = datetime.combine(date_obj, business_start)
@@ -573,8 +576,8 @@ async def get_available_slots(barber_id: str, date: str, service_id: str):
             "reason": availability.get("reason", "")
         })
         
-        # Move to next 30-minute slot
-        current_time += timedelta(minutes=30)
+        # Move to next 15-minute slot
+        current_time += timedelta(minutes=15)
     
     return {
         "date": date,
@@ -668,12 +671,21 @@ async def create_appointment(appointment_data: AppointmentCreate):
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
     
+    # Get barber-specific price or fall back to base price
+    barber_service = await db.barber_services.find_one(
+        {"barber_id": appointment_data.barber_id, "service_id": appointment_data.service_id},
+        {"_id": 0}
+    )
+    
+    price = barber_service["price"] if barber_service else service["base_price"]
+    duration = service["duration"]
+    
     # Check availability
     availability = await check_barber_availability(
         appointment_data.barber_id,
         appointment_data.appointment_date.isoformat(),
         appointment_data.appointment_time.strftime('%H:%M'),
-        service["duration"]
+        duration
     )
     
     if not availability["available"]:
@@ -685,6 +697,9 @@ async def create_appointment(appointment_data: AppointmentCreate):
     appointment_dict = appointment_data.model_dump()
     # Set status to confirmed directly (no pending state)
     appointment_dict["status"] = "confirmed"
+    # Add duration and price
+    appointment_dict["duration"] = duration
+    appointment_dict["price"] = price
     appointment_obj = Appointment(**appointment_dict)
     
     # Prepare for MongoDB storage
@@ -736,6 +751,40 @@ async def update_appointment_status_body(appointment_id: str, status_update: Sta
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Appointment not found")
     return {"message": "Appointment status updated successfully", "status": status_update.status}
+
+@api_router.patch("/appointments/{appointment_id}/duration")
+async def update_appointment_duration(appointment_id: str, duration_update: dict, current_barber: dict = Depends(get_current_barber)):
+    """Update appointment duration - only the assigned barber can reduce their appointment time"""
+    
+    # Verify appointment exists and belongs to this barber
+    appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    if appointment["barber_id"] != current_barber["id"]:
+        raise HTTPException(status_code=403, detail="Can only modify your own appointments")
+    
+    new_duration = duration_update.get("duration")
+    if not new_duration or new_duration < 15:
+        raise HTTPException(status_code=400, detail="Duration must be at least 15 minutes")
+    
+    # Don't allow increasing duration, only reducing
+    if new_duration > appointment["duration"]:
+        raise HTTPException(status_code=400, detail="Can only reduce duration, not increase")
+    
+    result = await db.appointments.update_one(
+        {"id": appointment_id},
+        {"$set": {"duration": new_duration}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    return {
+        "message": "Appointment duration updated successfully", 
+        "duration": new_duration,
+        "appointment_id": appointment_id
+    }
 
 # Contact messages endpoints
 @api_router.post("/contact", response_model=ContactMessage)
@@ -960,6 +1009,63 @@ async def migrate_services():
         "updated_count": result.modified_count
     }
 
+# Migration endpoint to update existing appointments with duration and price
+@api_router.post("/migrate-appointments")
+async def migrate_appointments():
+    """
+    Migrate existing appointments to add duration and price fields.
+    This should be called once to update all existing appointments.
+    """
+    updated_count = 0
+    skipped_count = 0
+    error_count = 0
+    
+    # Get all appointments
+    appointments = await db.appointments.find({}, {"_id": 0}).to_list(10000)
+    
+    for appointment in appointments:
+        try:
+            # Skip if already has both duration and price
+            if appointment.get('duration') is not None and appointment.get('price') is not None:
+                skipped_count += 1
+                continue
+            
+            # Get service information
+            service = await db.services.find_one({"id": appointment["service_id"]}, {"_id": 0})
+            if not service:
+                print(f"Service not found for appointment {appointment['id']}")
+                error_count += 1
+                continue
+            
+            # Get barber-specific price or use base price
+            barber_service = await db.barber_services.find_one(
+                {"barber_id": appointment["barber_id"], "service_id": appointment["service_id"]},
+                {"_id": 0}
+            )
+            
+            price = barber_service["price"] if barber_service else service["base_price"]
+            duration = service["duration"]
+            
+            # Update the appointment
+            await db.appointments.update_one(
+                {"id": appointment["id"]},
+                {"$set": {"duration": duration, "price": price}}
+            )
+            
+            updated_count += 1
+            
+        except Exception as e:
+            print(f"Error migrating appointment {appointment.get('id')}: {str(e)}")
+            error_count += 1
+    
+    return {
+        "message": "Migration completed",
+        "updated": updated_count,
+        "skipped": skipped_count,
+        "errors": error_count,
+        "total": len(appointments)
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
@@ -977,6 +1083,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

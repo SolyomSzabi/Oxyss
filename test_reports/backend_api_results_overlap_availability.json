@@ -1,0 +1,37 @@
+{
+  "summary": {
+    "test_type": "overlap_availability",
+    "total_tests": 4,
+    "passed_tests": 4,
+    "failed_tests": 0,
+    "success_rate": 100.0,
+    "timestamp": "2025-11-12T16:50:16.373641",
+    "mongodb_fix_verified": true
+  },
+  "detailed_results": [
+    {
+      "test_name": "API Root Endpoint",
+      "success": true,
+      "details": "Status: 200, Response: {'message': \"Oxy'ss Barbershop API\"}",
+      "timestamp": "2025-11-12T16:50:15.470963"
+    },
+    {
+      "test_name": "Initialize Data",
+      "success": true,
+      "details": "Status: 200, Barbers: 3, Services: 12, Auth accounts: 3",
+      "timestamp": "2025-11-12T16:50:15.549889"
+    },
+    {
+      "test_name": "Barber Login",
+      "success": true,
+      "details": "Status: 200, Logged in as: Oxy, Token type: bearer",
+      "timestamp": "2025-11-12T16:50:15.812705"
+    },
+    {
+      "test_name": "Appointment Availability Overlap Logic",
+      "success": true,
+      "details": "Blocked: 3/3, Available: 2/2, Valid bookings: 2/2, Overlap blocked: 1/1, Duration: 60min",
+      "timestamp": "2025-11-12T16:50:16.365597"
+    }
+  ]
+}

@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, X, Scissors } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/services', label: 'Services' },
-    { href: '/gallery', label: 'Gallery' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: t('nav.home') },
+    { href: '/services', label: t('nav.services') },
+    { href: '/gallery', label: t('nav.gallery') },
+    { href: '/about', label: t('nav.about') },
+    { href: '/contact', label: t('nav.contact') },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -50,18 +53,20 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
+            <LanguageSwitcher />
             <Link to="/booking">
               <Button 
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-6"
                 data-testid="navbar-book-appointment-btn"
               >
-                Book Appointment
+                {t('nav.bookAppointment')}
               </Button>
             </Link>
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <LanguageSwitcher />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm">
@@ -100,7 +105,7 @@ const Navbar = () => {
                         className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold w-full"
                         data-testid="mobile-book-appointment-btn"
                       >
-                        Book Appointment
+                        {t('nav.bookAppointment')}
                       </Button>
                     </Link>
                   </div>
