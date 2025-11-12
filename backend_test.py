@@ -1168,6 +1168,9 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--duration-price":
         success = tester.run_duration_price_tests()
         test_type = "duration_price"
+    elif len(sys.argv) > 1 and sys.argv[1] == "--overlap-test":
+        success = tester.run_overlap_availability_test()
+        test_type = "overlap_availability"
     else:
         success = tester.run_all_tests()
         test_type = "full_suite"
