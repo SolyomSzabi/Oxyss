@@ -889,7 +889,7 @@ class BarbershopAPITester:
                 availability_response = requests.get(
                     f"{self.api_url}/barbers/{test_barber['id']}/availability",
                     params={
-                        "date": "2025-11-13",
+                        "date": test_date,
                         "start_time": slot_time,
                         "duration": 45  # Test with a 45-minute service
                     },
