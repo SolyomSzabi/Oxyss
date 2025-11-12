@@ -398,9 +398,21 @@ const AllAppointments = () => {
                               
                               {/* Right side: Duration + Price stacked */}
                               <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
-                                {/* Duration badge */}
-                                <div className="bg-white px-1 py-0.5 rounded border border-zinc-300 font-bold text-zinc-700 text-[8px] leading-none">
+                                {/* Duration badge with edit button */}
+                                <div 
+                                  className="bg-white px-1 py-0.5 rounded border border-zinc-300 font-bold text-zinc-700 text-[8px] leading-none flex items-center gap-0.5 cursor-pointer hover:bg-zinc-100 transition-colors"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (appointment.status === 'confirmed') {
+                                      handleEditDuration(appointment);
+                                    }
+                                  }}
+                                  title={appointment.status === 'confirmed' ? 'Click to edit duration' : 'Duration editing only available for confirmed appointments'}
+                                >
                                   {duration}m
+                                  {appointment.status === 'confirmed' && (
+                                    <Edit2 className="w-2 h-2 text-zinc-500" />
+                                  )}
                                 </div>
                                 
                                 {/* Price badge */}
