@@ -521,8 +521,9 @@ async def check_barber_availability(barber_id: str, date: str, start_time: str, 
     # Check time conflicts
     for appointment in existing_appointments:
         appt_start = datetime.strptime(appointment["appointment_time"][:5], '%H:%M').time()
-        # Assuming average 45 minutes for existing appointments
-        appt_end_datetime = datetime.combine(datetime.fromisoformat(date).date(), appt_start) + timedelta(minutes=45)
+        # Use actual duration from appointment, fallback to 45 if not set
+        appt_duration = appointment.get("duration", 45)
+        appt_end_datetime = datetime.combine(datetime.fromisoformat(date).date(), appt_start) + timedelta(minutes=appt_duration)
         appt_end = appt_end_datetime.time()
         
         if (start_time_obj < appt_end and end_time_obj > appt_start):
