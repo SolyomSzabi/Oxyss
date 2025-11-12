@@ -451,31 +451,31 @@ const AllAppointments = () => {
 
       {/* Duration Edit Dialog */}
       <Dialog open={!!editingAppointment} onOpenChange={handleCloseDurationDialog}>
-        <DialogContent className="sm:max-w-md bg-white">
-          <DialogHeader className="bg-gradient-to-r from-yellow-50 to-orange-50 -mx-6 -mt-6 px-6 pt-6 pb-4 rounded-t-lg">
-            <DialogTitle className="text-zinc-900">Edit Appointment Duration</DialogTitle>
-            <DialogDescription className="text-zinc-600">
+        <DialogContent className="sm:max-w-md bg-white" onPointerDownOutside={(e) => e.preventDefault()}>
+          <DialogHeader className="space-y-2 pb-4 border-b border-zinc-200">
+            <DialogTitle className="text-xl font-bold text-zinc-900">Edit Appointment Duration</DialogTitle>
+            <DialogDescription className="text-sm text-zinc-600">
               Modify the duration for this appointment. You can only reduce the duration, not increase it.
             </DialogDescription>
           </DialogHeader>
           
           {editingAppointment && (
-            <div className="space-y-4 py-4 bg-zinc-50/50 -mx-6 px-6 rounded-lg">
+            <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <div className="text-sm font-medium text-zinc-700">Appointment Details</div>
-                <div className="bg-white p-3 rounded-lg space-y-1 text-sm border border-zinc-200 shadow-sm">
-                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Customer:</span> {editingAppointment.customer_name}</div>
-                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Service:</span> {editingAppointment.service_name}</div>
-                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Time:</span> {formatTime(editingAppointment.appointment_time)}</div>
-                  <div className="text-zinc-700"><span className="font-medium text-zinc-900">Current Duration:</span> {editingAppointment.duration} minutes</div>
+                <div className="text-sm font-semibold text-zinc-900 uppercase tracking-wide">Appointment Details</div>
+                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-4 rounded-lg space-y-2 text-sm border border-yellow-200">
+                  <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Customer:</span> {editingAppointment.customer_name}</div>
+                  <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Service:</span> {editingAppointment.service_name}</div>
+                  <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Time:</span> {formatTime(editingAppointment.appointment_time)}</div>
+                  <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Current Duration:</span> {editingAppointment.duration} minutes</div>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="duration" className="text-sm font-medium text-zinc-900">
+              <div className="space-y-3 bg-zinc-50 p-4 rounded-lg border border-zinc-200">
+                <label htmlFor="duration" className="text-sm font-semibold text-zinc-900 uppercase tracking-wide block">
                   New Duration (minutes)
                 </label>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <Input
                     id="duration"
                     type="number"
@@ -484,14 +484,17 @@ const AllAppointments = () => {
                     step="15"
                     value={newDuration}
                     onChange={(e) => setNewDuration(e.target.value)}
-                    className="flex-1 text-zinc-900 font-semibold bg-white"
+                    className="flex-1 text-lg text-zinc-900 font-bold bg-white border-2 border-zinc-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200"
                     disabled={updating}
+                    autoFocus
                   />
-                  <span className="text-sm font-medium text-zinc-700">min</span>
+                  <span className="text-base font-semibold text-zinc-700">min</span>
                 </div>
-                <p className="text-xs text-zinc-600 bg-blue-50 p-2 rounded border border-blue-100">
-                  <span className="font-medium">Range:</span> Minimum 15 minutes | Maximum {editingAppointment.duration} minutes
-                </p>
+                <div className="bg-blue-50 p-3 rounded border border-blue-200">
+                  <p className="text-xs text-blue-900 font-medium">
+                    📌 Minimum: 15 minutes | Maximum: {editingAppointment.duration} minutes
+                  </p>
+                </div>
               </div>
             </div>
           )}
