@@ -781,9 +781,31 @@ class BarbershopAPITester:
             print(f"📋 Using Service: {premium_service['name']} (Base Duration: {premium_service['duration']} min)")
             
             # Step 1: Create the John Anderson appointment on a future date at 12:00 PM
-            # Use a date that's likely to be available (3 days from now)
+            # Use a date that's likely to be available (30 days from now to avoid conflicts)
             from datetime import datetime, timedelta
-            test_date = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
+            test_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+            
+            # First check if the slot is available
+            print(f"🔍 Checking availability for {test_date} at 12:00...")
+            check_response = requests.get(
+                f"{self.api_url}/barbers/{test_barber['id']}/availability",
+                params={
+                    "date": test_date,
+                    "start_time": "12:00",
+                    "duration": 75
+                },
+                timeout=10
+            )
+            
+            if check_response.status_code == 200:
+                availability = check_response.json()
+                if not availability.get('available', False):
+                    print(f"⚠️  Slot not available: {availability.get('reason', 'Unknown reason')}")
+                    # Try a different time
+                    test_date = (datetime.now() + timedelta(days=45)).strftime('%Y-%m-%d')
+                    print(f"🔄 Trying different date: {test_date}")
+                else:
+                    print(f"✅ Slot is available on {test_date}")
             
             john_appointment = {
                 "customer_name": "John Anderson",
