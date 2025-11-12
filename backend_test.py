@@ -742,6 +742,337 @@ class BarbershopAPITester:
             print(f"\n⚠️  {len(failed_tests)} tests failed. Check the details above.")
             return False
 
+    def test_appointment_availability_overlap_logic(self):
+        """Test appointment availability checking logic for overlapping appointments"""
+        try:
+            print("\n🔍 Testing Appointment Availability Overlap Logic")
+            print("=" * 60)
+            
+            # First, get barber and service data
+            barbers_response = requests.get(f"{self.api_url}/barbers", timeout=10)
+            if barbers_response.status_code != 200:
+                self.log_test("Get Barbers for Overlap Test", False, "Could not get barbers")
+                return False
+                
+            barbers = barbers_response.json()
+            test_barber = barbers[0] if barbers else None
+            if not test_barber:
+                self.log_test("Find Test Barber", False, "No barbers found")
+                return False
+                
+            # Get Premium Cut & Beard service
+            services_response = requests.get(f"{self.api_url}/services", timeout=10)
+            if services_response.status_code != 200:
+                self.log_test("Get Services for Overlap Test", False, "Could not get services")
+                return False
+                
+            services = services_response.json()
+            premium_service = None
+            for service in services:
+                if service.get('name') == 'Premium Cut & Beard':
+                    premium_service = service
+                    break
+                    
+            if not premium_service:
+                self.log_test("Find Premium Cut & Beard Service", False, "Premium Cut & Beard service not found")
+                return False
+                
+            print(f"📋 Using Barber: {test_barber['name']}")
+            print(f"📋 Using Service: {premium_service['name']} (Base Duration: {premium_service['duration']} min)")
+            
+            # Step 1: Create the John Anderson appointment on 2025-11-13 at 12:00 PM
+            # But first, update the duration to 60 minutes (reduced from 75)
+            john_appointment = {
+                "customer_name": "John Anderson",
+                "customer_email": "john.anderson@example.com",
+                "customer_phone": "(555) 200-0001",
+                "service_id": premium_service['id'],
+                "service_name": "Premium Cut & Beard",
+                "barber_id": test_barber['id'],
+                "barber_name": test_barber['name'],
+                "appointment_date": "2025-11-13",
+                "appointment_time": "12:00:00"
+            }
+            
+            print(f"\n📝 Creating John Anderson appointment for 2025-11-13 at 12:00 PM...")
+            create_response = requests.post(
+                f"{self.api_url}/appointments",
+                json=john_appointment,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if create_response.status_code != 200:
+                try:
+                    error_data = create_response.json()
+                    details = f"Status: {create_response.status_code}, Error: {error_data.get('detail', 'Unknown error')}"
+                except:
+                    details = f"Status: {create_response.status_code}, Response: {create_response.text}"
+                self.log_test("Create John Anderson Appointment", False, details)
+                return False
+            
+            created_appointment = create_response.json()
+            appointment_id = created_appointment.get('id')
+            original_duration = created_appointment.get('duration', 75)
+            
+            print(f"✅ Created appointment with ID: {appointment_id}")
+            print(f"📏 Original duration: {original_duration} minutes")
+            
+            # Step 2: Update the appointment duration to 60 minutes (simulating the fix)
+            if self.auth_token:  # Need authentication to update duration
+                print(f"\n🔧 Updating appointment duration from {original_duration} to 60 minutes...")
+                duration_update = {"duration": 60}
+                
+                update_response = requests.patch(
+                    f"{self.api_url}/appointments/{appointment_id}/duration",
+                    json=duration_update,
+                    headers={
+                        "Authorization": f"Bearer {self.auth_token}",
+                        "Content-Type": "application/json"
+                    },
+                    timeout=10
+                )
+                
+                if update_response.status_code == 200:
+                    print("✅ Successfully updated appointment duration to 60 minutes")
+                    actual_duration = 60
+                else:
+                    print(f"⚠️  Could not update duration (Status: {update_response.status_code}), using original: {original_duration}")
+                    actual_duration = original_duration
+            else:
+                print("⚠️  No auth token, cannot update duration. Using original duration.")
+                actual_duration = original_duration
+            
+            # Step 3: Test overlapping time slots (should be BLOCKED)
+            print(f"\n🚫 Testing OVERLAPPING time slots (should be BLOCKED)...")
+            print(f"   Existing appointment: 12:00-{12 + actual_duration//60}:{(actual_duration%60):02d}")
+            
+            overlapping_slots = ["12:15", "12:30", "12:45"]
+            blocked_count = 0
+            
+            for slot_time in overlapping_slots:
+                availability_response = requests.get(
+                    f"{self.api_url}/barbers/{test_barber['id']}/availability",
+                    params={
+                        "date": "2025-11-13",
+                        "start_time": slot_time,
+                        "duration": 45  # Test with a 45-minute service
+                    },
+                    timeout=10
+                )
+                
+                if availability_response.status_code == 200:
+                    availability = availability_response.json()
+                    is_available = availability.get('available', True)
+                    reason = availability.get('reason', '')
+                    
+                    if not is_available and "conflicts with existing appointment" in reason:
+                        print(f"   ✅ {slot_time} - CORRECTLY BLOCKED: {reason}")
+                        blocked_count += 1
+                    elif not is_available:
+                        print(f"   ⚠️  {slot_time} - Blocked but wrong reason: {reason}")
+                    else:
+                        print(f"   ❌ {slot_time} - INCORRECTLY AVAILABLE (should be blocked)")
+                else:
+                    print(f"   ❌ {slot_time} - API Error: {availability_response.status_code}")
+            
+            # Step 4: Test valid time slots (should be ALLOWED)
+            print(f"\n✅ Testing VALID time slots (should be ALLOWED)...")
+            
+            valid_slots = ["11:00", "13:00"]  # 11:00 is before, 13:00 is exactly when appointment ends
+            allowed_count = 0
+            
+            for slot_time in valid_slots:
+                availability_response = requests.get(
+                    f"{self.api_url}/barbers/{test_barber['id']}/availability",
+                    params={
+                        "date": "2025-11-13",
+                        "start_time": slot_time,
+                        "duration": 45  # Test with a 45-minute service
+                    },
+                    timeout=10
+                )
+                
+                if availability_response.status_code == 200:
+                    availability = availability_response.json()
+                    is_available = availability.get('available', False)
+                    reason = availability.get('reason', '')
+                    
+                    if is_available:
+                        print(f"   ✅ {slot_time} - CORRECTLY AVAILABLE: {reason}")
+                        allowed_count += 1
+                    else:
+                        print(f"   ❌ {slot_time} - INCORRECTLY BLOCKED: {reason}")
+                else:
+                    print(f"   ❌ {slot_time} - API Error: {availability_response.status_code}")
+            
+            # Step 5: Test booking at valid slots to confirm they work
+            print(f"\n📅 Testing actual booking at valid slots...")
+            
+            # Try to book at 11:00 (should work)
+            test_booking_11 = {
+                "customer_name": "Test Customer 11AM",
+                "customer_email": "test11@example.com",
+                "customer_phone": "(555) 111-0000",
+                "service_id": premium_service['id'],
+                "service_name": "Premium Cut & Beard",
+                "barber_id": test_barber['id'],
+                "barber_name": test_barber['name'],
+                "appointment_date": "2025-11-13",
+                "appointment_time": "11:00:00"
+            }
+            
+            booking_11_response = requests.post(
+                f"{self.api_url}/appointments",
+                json=test_booking_11,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            booking_11_success = booking_11_response.status_code == 200
+            if booking_11_success:
+                print("   ✅ 11:00 booking - SUCCESS")
+            else:
+                try:
+                    error_data = booking_11_response.json()
+                    print(f"   ❌ 11:00 booking - FAILED: {error_data.get('detail', 'Unknown error')}")
+                except:
+                    print(f"   ❌ 11:00 booking - FAILED: Status {booking_11_response.status_code}")
+            
+            # Try to book at 13:00 (should work)
+            test_booking_13 = {
+                "customer_name": "Test Customer 1PM",
+                "customer_email": "test13@example.com",
+                "customer_phone": "(555) 130-0000",
+                "service_id": premium_service['id'],
+                "service_name": "Premium Cut & Beard",
+                "barber_id": test_barber['id'],
+                "barber_name": test_barber['name'],
+                "appointment_date": "2025-11-13",
+                "appointment_time": "13:00:00"
+            }
+            
+            booking_13_response = requests.post(
+                f"{self.api_url}/appointments",
+                json=test_booking_13,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            booking_13_success = booking_13_response.status_code == 200
+            if booking_13_success:
+                print("   ✅ 13:00 booking - SUCCESS")
+            else:
+                try:
+                    error_data = booking_13_response.json()
+                    print(f"   ❌ 13:00 booking - FAILED: {error_data.get('detail', 'Unknown error')}")
+                except:
+                    print(f"   ❌ 13:00 booking - FAILED: Status {booking_13_response.status_code}")
+            
+            # Step 6: Test booking at overlapping slots to confirm they're blocked
+            print(f"\n🚫 Testing actual booking at overlapping slots (should fail)...")
+            
+            test_booking_overlap = {
+                "customer_name": "Test Customer Overlap",
+                "customer_email": "testoverlap@example.com",
+                "customer_phone": "(555) 999-0000",
+                "service_id": premium_service['id'],
+                "service_name": "Premium Cut & Beard",
+                "barber_id": test_barber['id'],
+                "barber_name": test_barber['name'],
+                "appointment_date": "2025-11-13",
+                "appointment_time": "12:30:00"
+            }
+            
+            booking_overlap_response = requests.post(
+                f"{self.api_url}/appointments",
+                json=test_booking_overlap,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            booking_overlap_blocked = booking_overlap_response.status_code != 200
+            if booking_overlap_blocked:
+                try:
+                    error_data = booking_overlap_response.json()
+                    print(f"   ✅ 12:30 booking - CORRECTLY BLOCKED: {error_data.get('detail', 'Unknown error')}")
+                except:
+                    print(f"   ✅ 12:30 booking - CORRECTLY BLOCKED: Status {booking_overlap_response.status_code}")
+            else:
+                print("   ❌ 12:30 booking - INCORRECTLY ALLOWED (should be blocked)")
+            
+            # Calculate final results
+            print(f"\n📊 OVERLAP LOGIC TEST RESULTS:")
+            print(f"   Overlapping slots correctly blocked: {blocked_count}/3")
+            print(f"   Valid slots correctly available: {allowed_count}/2")
+            print(f"   Valid bookings successful: {int(booking_11_success) + int(booking_13_success)}/2")
+            print(f"   Overlapping booking correctly blocked: {int(booking_overlap_blocked)}/1")
+            print(f"   Appointment duration used: {actual_duration} minutes")
+            
+            # Determine overall success
+            overall_success = (
+                blocked_count == 3 and  # All overlapping slots blocked
+                allowed_count == 2 and  # All valid slots available
+                booking_11_success and  # 11:00 booking works
+                booking_13_success and  # 13:00 booking works
+                booking_overlap_blocked  # Overlapping booking blocked
+            )
+            
+            details = f"Blocked: {blocked_count}/3, Available: {allowed_count}/2, Valid bookings: {int(booking_11_success) + int(booking_13_success)}/2, Overlap blocked: {int(booking_overlap_blocked)}/1, Duration: {actual_duration}min"
+            
+            self.log_test("Appointment Availability Overlap Logic", overall_success, details)
+            return overall_success
+            
+        except Exception as e:
+            self.log_test("Appointment Availability Overlap Logic", False, f"Error: {str(e)}")
+            return False
+
+    def run_overlap_availability_test(self):
+        """Run focused test for appointment overlap availability checking"""
+        print("🧪 Starting Appointment Overlap Availability Test")
+        print("=" * 60)
+        
+        # Test basic connectivity
+        if not self.test_api_root():
+            print("❌ API is not accessible. Stopping tests.")
+            return False
+            
+        # Initialize data (barbers, services, auth)
+        print("\n📋 Testing Data Initialization...")
+        init_success, init_data = self.test_init_data()
+        
+        # Test authentication (needed for duration updates)
+        print("\n🔐 Testing Authentication...")
+        auth_success, auth_data = self.test_barber_login()
+        
+        # Run the main overlap test
+        print("\n🎯 Running Overlap Availability Test...")
+        overlap_success = self.test_appointment_availability_overlap_logic()
+        
+        # Print summary
+        print("\n" + "=" * 60)
+        print(f"📊 Test Summary: {self.tests_passed}/{self.tests_run} tests passed")
+        
+        success_rate = (self.tests_passed / self.tests_run * 100) if self.tests_run > 0 else 0
+        print(f"📈 Success Rate: {success_rate:.1f}%")
+        
+        # Print failed tests
+        failed_tests = [test for test in self.test_results if not test['success']]
+        if failed_tests:
+            print(f"\n❌ Failed Tests ({len(failed_tests)}):")
+            for test in failed_tests:
+                print(f"   • {test['test_name']}: {test['details']}")
+        
+        if overlap_success:
+            print("\n🎉 Appointment overlap availability checking is working correctly!")
+            print("✅ Overlapping appointments are properly blocked")
+            print("✅ Valid time slots are correctly available")
+            print("✅ Actual appointment duration is being used (not hardcoded 45 min)")
+            return True
+        else:
+            print(f"\n⚠️  Appointment overlap logic has issues. Check the details above.")
+            return False
+
     def run_all_tests(self):
         """Run comprehensive API test suite for Oxy'ss Barbershop"""
         print("🧪 Starting Oxy'ss Barbershop API Test Suite")
