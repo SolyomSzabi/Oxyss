@@ -780,8 +780,11 @@ class BarbershopAPITester:
             print(f"📋 Using Barber: {test_barber['name']}")
             print(f"📋 Using Service: {premium_service['name']} (Base Duration: {premium_service['duration']} min)")
             
-            # Step 1: Create the John Anderson appointment on 2025-11-13 at 12:00 PM
-            # But first, update the duration to 60 minutes (reduced from 75)
+            # Step 1: Create the John Anderson appointment on a future date at 12:00 PM
+            # Use a date that's likely to be available (3 days from now)
+            from datetime import datetime, timedelta
+            test_date = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
+            
             john_appointment = {
                 "customer_name": "John Anderson",
                 "customer_email": "john.anderson@example.com",
@@ -790,7 +793,7 @@ class BarbershopAPITester:
                 "service_name": "Premium Cut & Beard",
                 "barber_id": test_barber['id'],
                 "barber_name": test_barber['name'],
-                "appointment_date": "2025-11-13",
+                "appointment_date": test_date,
                 "appointment_time": "12:00:00"
             }
             
