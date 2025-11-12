@@ -27,6 +27,9 @@ const AllAppointments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [editingAppointment, setEditingAppointment] = useState(null);
+  const [newDuration, setNewDuration] = useState('');
+  const [updating, setUpdating] = useState(false);
 
   // Business hours (9 AM to 7 PM)
   const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i); // 9, 10, 11, ..., 18
