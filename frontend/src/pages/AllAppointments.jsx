@@ -150,6 +150,58 @@ const AllAppointments = () => {
     };
   };
 
+  const handleEditDuration = (appointment) => {
+    setEditingAppointment(appointment);
+    setNewDuration(appointment.duration || 45);
+  };
+
+  const handleCloseDurationDialog = () => {
+    setEditingAppointment(null);
+    setNewDuration('');
+  };
+
+  const handleSaveDuration = async () => {
+    if (!editingAppointment) return;
+    
+    const durationValue = parseInt(newDuration);
+    
+    if (!durationValue || durationValue < 15) {
+      toast.error('Duration must be at least 15 minutes');
+      return;
+    }
+
+    if (durationValue > editingAppointment.duration) {
+      toast.error('You can only reduce the duration, not increase it');
+      return;
+    }
+
+    try {
+      setUpdating(true);
+      const token = localStorage.getItem('barber_token');
+      
+      await axios.patch(
+        `${API}/appointments/${editingAppointment.id}/duration`,
+        { duration: durationValue },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      toast.success(`Duration updated to ${durationValue} minutes`);
+      handleCloseDurationDialog();
+      
+      // Refresh appointments
+      await fetchAllAppointments();
+    } catch (error) {
+      console.error('Error updating duration:', error);
+      toast.error(error.response?.data?.detail || 'Failed to update duration');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center pt-16">
