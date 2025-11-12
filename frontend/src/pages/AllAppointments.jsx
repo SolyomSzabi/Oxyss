@@ -484,7 +484,7 @@ const AllAppointments = () => {
                     step="15"
                     value={newDuration}
                     onChange={(e) => setNewDuration(e.target.value)}
-                    className="flex-1"
+                    className="flex-1 text-zinc-900 font-semibold"
                     disabled={updating}
                   />
                   <span className="text-sm text-zinc-600">min</span>
