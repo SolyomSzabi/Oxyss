@@ -797,7 +797,7 @@ class BarbershopAPITester:
                 "appointment_time": "12:00:00"
             }
             
-            print(f"\n📝 Creating John Anderson appointment for 2025-11-13 at 12:00 PM...")
+            print(f"\n📝 Creating John Anderson appointment for {test_date} at 12:00 PM...")
             create_response = requests.post(
                 f"{self.api_url}/appointments",
                 json=john_appointment,
