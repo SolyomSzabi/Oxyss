@@ -912,13 +912,24 @@ class BarbershopAPITester:
             # Step 5: Test booking at valid slots to confirm they work
             print(f"\n📅 Testing actual booking at valid slots...")
             
-            # Try to book at 11:00 (should work)
+            # Get a shorter service for the 11:00 test (45 minutes should fit before 12:00)
+            classic_haircut = None
+            for service in services:
+                if service.get('name') == 'Classic Haircut':
+                    classic_haircut = service
+                    break
+            
+            if not classic_haircut:
+                print("   ⚠️  Classic Haircut service not found, using Premium service")
+                classic_haircut = premium_service
+            
+            # Try to book at 11:00 (should work with 45-min service: 11:00-11:45)
             test_booking_11 = {
                 "customer_name": "Test Customer 11AM",
                 "customer_email": "test11@example.com",
                 "customer_phone": "(555) 111-0000",
-                "service_id": premium_service['id'],
-                "service_name": "Premium Cut & Beard",
+                "service_id": classic_haircut['id'],
+                "service_name": classic_haircut['name'],
                 "barber_id": test_barber['id'],
                 "barber_name": test_barber['name'],
                 "appointment_date": test_date,
