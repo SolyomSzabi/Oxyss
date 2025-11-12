@@ -250,6 +250,18 @@ frontend:
         agent: "main"
         comment: "Dashboard requires authentication - shows loading state when not logged in (expected behavior)"
 
+  - task: "All Staff Schedule - Duration Editing"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/AllAppointments.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: Duration editing functionality fully working on All Staff Schedule timeline view. ✅ Successfully logged in as oxy@oxyssbarbershop.com. ✅ Navigated to All Staff Schedule page. ✅ Found Szabolcs-Csaba Solyom appointment at 10:00 AM with Classic Haircut (45min). ✅ Duration badge clickable with edit icon. ✅ Edit dialog opens with correct appointment details (Customer: Szabolcs-Csaba Solyom, Service: Classic Haircut, Time: 10:00 AM, Current Duration: 45 minutes). ✅ Successfully changed duration from 45 to 30 minutes. ✅ Success toast message displayed: 'Duration updated to 30 minutes'. ✅ Timeline refreshed and shows updated duration (30m). ✅ Appointment block height adjusted to reflect new duration. ✅ Validation working: Error for duration < 15 minutes. ✅ Validation working: Error for duration > original (45). ✅ Cancel button closes dialog without changes. All aspects of duration editing feature working correctly."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
