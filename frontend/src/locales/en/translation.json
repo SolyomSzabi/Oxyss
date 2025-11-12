@@ -1,0 +1,159 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "gallery": "Gallery",
+    "about": "About",
+    "contact": "Contact",
+    "bookAppointment": "Book Appointment"
+  },
+  "home": {
+    "hero": {
+      "title": "Premium Barbershop Experience",
+      "subtitle": "Where traditional craftsmanship meets modern style",
+      "bookNow": "Book Now",
+      "viewServices": "View Services"
+    },
+    "services": {
+      "title": "Our Services",
+      "viewAll": "View All Services"
+    },
+    "whyChoose": {
+      "title": "Why Choose Oxy's?",
+      "experience": {
+        "title": "Expert Barbers",
+        "desc": "Our skilled team brings years of experience"
+      },
+      "quality": {
+        "title": "Premium Products",
+        "desc": "We use only the finest grooming products"
+      },
+      "atmosphere": {
+        "title": "Modern Atmosphere",
+        "desc": "Relax in our contemporary, welcoming space"
+      }
+    },
+    "cta": {
+      "title": "Ready for a Fresh Look?",
+      "subtitle": "Book your appointment today and experience the Oxy's difference",
+      "button": "Book Appointment"
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Professional grooming services tailored to your style",
+    "categories": {
+      "men": "Men",
+      "women": "Women",
+      "kids": "Kids"
+    },
+    "duration": "Duration",
+    "startingFrom": "Starting from",
+    "bookNow": "Book Now"
+  },
+  "about": {
+    "title": "About Oxy's Barbershop",
+    "subtitle": "Your destination for premium grooming",
+    "story": {
+      "title": "Our Story",
+      "text": "Founded with a passion for classic barbering and modern style, Oxy's Barbershop has become a cornerstone of the community. We blend traditional techniques with contemporary trends to deliver exceptional grooming experiences."
+    },
+    "team": {
+      "title": "Meet Our Team",
+      "subtitle": "Expert barbers dedicated to your style"
+    },
+    "values": {
+      "title": "Our Values",
+      "quality": {
+        "title": "Quality First",
+        "desc": "We never compromise on the quality of our services"
+      },
+      "customer": {
+        "title": "Customer Focus",
+        "desc": "Your satisfaction is our top priority"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "desc": "We stay updated with the latest trends and techniques"
+      }
+    }
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Explore our work and see the transformations"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with us",
+    "info": {
+      "title": "Contact Information",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Opening Hours"
+    },
+    "form": {
+      "title": "Send us a message",
+      "name": "Your Name",
+      "email": "Your Email",
+      "message": "Your Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Failed to send message"
+    },
+    "schedule": {
+      "weekdays": "Mon - Fri: 9:00 AM - 8:00 PM",
+      "saturday": "Sat: 8:00 AM - 6:00 PM",
+      "sunday": "Sun: 10:00 AM - 4:00 PM"
+    }
+  },
+  "booking": {
+    "title": "Book Your Appointment",
+    "subtitle": "Choose your preferred barber, service, date and time",
+    "steps": {
+      "barber": "Select Barber",
+      "service": "Select Service",
+      "datetime": "Date & Time",
+      "details": "Your Details"
+    },
+    "selectBarber": "Select Your Barber",
+    "selectService": "Select a Service",
+    "selectDate": "Select Date",
+    "selectTime": "Select Time",
+    "availableSlots": "Available Time Slots",
+    "noSlots": "No available slots for this date",
+    "yourDetails": "Your Details",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "bookingButton": "Book Appointment",
+    "booking": "Booking...",
+    "success": "Appointment booked successfully!",
+    "error": "Failed to book appointment",
+    "summary": {
+      "title": "Booking Summary",
+      "barber": "Barber",
+      "service": "Service",
+      "date": "Date",
+      "time": "Time",
+      "duration": "Duration",
+      "price": "Price"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "min": "min",
+    "currency": "RON"
+  }
+}
