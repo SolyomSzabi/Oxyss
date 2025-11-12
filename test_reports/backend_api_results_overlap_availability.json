@@ -5,7 +5,7 @@
     "passed_tests": 3,
     "failed_tests": 1,
     "success_rate": 75.0,
-    "timestamp": "2025-11-12T16:49:35.393452",
+    "timestamp": "2025-11-12T16:50:01.381478",
     "mongodb_fix_verified": false
   },
   "detailed_results": [
@@ -13,25 +13,25 @@
       "test_name": "API Root Endpoint",
       "success": true,
       "details": "Status: 200, Response: {'message': \"Oxy'ss Barbershop API\"}",
-      "timestamp": "2025-11-12T16:49:34.536569"
+      "timestamp": "2025-11-12T16:50:00.844562"
     },
     {
       "test_name": "Initialize Data",
       "success": true,
       "details": "Status: 200, Barbers: 3, Services: 12, Auth accounts: 3",
-      "timestamp": "2025-11-12T16:49:34.586256"
+      "timestamp": "2025-11-12T16:50:00.916020"
     },
     {
       "test_name": "Barber Login",
       "success": true,
       "details": "Status: 200, Logged in as: Oxy, Token type: bearer",
-      "timestamp": "2025-11-12T16:49:34.863727"
+      "timestamp": "2025-11-12T16:50:01.221240"
     },
     {
-      "test_name": "Appointment Availability Overlap Logic",
+      "test_name": "Create John Anderson Appointment",
       "success": false,
-      "details": "Blocked: 3/3, Available: 2/2, Valid bookings: 1/2, Overlap blocked: 1/1, Duration: 60min",
-      "timestamp": "2025-11-12T16:49:35.386772"
+      "details": "Status: 400, Error: Time slot not available: Time slot conflicts with existing appointment",
+      "timestamp": "2025-11-12T16:50:01.378978"
     }
   ]
 }
