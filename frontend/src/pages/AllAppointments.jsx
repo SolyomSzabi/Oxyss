@@ -448,6 +448,82 @@ const AllAppointments = () => {
           </div>
         )}
       </section>
+
+      {/* Duration Edit Dialog */}
+      <Dialog open={!!editingAppointment} onOpenChange={handleCloseDurationDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Appointment Duration</DialogTitle>
+            <DialogDescription>
+              Modify the duration for this appointment. You can only reduce the duration, not increase it.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {editingAppointment && (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <div className="text-sm font-medium text-zinc-700">Appointment Details</div>
+                <div className="bg-zinc-50 p-3 rounded-lg space-y-1 text-sm">
+                  <div><span className="font-medium">Customer:</span> {editingAppointment.customer_name}</div>
+                  <div><span className="font-medium">Service:</span> {editingAppointment.service_name}</div>
+                  <div><span className="font-medium">Time:</span> {formatTime(editingAppointment.appointment_time)}</div>
+                  <div><span className="font-medium">Current Duration:</span> {editingAppointment.duration} minutes</div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="duration" className="text-sm font-medium text-zinc-700">
+                  New Duration (minutes)
+                </label>
+                <div className="flex items-center space-x-2">
+                  <Input
+                    id="duration"
+                    type="number"
+                    min="15"
+                    max={editingAppointment.duration}
+                    step="15"
+                    value={newDuration}
+                    onChange={(e) => setNewDuration(e.target.value)}
+                    className="flex-1"
+                    disabled={updating}
+                  />
+                  <span className="text-sm text-zinc-600">min</span>
+                </div>
+                <p className="text-xs text-zinc-500">
+                  Minimum: 15 minutes | Maximum: {editingAppointment.duration} minutes
+                </p>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={handleCloseDurationDialog}
+              disabled={updating}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSaveDuration}
+              disabled={updating}
+              className="bg-yellow-600 hover:bg-yellow-700"
+            >
+              {updating ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
