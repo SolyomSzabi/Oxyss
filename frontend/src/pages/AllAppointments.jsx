@@ -3,9 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, User, Loader2, ArrowLeft } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Calendar, Clock, User, Loader2, ArrowLeft, Edit2, Save, X } from 'lucide-react';
+import { toast } from 'sonner';
 import axios from 'axios';
 import { useAuth } from '@/contexts/AuthContext';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
