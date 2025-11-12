@@ -451,10 +451,10 @@ const AllAppointments = () => {
 
       {/* Duration Edit Dialog */}
       <Dialog open={!!editingAppointment} onOpenChange={handleCloseDurationDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Edit Appointment Duration</DialogTitle>
-            <DialogDescription>
+        <DialogContent className="sm:max-w-md bg-white">
+          <DialogHeader className="bg-gradient-to-r from-yellow-50 to-orange-50 -mx-6 -mt-6 px-6 pt-6 pb-4 rounded-t-lg">
+            <DialogTitle className="text-zinc-900">Edit Appointment Duration</DialogTitle>
+            <DialogDescription className="text-zinc-600">
               Modify the duration for this appointment. You can only reduce the duration, not increase it.
             </DialogDescription>
           </DialogHeader>
