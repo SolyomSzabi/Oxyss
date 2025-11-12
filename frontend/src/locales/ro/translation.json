@@ -1,0 +1,159 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "services": "Servicii",
+    "gallery": "Galerie",
+    "about": "Despre Noi",
+    "contact": "Contact",
+    "bookAppointment": "Programează-te"
+  },
+  "home": {
+    "hero": {
+      "title": "Experiență Premium de Frizerie",
+      "subtitle": "Unde meșteșugul tradițional întâlnește stilul modern",
+      "bookNow": "Programează-te Acum",
+      "viewServices": "Vezi Serviciile"
+    },
+    "services": {
+      "title": "Serviciile Noastre",
+      "viewAll": "Vezi Toate Serviciile"
+    },
+    "whyChoose": {
+      "title": "De Ce Să Alegi Oxy's?",
+      "experience": {
+        "title": "Frizeri Experți",
+        "desc": "Echipa noastră calificată aduce ani de experiență"
+      },
+      "quality": {
+        "title": "Produse Premium",
+        "desc": "Folosim doar cele mai fine produse de îngrijire"
+      },
+      "atmosphere": {
+        "title": "Atmosferă Modernă",
+        "desc": "Relaxează-te în spațiul nostru contemporan și primitor"
+      }
+    },
+    "cta": {
+      "title": "Pregătit pentru un Look Nou?",
+      "subtitle": "Programează-te astăzi și experimentează diferența Oxy's",
+      "button": "Programează-te"
+    }
+  },
+  "services": {
+    "title": "Serviciile Noastre",
+    "subtitle": "Servicii profesionale de îngrijire adaptate stilului tău",
+    "categories": {
+      "men": "Bărbați",
+      "women": "Femei",
+      "kids": "Copii"
+    },
+    "duration": "Durată",
+    "startingFrom": "Începând de la",
+    "bookNow": "Programează-te Acum"
+  },
+  "about": {
+    "title": "Despre Oxy's Barbershop",
+    "subtitle": "Destinația ta pentru îngrijire premium",
+    "story": {
+      "title": "Povestea Noastră",
+      "text": "Înființat cu pasiune pentru frizeria clasică și stilul modern, Oxy's Barbershop a devenit un pilon al comunității. Combinăm tehnicile tradiționale cu tendințele contemporane pentru a oferi experiențe excepționale de îngrijire."
+    },
+    "team": {
+      "title": "Cunoaște Echipa Noastră",
+      "subtitle": "Frizeri experți dedicați stilului tău"
+    },
+    "values": {
+      "title": "Valorile Noastre",
+      "quality": {
+        "title": "Calitate În Primul Rând",
+        "desc": "Nu compromitem niciodată calitatea serviciilor noastre"
+      },
+      "customer": {
+        "title": "Focus pe Client",
+        "desc": "Satisfacția ta este prioritatea noastră principală"
+      },
+      "innovation": {
+        "title": "Inovație",
+        "desc": "Rămânem la curent cu cele mai noi tendințe și tehnici"
+      }
+    }
+  },
+  "gallery": {
+    "title": "Galerie",
+    "subtitle": "Explorează munca noastră și vezi transformările"
+  },
+  "contact": {
+    "title": "Contactează-ne",
+    "subtitle": "Ia legătura cu noi",
+    "info": {
+      "title": "Informații de Contact",
+      "address": "Adresă",
+      "phone": "Telefon",
+      "email": "Email",
+      "hours": "Program"
+    },
+    "form": {
+      "title": "Trimite-ne un mesaj",
+      "name": "Numele Tău",
+      "email": "Email-ul Tău",
+      "message": "Mesajul Tău",
+      "send": "Trimite Mesaj",
+      "sending": "Se trimite...",
+      "success": "Mesaj trimis cu succes!",
+      "error": "Eroare la trimiterea mesajului"
+    },
+    "schedule": {
+      "weekdays": "Lun - Vin: 9:00 - 20:00",
+      "saturday": "Sâm: 8:00 - 18:00",
+      "sunday": "Dum: 10:00 - 16:00"
+    }
+  },
+  "booking": {
+    "title": "Programează-te",
+    "subtitle": "Alege frizerul, serviciul, data și ora preferată",
+    "steps": {
+      "barber": "Alege Frizerul",
+      "service": "Alege Serviciul",
+      "datetime": "Data & Ora",
+      "details": "Detaliile Tale"
+    },
+    "selectBarber": "Alege Frizerul Tău",
+    "selectService": "Alege un Serviciu",
+    "selectDate": "Alege Data",
+    "selectTime": "Alege Ora",
+    "availableSlots": "Ore Disponibile",
+    "noSlots": "Nu sunt ore disponibile pentru această dată",
+    "yourDetails": "Detaliile Tale",
+    "fullName": "Nume Complet",
+    "email": "Adresă de Email",
+    "phone": "Număr de Telefon",
+    "bookingButton": "Programează",
+    "booking": "Se programează...",
+    "success": "Programare realizată cu succes!",
+    "error": "Eroare la programare",
+    "summary": {
+      "title": "Rezumatul Programării",
+      "barber": "Frizer",
+      "service": "Serviciu",
+      "date": "Data",
+      "time": "Ora",
+      "duration": "Durată",
+      "price": "Preț"
+    }
+  },
+  "common": {
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "cancel": "Anulează",
+    "confirm": "Confirmă",
+    "close": "Închide",
+    "save": "Salvează",
+    "edit": "Editează",
+    "delete": "Șterge",
+    "back": "Înapoi",
+    "next": "Următorul",
+    "previous": "Anterior",
+    "min": "min",
+    "currency": "RON"
+  }
+}
