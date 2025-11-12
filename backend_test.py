@@ -951,7 +951,7 @@ class BarbershopAPITester:
                 "service_name": "Premium Cut & Beard",
                 "barber_id": test_barber['id'],
                 "barber_name": test_barber['name'],
-                "appointment_date": "2025-11-13",
+                "appointment_date": test_date,
                 "appointment_time": "13:00:00"
             }
             
