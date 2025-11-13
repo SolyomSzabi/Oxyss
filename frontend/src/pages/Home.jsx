@@ -164,7 +164,7 @@ const Home = () => {
                 className="bg-zinc-900 hover:bg-zinc-800 text-white px-8"
                 data-testid="view-all-services-btn"
               >
-                View All Services
+                {t('home.services.viewAll')}
               </Button>
             </Link>
           </div>
