@@ -118,11 +118,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold font-heading text-zinc-900 mb-4">
-              Our Premium Services
+              {t('home.services.title')}
             </h2>
             <p className="text-xl text-zinc-600 max-w-2xl mx-auto">
-              From classic cuts to modern styles, we offer comprehensive grooming services 
-              tailored to your needs.
+              {t('home.services.subtitle')}
             </p>
           </div>
 
