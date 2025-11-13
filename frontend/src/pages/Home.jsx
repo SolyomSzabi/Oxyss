@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Clock, MapPin, Scissors, Award, Users } from 'lucide-react';
 
 const Home = () => {
+  const { t } = useTranslation();
   const services = [
     {
       name: 'Classic Haircut',
@@ -30,18 +32,18 @@ const Home = () => {
   const features = [
     {
       icon: <Scissors className="h-8 w-8 text-yellow-600" />,
-      title: 'Expert Barbers',
-      description: 'Skilled professionals with years of experience'
+      titleKey: 'home.whyChoose.experience.title',
+      descKey: 'home.whyChoose.experience.desc'
     },
     {
       icon: <Award className="h-8 w-8 text-yellow-600" />,
-      title: 'Premium Quality',
-      description: 'Using only the finest tools and products'
+      titleKey: 'home.whyChoose.quality.title',
+      descKey: 'home.whyChoose.quality.desc'
     },
     {
       icon: <Users className="h-8 w-8 text-yellow-600" />,
-      title: 'Personalized Service',
-      description: 'Tailored cuts that match your style and personality'
+      titleKey: 'home.whyChoose.atmosphere.title',
+      descKey: 'home.whyChoose.atmosphere.desc'
     }
   ];
 
@@ -59,7 +61,7 @@ const Home = () => {
         
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <Badge className="mb-6 bg-yellow-600/20 text-yellow-400 border-yellow-400/30 px-4 py-2">
-            Premium Barbershop Experience
+            {t('home.hero.title')}
           </Badge>
           
           <h1 className="text-5xl md:text-7xl font-bold font-heading mb-6 leading-tight">
@@ -68,8 +70,7 @@ const Home = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Where traditional craftsmanship meets modern style. Experience the finest 
-            in men's grooming with our expert barbers.
+            {t('home.hero.subtitle')}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -79,7 +80,7 @@ const Home = () => {
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-8 py-3 text-lg"
                 data-testid="hero-book-appointment-btn"
               >
-                Book Your Appointment
+                {t('home.hero.bookNow')}
               </Button>
             </Link>
             <Link to="/services">
@@ -89,7 +90,7 @@ const Home = () => {
                 className="border-white text-white hover:bg-white hover:text-zinc-900 px-8 py-3 text-lg"
                 data-testid="hero-view-services-btn"
               >
-                View Services
+                {t('home.hero.viewServices')}
               </Button>
             </Link>
           </div>
@@ -117,11 +118,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold font-heading text-zinc-900 mb-4">
-              Our Premium Services
+              {t('home.services.title')}
             </h2>
             <p className="text-xl text-zinc-600 max-w-2xl mx-auto">
-              From classic cuts to modern styles, we offer comprehensive grooming services 
-              tailored to your needs.
+              {t('home.services.subtitle')}
             </p>
           </div>
 
@@ -148,7 +148,7 @@ const Home = () => {
                         className="bg-zinc-900 hover:bg-zinc-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         data-testid={`book-service-btn-${index}`}
                       >
-                        Book Now
+                        {t('home.hero.bookNow')}
                       </Button>
                     </Link>
                   </div>
@@ -164,7 +164,7 @@ const Home = () => {
                 className="bg-zinc-900 hover:bg-zinc-800 text-white px-8"
                 data-testid="view-all-services-btn"
               >
-                View All Services
+                {t('home.services.viewAll')}
               </Button>
             </Link>
           </div>

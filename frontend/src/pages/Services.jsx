@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, DollarSign, Scissors, Loader2 } from 'lucide-react';
+import { Clock, Scissors, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -133,7 +133,6 @@ const Services = () => {
                               <span className="text-sm text-zinc-600">{service.duration} min</span>
                             </div>
                             <div className="flex items-center space-x-1">
-                              <DollarSign className="h-4 w-4 text-zinc-400" />
                               <span className="text-lg font-bold text-yellow-600">De la {service.base_price} RON*</span>
                             </div>
                           </div>
@@ -225,7 +224,7 @@ const Services = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Price Range</p>
-                <p className="text-2xl font-bold text-yellow-400">$20 - $55</p>
+                <p className="text-2xl font-bold text-yellow-400">20 - 55 RON</p>
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Payment Methods</p>
