@@ -32,18 +32,18 @@ const Home = () => {
   const features = [
     {
       icon: <Scissors className="h-8 w-8 text-yellow-600" />,
-      title: 'Expert Barbers',
-      description: 'Skilled professionals with years of experience'
+      titleKey: 'home.whyChoose.experience.title',
+      descKey: 'home.whyChoose.experience.desc'
     },
     {
       icon: <Award className="h-8 w-8 text-yellow-600" />,
-      title: 'Premium Quality',
-      description: 'Using only the finest tools and products'
+      titleKey: 'home.whyChoose.quality.title',
+      descKey: 'home.whyChoose.quality.desc'
     },
     {
       icon: <Users className="h-8 w-8 text-yellow-600" />,
-      title: 'Personalized Service',
-      description: 'Tailored cuts that match your style and personality'
+      titleKey: 'home.whyChoose.atmosphere.title',
+      descKey: 'home.whyChoose.atmosphere.desc'
     }
   ];
 
