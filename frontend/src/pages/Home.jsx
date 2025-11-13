@@ -61,7 +61,7 @@ const Home = () => {
         
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <Badge className="mb-6 bg-yellow-600/20 text-yellow-400 border-yellow-400/30 px-4 py-2">
-            Premium Barbershop Experience
+            {t('home.hero.title')}
           </Badge>
           
           <h1 className="text-5xl md:text-7xl font-bold font-heading mb-6 leading-tight">
@@ -70,8 +70,7 @@ const Home = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Where traditional craftsmanship meets modern style. Experience the finest 
-            in men's grooming with our expert barbers.
+            {t('home.hero.subtitle')}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -81,7 +80,7 @@ const Home = () => {
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-8 py-3 text-lg"
                 data-testid="hero-book-appointment-btn"
               >
-                Book Your Appointment
+                {t('home.hero.bookNow')}
               </Button>
             </Link>
             <Link to="/services">
@@ -91,7 +90,7 @@ const Home = () => {
                 className="border-white text-white hover:bg-white hover:text-zinc-900 px-8 py-3 text-lg"
                 data-testid="hero-view-services-btn"
               >
-                View Services
+                {t('home.hero.viewServices')}
               </Button>
             </Link>
           </div>
