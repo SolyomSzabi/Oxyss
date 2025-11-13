@@ -224,7 +224,7 @@ const Services = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Price Range</p>
-                <p className="text-2xl font-bold text-yellow-400">$20 - $55</p>
+                <p className="text-2xl font-bold text-yellow-400">20 - 55 RON</p>
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Payment Methods</p>
