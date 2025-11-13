@@ -148,7 +148,7 @@ const Home = () => {
                         className="bg-zinc-900 hover:bg-zinc-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         data-testid={`book-service-btn-${index}`}
                       >
-                        Book Now
+                        {t('home.hero.bookNow')}
                       </Button>
                     </Link>
                   </div>
