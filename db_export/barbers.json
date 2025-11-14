@@ -1,0 +1,44 @@
+[
+  {
+    "id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+    "name": "Oxy",
+    "description": "Master barber and founder with exceptional skills in classic and modern cuts",
+    "experience_years": 15,
+    "specialties": [
+      "Classic cuts",
+      "Fades",
+      "Beard styling",
+      "Hot towel shaves"
+    ],
+    "image_url": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+    "is_available": true
+  },
+  {
+    "id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+    "name": "Helga",
+    "description": "Expert stylist specializing in modern cuts and precision beard work",
+    "experience_years": 8,
+    "specialties": [
+      "Modern styles",
+      "Precision cuts",
+      "Beard trimming",
+      "Hair treatments"
+    ],
+    "image_url": "https://images.unsplash.com/photo-1594736797933-d0401ba5fe65?w=400&h=400&fit=crop&crop=face",
+    "is_available": true
+  },
+  {
+    "id": "b4f70f36-35ef-4e93-8ad7-6eaced548347",
+    "name": "Marcus",
+    "description": "Experienced barber specializing in traditional cuts and classic styling",
+    "experience_years": 12,
+    "specialties": [
+      "Traditional cuts",
+      "Pompadours",
+      "Classic shaves",
+      "Mustache grooming"
+    ],
+    "image_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+    "is_available": true
+  }
+]

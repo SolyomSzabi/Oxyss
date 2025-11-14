@@ -1,0 +1,79 @@
+[
+  {
+    "id": "76e3569d-fbb1-4109-9e9a-e3d00ca943b7",
+    "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+    "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+    "price": 40.0,
+    "is_available": true
+  },
+  {
+    "id": "fdf9b022-3c3e-4517-9756-4327dbea1adc",
+    "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+    "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+    "price": 28.0,
+    "is_available": true
+  },
+  {
+    "id": "0ef581ad-7111-4b0a-a3e6-353173963c8a",
+    "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+    "service_id": "9dbae8ab-f2c6-4825-9f60-49f43912e96d",
+    "price": 65.0,
+    "is_available": true
+  },
+  {
+    "id": "16f497e3-eae4-4e4c-b5ba-0983f9d53c2e",
+    "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+    "service_id": "650714b1-af43-4b77-a68d-7382dc07bb04",
+    "price": 45.0,
+    "is_available": true
+  },
+  {
+    "id": "9fe171fe-99a0-400e-bf5e-c78caa6fdbed",
+    "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+    "service_id": "7d072e5c-1d17-4165-b6f9-2d5973474048",
+    "price": 25.0,
+    "is_available": true
+  },
+  {
+    "id": "8c053564-5028-4318-87db-c527f425ac61",
+    "barber_id": "086299bc-ef10-41d9-aac0-b7d034e8b272",
+    "service_id": "f26cc11f-81c1-4078-bda0-f78d698478b7",
+    "price": 32.0,
+    "is_available": true
+  },
+  {
+    "id": "a9fbb5fc-9c0d-4d83-b7a1-3bd67795f8f0",
+    "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+    "service_id": "8b2a8be7-7bef-4edb-8994-d05febae8b1a",
+    "price": 35.0,
+    "is_available": true
+  },
+  {
+    "id": "a820daa4-8502-41de-b844-9cc2e6f38b1b",
+    "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+    "service_id": "6f1601ef-f1f2-4c67-92be-9e4b58dd6d80",
+    "price": 30.0,
+    "is_available": true
+  },
+  {
+    "id": "0e33b03e-951f-4a7b-b51c-e83ca0b6772d",
+    "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+    "service_id": "9dbae8ab-f2c6-4825-9f60-49f43912e96d",
+    "price": 60.0,
+    "is_available": true
+  },
+  {
+    "id": "d5afde9b-dac9-4abb-afaa-b296df4ff350",
+    "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+    "service_id": "7d072e5c-1d17-4165-b6f9-2d5973474048",
+    "price": 22.0,
+    "is_available": true
+  },
+  {
+    "id": "493635ca-f328-439d-a9fa-b994f5889e65",
+    "barber_id": "1114c1f0-e181-402c-9167-4e6d87f94070",
+    "service_id": "f26cc11f-81c1-4078-bda0-f78d698478b7",
+    "price": 28.0,
+    "is_available": true
+  }
+]
