@@ -14,7 +14,7 @@ const Contact = () => {
     {
       icon: <Phone className="h-6 w-6 text-yellow-600" />,
       title: 'Call Us',
-      details: ['(555) 123-4567'],
+      details: ['+40 75 064 0039'],
       action: 'Call Now'
     },
     {
@@ -27,8 +27,8 @@ const Contact = () => {
 
   const businessHours = [
     { day: 'Monday - Friday', hours: '9:00 AM - 8:00 PM' },
-    { day: 'Saturday', hours: '8:00 AM - 6:00 PM' },
-    { day: 'Sunday', hours: '10:00 AM - 4:00 PM' }
+    // { day: 'Saturday', hours: '8:00 AM - 6:00 PM' },
+    // { day: 'Sunday', hours: '10:00 AM - 4:00 PM' }
   ];
 
   return (

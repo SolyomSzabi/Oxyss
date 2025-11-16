@@ -220,11 +220,11 @@ const Services = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Average Service Time</p>
-                <p className="text-2xl font-bold text-yellow-400">30-75 min</p>
+                <p className="text-2xl font-bold text-yellow-400">30-90 min</p>
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Price Range</p>
-                <p className="text-2xl font-bold text-yellow-400">20 - 55 RON</p>
+                <p className="text-2xl font-bold text-yellow-400">38 - 170 RON</p>
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Payment Methods</p>

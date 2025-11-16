@@ -103,7 +103,7 @@ const Home = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="h-5 w-5 text-yellow-400" />
-              <span>Open 9AM - 8PM</span>
+              <span>Open 9AM - 7PM</span>
             </div>
             <div className="flex items-center space-x-2">
               <Star className="h-5 w-5 text-yellow-400 fill-current" />
