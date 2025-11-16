@@ -10,22 +10,22 @@ const Home = () => {
   const { t } = useTranslation();
   const services = [
     {
-      name: 'Classic Haircut',
-      price: '35 RON',
-      duration: '45 min',
-      description: 'Traditional men\'s haircut with wash and style'
-    },
-    {
-      name: 'Beard Trim & Style',
-      price: '25 RON',
+      name: "Men's Haircut",
+      price: '63 RON',
       duration: '30 min',
-      description: 'Professional beard trimming and styling'
+      description: 'Washing • Cutting • Styling'
     },
     {
-      name: 'Premium Cut & Beard',
-      price: '55 RON',
-      duration: '75 min',
-      description: 'Complete grooming package'
+      name: 'Beard Trim',
+      price: '38 RON',
+      duration: '30 min',
+      description: 'Shaping • Contouring'
+    },
+    {
+      name: "Men's BRONZE",
+      price: '85 RON',
+      duration: '45 min',
+      description: 'Haircut • Beard Trim'
     }
   ];
 
