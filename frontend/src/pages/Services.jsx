@@ -133,7 +133,7 @@ const Services = () => {
                               <span className="text-sm text-zinc-600">{service.duration} min</span>
                             </div>
                             <div className="flex items-center space-x-1">
-                              <span className="text-lg font-bold text-yellow-600">De la {service.base_price} RON*</span>
+                              <span className="text-lg font-bold text-yellow-600">From {service.base_price} RON</span>
                             </div>
                           </div>
                         </div>
