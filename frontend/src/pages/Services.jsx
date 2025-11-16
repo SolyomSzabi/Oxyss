@@ -97,7 +97,7 @@ const Services = () => {
       {/* Services Grid by Category */}
       <section className="section-padding">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {['Men', 'Women', 'Kids'].map((category) => {
+          {['Men', 'Women', 'Children'].map((category) => {
             const categoryServices = services.filter(s => s.category === category);
             
             if (categoryServices.length === 0) return null;
