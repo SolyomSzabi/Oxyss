@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Clock, MapPin, Scissors, Award, Users } from 'lucide-react';
+import heroImg from "@/assets/hero.jpg";
+
 
 const Home = () => {
   const { t } = useTranslation();
@@ -54,7 +56,7 @@ const Home = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1732319622287-a9c37287b43e')`
+            backgroundImage: `url(${heroImg})`
           }}
         />
         <div className="hero-overlay" />
