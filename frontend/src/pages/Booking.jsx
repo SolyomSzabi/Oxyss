@@ -340,7 +340,7 @@ const Booking = () => {
                         </div>
                       ) : (
                         <div className="space-y-8">
-                          {['Men', 'Women', 'Kids'].map((category) => {
+                          {['Men', 'Women', 'Children'].map((category) => {
                             const categoryServices = services.filter(s => s.category === category);
                             
                             if (categoryServices.length === 0) return null;
