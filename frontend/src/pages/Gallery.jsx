@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
+import gallery1 from "@/assets/gallery1.jpg";
+import gallery2 from "@/assets/gallery2.jpg";
+import gallery3 from "@/assets/gallery3.jpg";
+import gallery4 from "@/assets/gallery4.jpg";
+
 
 const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -9,67 +14,67 @@ const Gallery = () => {
   const galleryImages = [
     {
       id: 1,
-      src: 'https://images.unsplash.com/photo-1605497788044-5a32c7078486',
+      src: gallery1,
       title: 'Professional Barbering',
       category: 'haircuts',
       description: 'Expert precision cutting'
     },
     {
       id: 2,
-      src: 'https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5',
+      src: gallery2,
       title: 'Classic Cut in Progress',
       category: 'haircuts',
       description: 'Traditional barbering techniques'
     },
     {
       id: 3,
-      src: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518',
+      src: gallery3,
       title: 'Styled & Groomed',
-      category: 'styling',
+      category: 'beard',
       description: 'Complete grooming result'
     },
     {
       id: 4,
-      src: 'https://images.unsplash.com/photo-1578390432942-d323db577792',
+      src: gallery4,
       title: 'Modern Fade',
-      category: 'haircuts',
+      category: 'beard',
       description: 'Contemporary styling'
     },
-    {
-      id: 5,
-      src: 'https://images.unsplash.com/photo-1517832606299-7ae9b720a186',
-      title: 'Beard Trimming',
-      category: 'beard',
-      description: 'Precision beard work'
-    },
-    {
-      id: 6,
-      src: 'https://images.unsplash.com/photo-1743779035881-9205ef92f1ce',
-      title: 'Professional Beard Service',
-      category: 'beard',
-      description: 'Expert beard grooming'
-    },
-    {
-      id: 7,
-      src: 'https://images.unsplash.com/photo-1759134248487-e8baaf31e33e',
-      title: 'Modern Barbershop',
-      category: 'shop',
-      description: 'Contemporary barbershop interior'
-    },
-    {
-      id: 8,
-      src: 'https://images.unsplash.com/photo-1610475680335-dafab5475150',
-      title: 'Classic Barber Chair',
-      category: 'shop',
-      description: 'Traditional barbershop setup'
-    },
-    {
-      id: 9,
-      src: 'https://images.unsplash.com/photo-1667539916609-c706d5b7ed65',
-      title: 'Professional Tools',
-      category: 'shop',
-      description: 'Quality barbering equipment'
-    }
+    // {
+    //   id: 5,
+    //   src: 'https://images.unsplash.com/photo-1517832606299-7ae9b720a186',
+    //   title: 'Beard Trimming',
+    //   category: 'beard',
+    //   description: 'Precision beard work'
+    // },
+    // {
+    //   id: 6,
+    //   src: 'https://images.unsplash.com/photo-1743779035881-9205ef92f1ce',
+    //   title: 'Professional Beard Service',
+    //   category: 'beard',
+    //   description: 'Expert beard grooming'
+    // },
+    // {
+    //   id: 7,
+    //   src: 'https://images.unsplash.com/photo-1759134248487-e8baaf31e33e',
+    //   title: 'Modern Barbershop',
+    //   category: 'shop',
+    //   description: 'Contemporary barbershop interior'
+    // },
+    // {
+    //   id: 8,
+    //   src: 'https://images.unsplash.com/photo-1610475680335-dafab5475150',
+    //   title: 'Classic Barber Chair',
+    //   category: 'shop',
+    //   description: 'Traditional barbershop setup'
+    // },
+    // {
+    //   id: 9,
+    //   src: 'https://images.unsplash.com/photo-1667539916609-c706d5b7ed65',
+    //   title: 'Professional Tools',
+    //   category: 'shop',
+    //   description: 'Quality barbering equipment'
+    // }
   ];
 
   const categories = [
