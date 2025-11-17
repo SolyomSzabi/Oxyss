@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Clock, MapPin, Scissors, Award, Users } from 'lucide-react';
 import heroImg from "@/assets/hero.jpg";
 
-
 const Home = () => {
   const { t } = useTranslation();
   const services = [
@@ -173,7 +172,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Why Choose Us 
       <section className="section-padding bg-zinc-50" data-testid="why-choose-us-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -201,7 +200,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section>*/}
 
       {/* Gallery Preview */}
       <section className="section-padding bg-white" data-testid="gallery-preview-section">
