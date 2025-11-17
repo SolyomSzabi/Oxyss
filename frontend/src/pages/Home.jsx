@@ -6,6 +6,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Clock, MapPin, Scissors, Award, Users } from 'lucide-react';
 import heroImg from "@/assets/hero.jpg";
+import gallery1 from "@/assets/gallery1.jpg";
+import gallery2 from "@/assets/gallery2.jpg";
+import gallery3 from "@/assets/gallery3.jpg";
+import gallery4 from "@/assets/gallery4.jpg";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -216,10 +220,10 @@ const Home = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {[
-              'https://images.unsplash.com/photo-1605497788044-5a32c7078486',
-              'https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5',
-              'https://images.unsplash.com/photo-1521572267360-ee0c2909d518',
-              'https://images.unsplash.com/photo-1578390432942-d323db577792'
+              gallery1,
+              gallery2,
+              gallery3,
+              gallery4,
             ].map((image, index) => (
               <div key={index} className="aspect-square overflow-hidden rounded-lg group cursor-pointer" data-testid={`gallery-image-${index}`}>
                 <img 
