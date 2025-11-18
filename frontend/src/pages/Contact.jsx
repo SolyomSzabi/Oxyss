@@ -137,9 +137,15 @@ const Contact = () => {
               Located in the heart of Downtown, we're easily accessible and offer convenient parking.
             </p>
           </div>
-                      <div>
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2712.6948477512888!2d22.86645967677371!3d47.16383061844748!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474865cedc1de883%3A0xeb99241c438a7776!2sOxyss%20Style!5e0!3m2!1shu!2sro!4v1763506134238!5m2!1shu!2sro" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                      </div>
+<iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2712.6948477512888!2d22.86645967677371!3d47.16383061844748!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474865cedc1de883%3A0xeb99241c438a7776!2sOxyss%20Style!5e0!3m2!1shu!2sro!4v1763506134238!5m2!1shu!2sro"
+  width="600"
+  height="450"
+  style={{ border: 0 }}
+  allowFullScreen=""
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+/>
           {/* <div className="bg-zinc-100 rounded-lg h-96 flex items-center justify-center" data-testid="map-placeholder">
             <div className="text-center">
               <MapPin className="h-12 w-12 text-zinc-400 mx-auto mb-4" />
