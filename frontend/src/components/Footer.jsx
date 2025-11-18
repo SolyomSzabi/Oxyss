@@ -89,12 +89,12 @@ const Footer = () => {
               <li className="flex items-center space-x-3">
                 <MapPin className="h-4 w-4 text-yellow-400" />
                 <span className="text-zinc-300 text-sm">
-                  Crasna, Sălaj, Romania
+                  Str. Ratinului, nr.959, Crasna, Sălaj, Romania
                 </span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-yellow-400" />
-                <span className="text-zinc-300 text-sm">+40 75 064 0039</span>
+                <span className="text-zinc-300 text-sm">+40 74 116 1016</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-yellow-400" />
