@@ -66,7 +66,7 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <Badge className="mb-6 bg-yellow-600/10 text-yellow-700 border-yellow-600/20 px-4 py-2">
-                Established 2009
+                Established 2025
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold font-heading text-zinc-900 mb-6">
                 About Oxy'ss
@@ -98,12 +98,12 @@ const About = () => {
                 className="rounded-lg shadow-2xl w-full"
                 data-testid="about-hero-image"
               />
-              <div className="absolute -bottom-6 -right-6 bg-yellow-600 text-white p-4 rounded-lg shadow-lg">
+              {/* <div className="absolute -bottom-6 -right-6 bg-yellow-600 text-white p-4 rounded-lg shadow-lg">
                 <div className="text-center">
                   <div className="text-2xl font-bold">15+</div>
                   <div className="text-sm">Years of Excellence</div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
