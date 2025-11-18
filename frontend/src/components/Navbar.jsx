@@ -28,13 +28,13 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20 py-2">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-zinc-900 p-2 rounded-lg">
+            {/* <div className="bg-zinc-900 p-2 rounded-lg"> */}
              <img 
               src={logo}
               alt="Icon" 
               className="h-6 w-6 object-contain"
             />
-               </div>
+               {/* </div> */}
             {/* <div className="flex flex-col">
               <h1 className="text-2xl font-bold font-heading text-zinc-900 leading-tight">
                 Oxy'ss
