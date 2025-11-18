@@ -26,7 +26,7 @@ const Contact = () => {
   ];
 
   const businessHours = [
-    { day: 'Monday - Friday', hours: '9:00 AM - 8:00 PM' },
+    { day: 'Monday - Friday', hours: '9:00 AM - 7:00 PM' },
     // { day: 'Saturday', hours: '8:00 AM - 6:00 PM' },
     // { day: 'Sunday', hours: '10:00 AM - 4:00 PM' }
   ];
@@ -116,7 +116,7 @@ const Contact = () => {
                     <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
                       <p className="text-sm text-yellow-800">
                         <CheckCircle className="h-4 w-4 inline mr-2" />
-                        We're open 6 days a week for your convenience
+                        We're open 5 days a week for your convenience
                       </p>
                     </div>
                   </CardContent>
