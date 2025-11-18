@@ -137,7 +137,11 @@ const Contact = () => {
               Located in the heart of Downtown, we're easily accessible and offer convenient parking.
             </p>
           </div>
-<iframe
+
+          <div className="bg-zinc-100 rounded-lg h-96 flex items-center justify-center" data-testid="map-placeholder">
+            <div className="text-center">
+              {/* <MapPin className="h-12 w-12 text-zinc-400 mx-auto mb-4" /> */}
+              <iframe
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2712.6948477512888!2d22.86645967677371!3d47.16383061844748!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474865cedc1de883%3A0xeb99241c438a7776!2sOxyss%20Style!5e0!3m2!1shu!2sro!4v1763506134238!5m2!1shu!2sro"
   width="600"
   height="450"
@@ -146,9 +150,6 @@ const Contact = () => {
   loading="lazy"
   referrerPolicy="no-referrer-when-downgrade"
 />
-          {/* <div className="bg-zinc-100 rounded-lg h-96 flex items-center justify-center" data-testid="map-placeholder">
-            <div className="text-center">
-              <MapPin className="h-12 w-12 text-zinc-400 mx-auto mb-4" />
               <p className="text-zinc-600 font-medium">Interactive Map</p>
               <p className="text-sm text-zinc-500">123 Style Street, Downtown, NY 10001</p>
               <Button 
@@ -159,7 +160,7 @@ const Contact = () => {
                 Get Directions
               </Button>
             </div>
-          </div> */}
+          </div>
           
           {/* <div className="mt-8 text-center">
             <div className="bg-zinc-50 rounded-lg p-6 max-w-2xl mx-auto">
