@@ -205,33 +205,33 @@ const Services = () => {
             Personalized Pricing
           </h2>
           <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto">
-            Our experienced barbers offer services at different pricing levels based on their 
-            expertise and specializations. Choose your preferred barber during booking to see exact pricing.
+            Our experienced hairdressers offer services at different pricing levels based on their 
+            expertise and specializations. Choose your preferred hairdresser during booking to see exact pricing.
           </p>
           <div className="bg-yellow-600/20 border border-yellow-600/30 rounded-lg p-4 mb-8 max-w-3xl mx-auto">
             <p className="text-yellow-200 text-sm">
-              <strong>*Pricing Note:</strong> Prices shown are starting rates. Each barber has their own pricing 
+              <strong>*Pricing Note:</strong> Prices shown are starting rates. Each hairdresser has their own pricing 
               based on experience and specializations. Final pricing will be confirmed when you select 
-              your preferred barber during the booking process.
+              your preferred hairdresser during the booking process.
             </p>
           </div>
           
-          <div className="bg-zinc-800 rounded-lg p-6 mb-8">
+          {/* <div className="bg-zinc-800 rounded-lg p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Average Service Time</p>
-                <p className="text-2xl font-bold text-yellow-400">30-90 min</p>
+                <p className="text-2xl font-bold text-yellow-400">30 - 120 min</p>
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Price Range</p>
-                <p className="text-2xl font-bold text-yellow-400">38 - 170 RON</p>
+                <p className="text-2xl font-bold text-yellow-400">38 - 200 RON</p>
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Payment Methods</p>
                 <p className="text-lg text-white">Cash • Card • Digital</p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <Link to="/booking">
             <Button 
