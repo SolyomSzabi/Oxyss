@@ -147,7 +147,7 @@ const Contact = () => {
   // height="450"
   // style={{ border: 0 }}
   // allowFullScreen=""
-  className="h-12 w-12 text-zinc-400 mx-auto mb-4"
+  // className="h-12 w-12 text-zinc-400 mx-auto mb-4"
   loading="lazy"
   referrerPolicy="no-referrer-when-downgrade"
 />
