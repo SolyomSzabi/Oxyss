@@ -51,8 +51,8 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {/* Contact Information */}
-            <div className="space-y-8 text-center">
-              <div>
+            <div className="space-y-8">
+              <div className="text-center">
                 <h2 className="text-3xl font-bold font-heading text-zinc-900 mb-6">
                   Get in Touch
                 </h2>
