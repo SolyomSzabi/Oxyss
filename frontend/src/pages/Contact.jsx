@@ -8,19 +8,19 @@ const Contact = () => {
     {
       icon: <MapPin className="h-6 w-6 text-yellow-600" />,
       title: 'Visit Us',
-      details: ['123 Style Street', 'Downtown, NY 10001'],
+      details: ['Str. Ratinului, nr.959', 'Crasna, Sălaj, Romania'],
       action: 'Get Directions'
     },
     {
       icon: <Phone className="h-6 w-6 text-yellow-600" />,
       title: 'Call Us',
-      details: ['+40 75 064 0039'],
+      details: ['+40 74 116 1016'],
       action: 'Call Now'
     },
     {
       icon: <Mail className="h-6 w-6 text-yellow-600" />,
       title: 'Email Us',
-      details: ['info@oxyssbarbershop.com'],
+      details: ['oxyssstyle@gmail.com'],
       action: 'Send Email'
     }
   ];
@@ -79,7 +79,7 @@ const Contact = () => {
                               {detail}
                             </p>
                           ))}
-                          {info.action && (
+                          {/* {info.action && (
                             <Button 
                               variant="link" 
                               className="p-0 h-auto text-yellow-600 hover:text-yellow-700 mt-2"
@@ -87,7 +87,7 @@ const Contact = () => {
                             >
                               {info.action}
                             </Button>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </CardContent>
@@ -133,9 +133,9 @@ const Contact = () => {
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-zinc-900 mb-6">
               Find Us
             </h2>
-            <p className="text-xl text-zinc-600">
+            {/* <p className="text-xl text-zinc-600">
               Located in the heart of Downtown, we're easily accessible and offer convenient parking.
-            </p>
+            </p> */}
           </div>
 
           <div className="relative w-full h-[450px] rounded-xl overflow-hidden shadow-lg">
