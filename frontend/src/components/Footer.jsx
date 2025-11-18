@@ -15,7 +15,7 @@ const Footer = () => {
               </div>
               <div>
                 <h2 className="text-3xl font-bold font-heading">Oxy'ss</h2>
-                <p className="text-yellow-400 font-medium">Premium Barbershop</p>
+                <p className="text-yellow-400 font-medium">Premium Hair Studio</p>
               </div>
             </div>
             <p className="text-zinc-300 mb-6 max-w-md">
