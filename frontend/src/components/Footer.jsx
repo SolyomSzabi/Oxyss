@@ -63,14 +63,14 @@ const Footer = () => {
                   Gallery
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link 
                   to="/about" 
                   className="text-zinc-300 hover:text-yellow-400 transition-colors"
                 >
                   About
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link 
                   to="/contact" 
