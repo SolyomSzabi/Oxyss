@@ -19,7 +19,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-zinc-300 mb-6 max-w-md">
-              Experience the finest in men's grooming at Oxy'ss. Our skilled barbers 
+              Experience the finest in hairstyling services at Oxy'ss. Our skilled barbers 
               combine traditional techniques with modern style to give you the perfect cut.
             </p>
             <div className="flex space-x-4">
