@@ -71,7 +71,7 @@ const Home = () => {
           
           <h1 className="text-5xl md:text-7xl font-bold font-heading mb-6 leading-tight">
             Welcome to
-            <span className="block text-gradient">Oxy'ss Barbershop</span>
+            <span className="block text-gradient">Oxy'ss Style</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
