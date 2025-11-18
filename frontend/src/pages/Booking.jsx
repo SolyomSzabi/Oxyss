@@ -308,7 +308,7 @@ const Booking = () => {
                             <div className="flex-1">
                               <h4 className="font-semibold text-zinc-900 mb-1">{barber.name}</h4>
                               <p className="text-sm text-zinc-600 mb-2">{barber.description}</p>
-                              <div className="flex items-center space-x-2">
+                              {/* <div className="flex items-center space-x-2">
                                 <Badge variant="outline" className="text-xs">
                                   {barber.experience_years}+ years
                                 </Badge>
@@ -319,7 +319,7 @@ const Booking = () => {
                                     {specialty}
                                   </Badge>
                                 ))}
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </div>
