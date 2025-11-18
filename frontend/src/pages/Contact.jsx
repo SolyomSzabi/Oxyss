@@ -153,7 +153,7 @@ const Contact = () => {
             </div>
           </div>
           
-          <div className="mt-8 text-center">
+          {/* <div className="mt-8 text-center">
             <div className="bg-zinc-50 rounded-lg p-6 max-w-2xl mx-auto">
               <h3 className="font-semibold text-zinc-900 mb-2">Parking & Accessibility</h3>
               <p className="text-zinc-600 text-sm">
@@ -161,7 +161,7 @@ const Contact = () => {
                 Public transportation: Bus stops within 2 blocks, Metro station 0.3 miles away.
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>
