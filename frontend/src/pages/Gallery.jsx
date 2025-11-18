@@ -99,7 +99,7 @@ const Gallery = () => {
           </h1>
           <p className="text-xl text-zinc-600 max-w-3xl mx-auto mb-8">
             Explore our portfolio showcasing the artistry and craftsmanship that defines 
-            Oxy'ss Barbershop. Every cut tells a story of precision and style.
+            Oxy'ss Hair Studio. Every cut tells a story of precision and style.
           </p>
           
           {/* Category Filter */}
@@ -147,7 +147,7 @@ const Gallery = () => {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     </div>
-                    <div className="p-4">
+                    {/* <div className="p-4">
                       <h3 className="font-semibold text-zinc-900 mb-1">
                         {image.title}
                       </h3>
@@ -160,7 +160,7 @@ const Gallery = () => {
                       >
                         {image.category}
                       </Badge>
-                    </div>
+                    </div> */}
                   </div>
                 </DialogTrigger>
                 <DialogContent className="max-w-4xl w-[90vw] p-0">
