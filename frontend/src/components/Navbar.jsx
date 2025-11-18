@@ -32,7 +32,7 @@ const Navbar = () => {
              <img 
               src={logo}
               alt="Icon" 
-              className="h-10 w-10 object-contain"
+              className="h-15 w-15 object-contain"
             />
                {/* </div> */}
             {/* <div className="flex flex-col">
