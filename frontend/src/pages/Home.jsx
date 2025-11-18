@@ -104,7 +104,7 @@ const Home = () => {
           <div className="flex flex-wrap justify-center items-center gap-6 mt-12 text-gray-300">
             <div className="flex items-center space-x-2">
               <MapPin className="h-5 w-5 text-yellow-400" />
-              <span>Str. Ratinului, nr.929, Crasna, Sălaj, Romania</span>
+              <span>Str. Ratinului, nr.959, Crasna, Sălaj, Romania</span>
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="h-5 w-5 text-yellow-400" />

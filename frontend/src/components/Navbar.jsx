@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, X, Scissors } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
+import logo from "@/assets/logo.jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center space-x-2">
             <div className="bg-zinc-900 p-2 rounded-lg">
              <img 
-              src="/path/to/your-image.png" 
+              src={logo}
               alt="Icon" 
               className="h-6 w-6 object-contain"
             />
