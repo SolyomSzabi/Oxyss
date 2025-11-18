@@ -29,18 +29,18 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             {/* <div className="bg-zinc-900 p-2 rounded-lg"> */}
-             <img 
+             {/* <img 
               src={logo}
               alt="Icon" 
-              className="h-15 w-15 object-contain"
-            />
+              className="h-11 w-11 object-contain"
+            /> */}
                {/* </div> */}
-            {/* <div className="flex flex-col">
+            <div className="flex flex-col">
               <h1 className="text-2xl font-bold font-heading text-zinc-900 leading-tight">
                 Oxy'ss
               </h1>
-              <p className="text-xs text-zinc-600 -mt-0.5 leading-tight">Barbershop</p>
-            </div> */}
+              <p className="text-xs text-zinc-600 -mt-0.5 leading-tight">Style</p>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
