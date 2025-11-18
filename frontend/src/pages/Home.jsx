@@ -21,16 +21,16 @@ const Home = () => {
       description: 'Washing • Cutting • Styling'
     },
     {
-      name: 'Beard Trim',
-      price: '38 RON',
-      duration: '30 min',
-      description: 'Shaping • Contouring'
-    },
-    {
       name: "Men's BRONZE",
       price: '85 RON',
       duration: '45 min',
       description: 'Haircut • Beard Trim'
+    },
+    {
+      name: "Men's OXY’SS GOLD",
+      price: '170 RON',
+      duration: '90 min',
+      description: 'Hair wash with head massage • Haircut • Beard • Styling • Eyebrows • Ears • Nose'
     }
   ];
 
@@ -104,7 +104,7 @@ const Home = () => {
           <div className="flex flex-wrap justify-center items-center gap-6 mt-12 text-gray-300">
             <div className="flex items-center space-x-2">
               <MapPin className="h-5 w-5 text-yellow-400" />
-              <span>Crasna, Sălaj, Romania</span>
+              <span>Str. Ratinului, nr.929, Crasna, Sălaj, Romania</span>
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="h-5 w-5 text-yellow-400" />
@@ -112,7 +112,7 @@ const Home = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Star className="h-5 w-5 text-yellow-400 fill-current" />
-              <span>4.9/5 Rating</span>
+              <span>5/5 Rating</span>
             </div>
           </div>
         </div>
