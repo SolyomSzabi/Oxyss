@@ -58,7 +58,7 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <LanguageSwitcher />
+            {/* <LanguageSwitcher /> */}
             <Link to="/booking">
               <Button 
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-6"
