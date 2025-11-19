@@ -21,13 +21,14 @@ i18n
         translation: huTranslation
       }
     },
+    lng: 'en',
     fallbackLng: 'en',
     debug: false,
     interpolation: {
       escapeValue: false
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage']
     }
   });
