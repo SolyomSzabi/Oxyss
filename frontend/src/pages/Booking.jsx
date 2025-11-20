@@ -660,7 +660,10 @@ const Booking = () => {
                   {currentStep < 3 ? (
                     <Button
                       ref={nextStepRef}
-                      onClick={() => setCurrentStep(currentStep + 1)}
+                      onClick={() => {
+                        setCurrentStep(currentStep + 1);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                       disabled={!canProceedToNext(currentStep)}
                       className="bg-yellow-600 hover:bg-yellow-700 text-white"
                       data-testid="next-step-btn"
