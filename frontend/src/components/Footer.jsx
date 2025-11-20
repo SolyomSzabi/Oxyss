@@ -23,15 +23,18 @@ const Footer = () => {
               combine traditional techniques with modern style to give you the perfect cut.
             </p>
             <div className="flex space-x-4">
-              <div className="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
+              {/* <div className="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
                 <span className="text-sm font-bold">fb</span>
-              </div>
-              <div className="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
+              </div> */}
+              <div
+                className="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer"
+                onClick={() => window.location.href = "https://www.instagram.com/__oxyss?igsh=MTRmaWtnbjJ6Ym13NA=="}
+              >
                 <span className="text-sm font-bold">ig</span>
               </div>
-              <div className="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
+              {/* <div className="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors cursor-pointer">
                 <span className="text-sm font-bold">tw</span>
-              </div>
+              </div> */}
             </div>
           </div>
 
