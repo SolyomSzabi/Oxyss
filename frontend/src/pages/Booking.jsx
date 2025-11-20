@@ -639,7 +639,7 @@ const Booking = () => {
                           
                       setTimeout(() => {
                         window.scrollTo({ top: 0, behavior: "smooth" });
-                      }, 100);
+                      }, 0);
                     }}
                     className="bg-yellow-600 hover:bg-yellow-700 text-white"
                     data-testid="book-another-btn"
@@ -668,7 +668,7 @@ const Booking = () => {
                           setCurrentStep(currentStep + 1);
                           setTimeout(() => {
                              window.scrollTo({ top: 0, behavior: "smooth" });
-                           }, 100);
+                           }, 0);
                       }}
                       disabled={!canProceedToNext(currentStep)}
                       className="bg-yellow-600 hover:bg-yellow-700 text-white"
