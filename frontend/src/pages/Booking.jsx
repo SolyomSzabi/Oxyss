@@ -678,11 +678,14 @@ const Booking = () => {
                     </Button>
                   ) : (
                     <Button
-                      onClick={() => {
-                        // setTimeout(() => {
-                        //   window.scrollTo({ top: 0, behavior: "smooth" });
-                        // }, 100);
+                      onClick={(e) => {
+                        e.preventDefault();
+
                         handleSubmit();
+
+                        setTimeout(() => {
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }, 0);
                       }}
                       disabled={!canProceedToNext(currentStep) || submitting}
                       className="bg-yellow-600 hover:bg-yellow-700 text-white"
