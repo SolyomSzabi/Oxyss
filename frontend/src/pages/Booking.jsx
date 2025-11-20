@@ -20,6 +20,8 @@ const Booking = () => {
   const location = useLocation();
   const selectedService = location.state?.selectedService || null;
 
+  const nextStepRef = useRef(null);
+
   const [services, setServices] = useState([]);
   const [barbers, setBarbers] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -115,6 +117,15 @@ const Booking = () => {
     // Fetch available slots if we have date and barber selected
     if (bookingData.barberId && bookingData.appointmentDate && newServiceId) {
       fetchAvailableSlots(bookingData.barberId, bookingData.appointmentDate, newServiceId);
+    }
+
+        if (nextStepRef.current) {
+      setTimeout(() => {
+        nextStepRef.current.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 100);
     }
   };
 
@@ -648,6 +659,7 @@ const Booking = () => {
                   
                   {currentStep < 3 ? (
                     <Button
+                      ref={nextStepRef}
                       onClick={() => setCurrentStep(currentStep + 1)}
                       disabled={!canProceedToNext(currentStep)}
                       className="bg-yellow-600 hover:bg-yellow-700 text-white"
