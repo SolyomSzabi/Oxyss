@@ -170,10 +170,10 @@ const Gallery = () => {
                       alt={image.title}
                       className="w-full h-auto max-h-[80vh] object-contain"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/75 text-white p-4">
+                    {/* <div className="absolute bottom-0 left-0 right-0 bg-black/75 text-white p-4">
                       <h3 className="text-lg font-semibold mb-1">{image.title}</h3>
                       <p className="text-sm text-gray-300">{image.description}</p>
-                    </div>
+                    </div> */}
                   </div>
                 </DialogContent>
               </Dialog>
