@@ -679,9 +679,9 @@ const Booking = () => {
                   ) : (
                     <Button
                       onClick={() => {
-                        setTimeout(() => {
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }, 100);
+                        // setTimeout(() => {
+                        //   window.scrollTo({ top: 0, behavior: "smooth" });
+                        // }, 100);
                         handleSubmit();
                       }}
                       disabled={!canProceedToNext(currentStep) || submitting}
