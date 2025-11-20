@@ -662,8 +662,10 @@ const Booking = () => {
                       ref={nextStepRef}
                       onClick={() => {
                         setCurrentStep(currentStep + 1);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                        console.log('fasz')
+                          setTimeout(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    console.log('fasz')
+  }, 0);
                       }}
                       disabled={!canProceedToNext(currentStep)}
                       className="bg-yellow-600 hover:bg-yellow-700 text-white"
