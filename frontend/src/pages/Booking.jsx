@@ -679,9 +679,7 @@ const Booking = () => {
                   ) : (
                     <Button
                       onClick={(e) => {
-                        e.preventDefault();
-
-                        handleSubmit();
+                        handleSubmit(e);
 
                         setTimeout(() => {
                           window.scrollTo({ top: 0, behavior: "smooth" });
