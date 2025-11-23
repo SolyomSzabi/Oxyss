@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Calendar, Clock, User, Loader2, ArrowLeft, Edit2, Save, X } from 'lucide-react';
+import { Calendar, Clock, User, Loader2, ArrowLeft, Edit2, Save, X, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { useAuth } from '@/contexts/AuthContext';
