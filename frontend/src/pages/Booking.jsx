@@ -246,7 +246,7 @@ const Booking = () => {
               Book Your Appointment
             </h1>
             <p className="text-xl text-zinc-600 max-w-2xl mx-auto">
-              Schedule your visit to Oxy'ss Barbershop in just a few simple steps.
+              Schedule your visit to Oxy'ss Style in just a few simple steps.
             </p>
           </div>
 
@@ -282,7 +282,7 @@ const Booking = () => {
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-zinc-900">
-                {currentStep === 1 && 'Select Service & Barber'}
+                {currentStep === 1 && 'Select Service & Hair Stylist'}
                 {currentStep === 2 && 'Choose Date & Time'}
                 {currentStep === 3 && 'Contact Information'}
                 {currentStep === 4 && 'Booking Confirmed!'}
@@ -296,7 +296,7 @@ const Booking = () => {
                   {/* Barber Selection */}
                   <div>
                     <h3 className="text-lg font-semibold text-zinc-900 mb-4">
-                      Choose Your Barber
+                      Choose Your Hair Stylist
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {barbers.map((barber) => (
@@ -405,7 +405,7 @@ const Booking = () => {
                       <h4 className="font-semibold text-green-800 mb-2">Selection Summary</h4>
                       <div className="text-sm text-green-700">
                         <p><strong>Service:</strong> {bookingData.serviceName}</p>
-                        <p><strong>Barber:</strong> {bookingData.barberName}</p>
+                        <p><strong>Hair Stylist:</strong> {bookingData.barberName}</p>
                       </div>
                     </div>
                   )}
@@ -428,7 +428,7 @@ const Booking = () => {
                         </div>
                         {bookingData.barberName && (
                           <div className="flex items-center">
-                            <span className="text-zinc-700"><strong>Barber:</strong> {bookingData.barberName}</span>
+                            <span className="text-zinc-700"><strong>Hair Stylist:</strong> {bookingData.barberName}</span>
                           </div>
                         )}
                       </div>
@@ -527,7 +527,7 @@ const Booking = () => {
                     <h3 className="font-semibold text-zinc-900 mb-2">Appointment Summary:</h3>
                     <div className="space-y-1 text-sm text-zinc-700">
                       <p><strong>Service:</strong> {bookingData.serviceName}</p>
-                      <p><strong>Barber:</strong> {bookingData.barberName}</p>
+                      <p><strong>Hair Stylist:</strong> {bookingData.barberName}</p>
                       <p><strong>Date:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>Time:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>Duration:</strong> {selectedServiceDetails?.duration} minutes</p>
@@ -613,7 +613,7 @@ const Booking = () => {
                     <h3 className="font-semibold text-zinc-900 mb-3">Appointment Details:</h3>
                     <div className="space-y-2 text-sm">
                       <p><strong>Service:</strong> {bookingData.serviceName}</p>
-                      <p><strong>Barber:</strong> {bookingData.barberName}</p>
+                      <p><strong>Hair Stylist:</strong> {bookingData.barberName}</p>
                       <p><strong>Date:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>Time:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>Customer:</strong> {bookingData.customerName}</p>
