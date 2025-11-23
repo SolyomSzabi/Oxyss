@@ -30,6 +30,8 @@ const AllAppointments = () => {
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [newDuration, setNewDuration] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [deletingAppointment, setDeletingAppointment] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   // Business hours (9 AM to 7 PM)
   const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i); // 9, 10, 11, ..., 18
@@ -199,6 +201,43 @@ const AllAppointments = () => {
       toast.error(error.response?.data?.detail || 'Failed to update duration');
     } finally {
       setUpdating(false);
+    }
+  };
+
+    const handleDeleteClick = (appointment) => {
+    setDeletingAppointment(appointment);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeletingAppointment(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deletingAppointment) return;
+    
+    try {
+      setDeleting(true);
+      const token = localStorage.getItem('barber_token');
+      
+      await axios.delete(
+        `${API}/appointments/${deletingAppointment.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      toast.success('Appointment deleted successfully');
+      handleCloseDeleteDialog();
+      
+      // Refresh appointments
+      await fetchAllAppointments();
+    } catch (error) {
+      console.error('Error deleting appointment:', error);
+      toast.error(error.response?.data?.detail || 'Failed to delete appointment');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -521,6 +560,56 @@ const AllAppointments = () => {
                 <>
                   <Save className="h-4 w-4 mr-2" />
                   Save Changes
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+            {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deletingAppointment} onOpenChange={handleCloseDeleteDialog}>
+        <DialogContent className="sm:max-w-md bg-white" onPointerDownOutside={(e) => e.preventDefault()}>
+          <DialogHeader className="space-y-2 pb-4 border-b border-zinc-200">
+            <DialogTitle className="text-xl font-bold text-zinc-900">Delete Appointment</DialogTitle>
+            <DialogDescription className="text-sm text-zinc-600">
+              Are you sure you want to delete this appointment? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {deletingAppointment && (
+            <div className="space-y-4 py-4">
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 p-4 rounded-lg space-y-2 text-sm border border-red-200">
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Customer:</span> {deletingAppointment.customer_name}</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Service:</span> {deletingAppointment.service_name}</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Time:</span> {formatTime(deletingAppointment.appointment_time)}</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Duration:</span> {deletingAppointment.duration} minutes</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Phone:</span> {deletingAppointment.customer_phone}</div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={handleCloseDeleteDialog}
+              disabled={deleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirmDelete}
+              disabled={deleting}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Appointment
                 </>
               )}
             </Button>

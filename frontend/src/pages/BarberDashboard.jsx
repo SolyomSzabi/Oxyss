@@ -53,6 +53,8 @@ const BarberDashboard = () => {
     end_time: '',
     title: 'Break'
   });
+  const [deletingAppointment, setDeletingAppointment] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated && barberData) {
@@ -226,6 +228,39 @@ const BarberDashboard = () => {
 
   const handleDurationChange = (appointmentId, value) => {
     setNewDurations({ ...newDurations, [appointmentId]: value });
+  };
+
+    const handleDeleteClick = (appointment) => {
+    setDeletingAppointment(appointment);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeletingAppointment(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deletingAppointment) return;
+    
+    try {
+      setDeleting(true);
+      
+      await axios.delete(
+        `${API}/appointments/${deletingAppointment.id}`,
+        getAuthHeaders()
+      );
+
+      toast.success('Appointment deleted successfully');
+      handleCloseDeleteDialog();
+      
+      // Refresh appointments
+      await fetchTodayAppointments();
+      await fetchBarberAppointments();
+    } catch (error) {
+      console.error('Error deleting appointment:', error);
+      toast.error(error.response?.data?.detail || 'Failed to delete appointment');
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const handleLogout = () => {
@@ -405,6 +440,7 @@ const BarberDashboard = () => {
         )}
 
         {appointment.status === 'confirmed' && (
+        <div>
           <Button 
             size="sm" 
             onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
@@ -419,6 +455,32 @@ const BarberDashboard = () => {
             )}
             Mark Complete
           </Button>
+          <Button 
+              size="sm" 
+              variant="destructive"
+              onClick={() => handleDeleteClick(appointment)}
+              className="bg-red-600 hover:bg-red-700 text-white"
+              data-testid={`delete-btn-${appointment.id}`}
+          >
+              <Trash2 className="h-3 w-3 mr-1" />
+              Delete
+          </Button>
+        </div>
+        )}
+
+        {appointment.status !== 'confirmed' && (
+          <div className="mt-2">
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={() => handleDeleteClick(appointment)}
+              className="border-red-300 text-red-600 hover:bg-red-50"
+              data-testid={`delete-btn-${appointment.id}`}
+            >
+              <Trash2 className="h-3 w-3 mr-1" />
+              Delete Appointment
+            </Button>
+          </div>
         )}
       </CardContent>
     </Card>
@@ -688,6 +750,58 @@ const BarberDashboard = () => {
           </Tabs>
         </div>
       </section>
+
+          {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deletingAppointment} onOpenChange={handleCloseDeleteDialog}>
+        <DialogContent className="sm:max-w-md bg-white" onPointerDownOutside={(e) => e.preventDefault()}>
+          <DialogHeader className="space-y-2 pb-4 border-b border-zinc-200">
+            <DialogTitle className="text-xl font-bold text-zinc-900">Delete Appointment</DialogTitle>
+            <DialogDescription className="text-sm text-zinc-600">
+              Are you sure you want to delete this appointment? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {deletingAppointment && (
+            <div className="space-y-4 py-4">
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 p-4 rounded-lg space-y-2 text-sm border border-red-200">
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Customer:</span> {deletingAppointment.customer_name}</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Service:</span> {deletingAppointment.service_name}</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Date:</span> {formatAppointmentDate(deletingAppointment.appointment_date)}</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Time:</span> {deletingAppointment.appointment_time?.slice(0, 5)}</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Duration:</span> {deletingAppointment.duration} minutes</div>
+                <div className="text-zinc-800"><span className="font-semibold text-zinc-900">Phone:</span> {deletingAppointment.customer_phone}</div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={handleCloseDeleteDialog}
+              disabled={deleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirmDelete}
+              disabled={deleting}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Appointment
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
