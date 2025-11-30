@@ -32,6 +32,9 @@ const AllAppointments = () => {
   const [updating, setUpdating] = useState(false);
   const [deletingAppointment, setDeletingAppointment] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(
+  new Date().toISOString().split("T")[0] // yyyy-mm-dd
+  );
 
   // Business hours (9 AM to 7 PM)
   const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i); // 9, 10, 11, ..., 18
@@ -51,7 +54,13 @@ const AllAppointments = () => {
     return () => clearInterval(timer);
   }, [barberData, navigate]);
 
-  const fetchAllAppointments = async () => {
+  useEffect(() => {
+  if (barberData) {
+    fetchAllAppointments(selectedDate);
+  }
+}, [selectedDate]);
+
+  const fetchAllAppointments = async (date = selectedDate) => {
     try {
       setLoading(true);
       
@@ -61,30 +70,29 @@ const AllAppointments = () => {
 
       // Fetch today's appointments for each barber
       const token = localStorage.getItem('barber_token');
-      const barbersWithAppointments = await Promise.all(
-        allBarbers.map(async (barber) => {
-          try {
-            const appointmentsResponse = await axios.get(
-              `${API}/barbers/${barber.id}/appointments/today`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`
-                }
-              }
-            );
-            return {
-              ...barber,
-              appointments: appointmentsResponse.data || []
-            };
-          } catch (err) {
-            console.error(`Error fetching appointments for ${barber.name}:`, err);
-            return {
-              ...barber,
-              appointments: []
-            };
-          }
-        })
-      );
+    const barbersWithAppointments = await Promise.all(
+      allBarbers.map(async (barber) => {
+        try {
+          const appointmentsResponse = await axios.get(
+            `${API}/barbers/${barber.id}/appointments`,
+            {
+              params: { date },  // <-- send ?date=YYYY-MM-DD
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          return {
+            ...barber,
+            appointments: appointmentsResponse.data || [],
+          };
+        } catch (err) {
+          console.error(`Error fetching appointments for ${barber.name}:`, err);
+          return { ...barber, appointments: [] };
+        }
+      })
+    );
 
       setBarbers(barbersWithAppointments);
     } catch (err) {
@@ -104,17 +112,18 @@ const AllAppointments = () => {
     return `${displayHour}:${minutes} ${ampm}`;
   };
 
-  const getTodayString = () => {
-    // Get Romanian timezone date
-    const today = new Date().toLocaleDateString('ro-RO', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric',
-      timeZone: 'Europe/Bucharest'
-    });
-    return today.charAt(0).toUpperCase() + today.slice(1);
-  };
+const formatSelectedDate = () => {
+  const dateObj = new Date(selectedDate + "T00:00:00");
+
+  return dateObj.toLocaleDateString("ro-RO", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "Europe/Bucharest",
+  }).replace(/^\w/, (c) => c.toUpperCase());
+};
+
 
   const getTotalAppointments = () => {
     return barbers.reduce((total, barber) => total + barber.appointments.length, 0);
@@ -290,6 +299,23 @@ const AllAppointments = () => {
               Refresh
             </Button>
           </div>
+
+                      <div className="flex items-center space-x-3">
+              <Input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="w-40"
+              />
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => fetchAllAppointments(selectedDate)}
+              >
+                Load
+              </Button>
+            </div>
           
           <div className="flex items-center justify-between">
             <div>
@@ -298,7 +324,7 @@ const AllAppointments = () => {
               </h1>
               <div className="flex items-center space-x-2 text-sm text-zinc-600">
                 <Calendar className="h-4 w-4" />
-                <span>{getTodayString()}</span>
+                <span>{formatSelectedDate()}</span>
               </div>
             </div>
             <div className="text-right">
