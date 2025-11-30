@@ -76,7 +76,10 @@ const AllAppointments = () => {
           const appointmentsResponse = await axios.get(
             `${API}/barbers/${barber.id}/appointments`,
             {
-              params: { date },  // <-- send ?date=YYYY-MM-DD
+              params: {
+                date_from: date,
+                date_to: date
+              },   
               headers: {
                 Authorization: `Bearer ${token}`,
               },
