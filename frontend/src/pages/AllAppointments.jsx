@@ -487,6 +487,18 @@ const formatSelectedDate = () => {
                                 <div className="bg-yellow-100 px-1 py-0.5 rounded font-bold text-yellow-800 text-[8px] leading-none whitespace-nowrap">
                                   {appointment.price || '?'} RON
                                 </div>
+
+                                                                {/* Delete button */}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteClick(appointment);
+                                  }}
+                                  className="bg-red-100 hover:bg-red-200 px-1 py-0.5 rounded border border-red-300 transition-colors flex items-center gap-0.5"
+                                  title="Delete appointment"
+                                >
+                                  <Trash2 className="w-2.5 h-2.5 text-red-600" />
+                                </button>
                               </div>
                             </div>
                           </div>
