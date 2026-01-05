@@ -120,7 +120,7 @@ const Footer = () => {
             © 2025 Oxy'ss Barbershop. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
-            <Link to="/barber-login" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
+            <Link to="/barber-dashboard" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
               Staff Login
             </Link>
           </div>
