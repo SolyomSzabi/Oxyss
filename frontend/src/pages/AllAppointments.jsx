@@ -353,6 +353,9 @@ const handleCreateAppointment = async () => {
       status: 'confirmed'
     };
 
+    // Log the payload to see what we're sending
+    console.log('Sending appointment payload:', appointmentPayload);
+
     await axios.post(
       `${API}/appointments`,
       appointmentPayload,
@@ -369,7 +372,24 @@ const handleCreateAppointment = async () => {
     await fetchAllAppointments();
   } catch (error) {
     console.error('Error creating appointment:', error);
-    toast.error(error.response?.data?.detail || 'Failed to create appointment');
+    console.error('Error response:', error.response?.data); // This will show the API error details
+    
+    // Show more detailed error message
+    if (error.response?.data?.detail) {
+      if (typeof error.response.data.detail === 'string') {
+        toast.error(error.response.data.detail);
+      } else if (Array.isArray(error.response.data.detail)) {
+        // Handle validation errors array
+        const errorMessages = error.response.data.detail
+          .map(err => `${err.loc?.join('.')}: ${err.msg}`)
+          .join(', ');
+        toast.error(errorMessages);
+      } else {
+        toast.error(JSON.stringify(error.response.data.detail));
+      }
+    } else {
+      toast.error('Failed to create appointment');
+    }
   } finally {
     setCreating(false);
   }
