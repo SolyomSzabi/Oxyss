@@ -46,6 +46,7 @@ const AllAppointments = () => {
   const [newAppointmentData, setNewAppointmentData] = useState({
     customer_name: '',
     customer_phone: '',
+    customer_email: '',
     service_id: '',
     notes: ''
   });
@@ -280,120 +281,146 @@ const formatSelectedDate = () => {
   };
 
   const handleTimeSlotClick = (barberId, hour, event) => {
-  if (event.target.closest('.appointment-card')) {
-    return;
-  }
+    if (event.target.closest('.appointment-card')) {
+      return;
+    }
 
-  const rect = event.currentTarget.getBoundingClientRect();
-  const clickY = event.clientY - rect.top;
-  const hourHeight = rect.height;
-  const minutesFraction = clickY / hourHeight;
-  const minutes = Math.round(minutesFraction * 60 / 15) * 15;
-  
-  const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
-  
-  setCreatingAppointment({
-    barber_id: barberId,
-    time: timeString,
-    date: selectedDate
-  });
-  
-  setNewAppointmentData({
-    customer_name: '',
-    customer_phone: '',
-    service_id: '',
-    notes: ''
-  });
-};
+    const rect = event.currentTarget.getBoundingClientRect();
+    const clickY = event.clientY - rect.top;
+    const hourHeight = rect.height;
+    const minutesFraction = clickY / hourHeight;
+    const minutes = Math.round(minutesFraction * 60 / 15) * 15;
+    
+    const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+    
+    setCreatingAppointment({
+      barber_id: barberId,
+      time: timeString,
+      date: selectedDate
+    });
+    
+    setNewAppointmentData({
+      customer_name: '',
+      customer_phone: '',
+      customer_email: '',
+      service_id: '',
+      notes: ''
+    });
+  };
 
 const handleCloseCreateDialog = () => {
   setCreatingAppointment(null);
   setNewAppointmentData({
     customer_name: '',
     customer_phone: '',
+    customer_email: '',
     service_id: '',
     notes: ''
   });
 };
 
-const handleCreateAppointment = async () => {
-  if (!creatingAppointment) return;
+  const handleCreateAppointment = async () => {
+    if (!creatingAppointment) return;
 
-  if (!newAppointmentData.customer_name.trim()) {
-    toast.error('Customer name is required');
-    return;
-  }
-
-  if (!newAppointmentData.customer_phone.trim()) {
-    toast.error('Customer phone is required');
-    return;
-  }
-
-  if (!newAppointmentData.service_id) {
-    toast.error('Please select a service');
-    return;
-  }
-
-  try {
-    setCreating(true);
-    const token = localStorage.getItem('barber_token');
-    
-    const selectedService = services.find(s => s.id === parseInt(newAppointmentData.service_id));
-    
-    const appointmentPayload = {
-      barber_id: creatingAppointment.barber_id,
-      customer_name: newAppointmentData.customer_name.trim(),
-      customer_phone: newAppointmentData.customer_phone.trim(),
-      service_id: parseInt(newAppointmentData.service_id),
-      appointment_date: creatingAppointment.date,
-      appointment_time: creatingAppointment.time,
-      duration: selectedService?.duration || 45,
-      price: selectedService?.price || 0,
-      notes: newAppointmentData.notes.trim() || null,
-      status: 'confirmed'
-    };
-
-    // Log the payload to see what we're sending
-    console.log('Sending appointment payload:', appointmentPayload);
-
-    await axios.post(
-      `${API}/appointments`,
-      appointmentPayload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-
-    toast.success('Appointment created successfully');
-    handleCloseCreateDialog();
-    await fetchAllAppointments();
-  } catch (error) {
-    console.error('Error creating appointment:', error);
-    console.error('Error response:', error.response?.data); // This will show the API error details
-    
-    // Show more detailed error message
-    if (error.response?.data?.detail) {
-      if (typeof error.response.data.detail === 'string') {
-        toast.error(error.response.data.detail);
-      } else if (Array.isArray(error.response.data.detail)) {
-        // Handle validation errors array
-        const errorMessages = error.response.data.detail
-          .map(err => `${err.loc?.join('.')}: ${err.msg}`)
-          .join(', ');
-        toast.error(errorMessages);
-      } else {
-        toast.error(JSON.stringify(error.response.data.detail));
-      }
-    } else {
-      toast.error('Failed to create appointment');
+    if (!newAppointmentData.customer_name.trim()) {
+      toast.error('Customer name is required');
+      return;
     }
-  } finally {
-    setCreating(false);
-  }
-};
+
+    if (!newAppointmentData.customer_phone.trim()) {
+      toast.error('Customer phone is required');
+      return;
+    }
+
+    if (!newAppointmentData.customer_email.trim()) {
+      toast.error('Customer email is required');
+      return;
+    }
+
+    if (!newAppointmentData.service_id) {
+      toast.error('Please select a service');
+      return;
+    }
+
+    try {
+      setCreating(true);
+      const token = localStorage.getItem('barber_token');
+      
+      // service_id should remain as string (UUID)
+      const selectedService = services.find(s => s.id.toString() === newAppointmentData.service_id.toString());
+      
+      if (!selectedService) {
+        toast.error('Service not found');
+        return;
+      }
+
+      // Find the barber name
+      const selectedBarber = barbers.find(b => b.id === creatingAppointment.barber_id);
+      
+      if (!selectedBarber) {
+        toast.error('Barber not found');
+        return;
+      }
+      
+      const appointmentPayload = {
+        barber_id: creatingAppointment.barber_id,
+        barber_name: selectedBarber.name,
+        customer_name: newAppointmentData.customer_name.trim(),
+        customer_phone: newAppointmentData.customer_phone.trim(),
+        customer_email: newAppointmentData.customer_email.trim(),
+        service_id: newAppointmentData.service_id.toString(), // Keep as string
+        service_name: selectedService.name,
+        appointment_date: creatingAppointment.date,
+        appointment_time: creatingAppointment.time,
+        duration: selectedService.duration,
+        price: selectedService.price,
+        status: 'confirmed'
+      };
+      
+      // Only add notes if they exist
+      if (newAppointmentData.notes.trim()) {
+        appointmentPayload.notes = newAppointmentData.notes.trim();
+      }
+
+      console.log('Sending appointment payload:', appointmentPayload);
+
+      await axios.post(
+        `${API}/appointments`,
+        appointmentPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      toast.success('Appointment created successfully');
+      handleCloseCreateDialog();
+      await fetchAllAppointments();
+    } catch (error) {
+      console.error('Error creating appointment:', error);
+      console.error('Error response:', error.response?.data);
+      
+      if (error.response?.data?.detail) {
+        if (typeof error.response.data.detail === 'string') {
+          toast.error(error.response.data.detail);
+        } else if (Array.isArray(error.response.data.detail)) {
+          const errorMessages = error.response.data.detail
+            .map(err => `${err.loc?.join('.')}: ${err.msg}`)
+            .join(', ');
+          toast.error(errorMessages);
+          console.log('Validation errors:', error.response.data.detail);
+        } else {
+          toast.error(JSON.stringify(error.response.data.detail));
+        }
+      } else {
+        toast.error('Failed to create appointment');
+      }
+    } finally {
+      setCreating(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -726,6 +753,19 @@ const handleCreateAppointment = async () => {
                     value={newAppointmentData.customer_phone}
                     onChange={(e) => setNewAppointmentData({...newAppointmentData, customer_phone: e.target.value})}
                     placeholder="Enter phone number"
+                    disabled={creating}
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-zinc-900 block mb-2">
+                    Customer Email *
+                  </label>
+                  <Input
+                    type="email"
+                    value={newAppointmentData.customer_email}
+                    onChange={(e) => setNewAppointmentData({...newAppointmentData, customer_email: e.target.value})}
+                    placeholder="Enter email address"
                     disabled={creating}
                   />
                 </div>
