@@ -54,8 +54,14 @@ const AllAppointments = () => {
   const [services, setServices] = useState([]);
 
 
-  // Business hours (9 AM to 7 PM)
-  const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i); // 9, 10, 11, ..., 18
+    // Create 15-minute time slots from 9 AM to 7 PM
+  const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i); // Still keep hours for display
+  const timeSlots = [];
+  for (let hour = 9; hour < 19; hour++) {
+    for (let minute = 0; minute < 60; minute += 15) {
+      timeSlots.push({ hour, minute });
+    }
+  }
 
   useEffect(() => {
     if (!barberData) {
@@ -280,18 +286,13 @@ const formatSelectedDate = () => {
     }
   };
 
-  const handleTimeSlotClick = (barberId, hour, event) => {
+  const handleTimeSlotClick = (barberId, hour, minute, event) => {
+    // Prevent if clicking on an appointment
     if (event.target.closest('.appointment-card')) {
       return;
     }
 
-    const rect = event.currentTarget.getBoundingClientRect();
-    const clickY = event.clientY - rect.top;
-    const hourHeight = rect.height;
-    const minutesFraction = clickY / hourHeight;
-    const minutes = Math.round(minutesFraction * 60 / 15) * 15;
-    
-    const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+    const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
     
     setCreatingAppointment({
       barber_id: barberId,
@@ -308,16 +309,16 @@ const formatSelectedDate = () => {
     });
   };
 
-const handleCloseCreateDialog = () => {
-  setCreatingAppointment(null);
-  setNewAppointmentData({
-    customer_name: '',
-    customer_phone: '',
-    customer_email: '',
-    service_id: '',
-    notes: ''
-  });
-};
+  const handleCloseCreateDialog = () => {
+    setCreatingAppointment(null);
+    setNewAppointmentData({
+      customer_name: '',
+      customer_phone: '',
+      customer_email: '',
+      service_id: '',
+      notes: ''
+    });
+  };
 
   const handleCreateAppointment = async () => {
     if (!creatingAppointment) return;
@@ -572,15 +573,34 @@ const handleCloseCreateDialog = () => {
 
                   {/* Timeline Grid */}
                   <div className="relative" style={{ height: `${businessHours.length * 96}px` }}>
-                    {/* Hour Lines */}
+                    {/* Hour Lines (visual separators) */}
                     {businessHours.map((hour, index) => (
                       <div
-                        key={hour}
-                        className="absolute w-full border-b border-zinc-200 hover:bg-yellow-50 cursor-pointer transition-colors"
+                        key={`hour-${hour}`}
+                        className="absolute w-full border-b border-zinc-300"
                         style={{ top: `${(index / businessHours.length) * 100}%`, height: '96px' }}
-                        onClick={(e) => handleTimeSlotClick(barber.id, hour, e)}
-                        title="Click to add appointment"
                       ></div>
+                    ))}
+
+                    {/* 15-minute clickable slots */}
+                    {timeSlots.map((slot, index) => (
+                      <div
+                        key={`slot-${slot.hour}-${slot.minute}`}
+                        className="absolute w-full border-b border-zinc-100 hover:bg-yellow-50 cursor-pointer transition-colors group"
+                        style={{ 
+                          top: `${(index / timeSlots.length) * 100}%`, 
+                          height: `${100 / timeSlots.length}%`
+                        }}
+                        onClick={(e) => handleTimeSlotClick(barber.id, slot.hour, slot.minute, e)}
+                        title={`Click to add appointment at ${slot.hour}:${slot.minute.toString().padStart(2, '0')}`}
+                      >
+                        {/* Show time label on hover for 15-min slots that aren't on the hour */}
+                        {slot.minute !== 0 && (
+                          <span className="absolute left-1 top-0 text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                            {slot.hour}:{slot.minute.toString().padStart(2, '0')}
+                          </span>
+                        )}
+                      </div>
                     ))}
 
                     {/* Current Time Indicator */}
