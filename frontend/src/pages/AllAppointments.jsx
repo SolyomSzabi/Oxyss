@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Calendar, Clock, User, Loader2, ArrowLeft, Edit2, Save, X, Trash2 } from 'lucide-react';
+import { Calendar, Clock, User, Loader2, ArrowLeft, Edit2, Save, X, Trash2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,6 +16,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -35,6 +42,16 @@ const AllAppointments = () => {
   const [selectedDate, setSelectedDate] = useState(
   new Date().toISOString().split("T")[0] // yyyy-mm-dd
   );
+  const [creatingAppointment, setCreatingAppointment] = useState(null);
+  const [newAppointmentData, setNewAppointmentData] = useState({
+    customer_name: '',
+    customer_phone: '',
+    service_id: '',
+    notes: ''
+  });
+  const [creating, setCreating] = useState(false);
+  const [services, setServices] = useState([]);
+
 
   // Business hours (9 AM to 7 PM)
   const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i); // 9, 10, 11, ..., 18
@@ -45,11 +62,11 @@ const AllAppointments = () => {
       return;
     }
     fetchAllAppointments();
+    fetchServices(); // Add this line
 
-    // Update current time every minute
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // Update every minute
+    }, 60000);
 
     return () => clearInterval(timer);
   }, [barberData, navigate]);
@@ -103,6 +120,15 @@ const AllAppointments = () => {
       console.error('Error fetching appointments:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(`${API}/services`);
+      setServices(response.data);
+    } catch (err) {
+      console.error('Error fetching services:', err);
     }
   };
 
@@ -253,6 +279,102 @@ const formatSelectedDate = () => {
     }
   };
 
+  const handleTimeSlotClick = (barberId, hour, event) => {
+  if (event.target.closest('.appointment-card')) {
+    return;
+  }
+
+  const rect = event.currentTarget.getBoundingClientRect();
+  const clickY = event.clientY - rect.top;
+  const hourHeight = rect.height;
+  const minutesFraction = clickY / hourHeight;
+  const minutes = Math.round(minutesFraction * 60 / 15) * 15;
+  
+  const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+  
+  setCreatingAppointment({
+    barber_id: barberId,
+    time: timeString,
+    date: selectedDate
+  });
+  
+  setNewAppointmentData({
+    customer_name: '',
+    customer_phone: '',
+    service_id: '',
+    notes: ''
+  });
+};
+
+const handleCloseCreateDialog = () => {
+  setCreatingAppointment(null);
+  setNewAppointmentData({
+    customer_name: '',
+    customer_phone: '',
+    service_id: '',
+    notes: ''
+  });
+};
+
+const handleCreateAppointment = async () => {
+  if (!creatingAppointment) return;
+
+  if (!newAppointmentData.customer_name.trim()) {
+    toast.error('Customer name is required');
+    return;
+  }
+
+  if (!newAppointmentData.customer_phone.trim()) {
+    toast.error('Customer phone is required');
+    return;
+  }
+
+  if (!newAppointmentData.service_id) {
+    toast.error('Please select a service');
+    return;
+  }
+
+  try {
+    setCreating(true);
+    const token = localStorage.getItem('barber_token');
+    
+    const selectedService = services.find(s => s.id === parseInt(newAppointmentData.service_id));
+    
+    const appointmentPayload = {
+      barber_id: creatingAppointment.barber_id,
+      customer_name: newAppointmentData.customer_name.trim(),
+      customer_phone: newAppointmentData.customer_phone.trim(),
+      service_id: parseInt(newAppointmentData.service_id),
+      appointment_date: creatingAppointment.date,
+      appointment_time: creatingAppointment.time,
+      duration: selectedService?.duration || 45,
+      price: selectedService?.price || 0,
+      notes: newAppointmentData.notes.trim() || null,
+      status: 'confirmed'
+    };
+
+    await axios.post(
+      `${API}/appointments`,
+      appointmentPayload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    toast.success('Appointment created successfully');
+    handleCloseCreateDialog();
+    await fetchAllAppointments();
+  } catch (error) {
+    console.error('Error creating appointment:', error);
+    toast.error(error.response?.data?.detail || 'Failed to create appointment');
+  } finally {
+    setCreating(false);
+  }
+};
+
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center pt-16">
@@ -346,18 +468,24 @@ const formatSelectedDate = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           {/* Legend */}
-          <div className="p-4 border-b bg-zinc-50 flex items-center space-x-6 text-sm">
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-green-500 rounded"></div>
-              <span className="text-zinc-700">Completed</span>
+          <div className="p-4 border-b bg-zinc-50 flex items-center justify-between">
+            <div className="flex items-center space-x-6 text-sm">
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-green-500 rounded"></div>
+                <span className="text-zinc-700">Completed</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-blue-500 rounded"></div>
+                <span className="text-zinc-700">Upcoming</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-0.5 h-4 bg-red-500"></div>
+                <span className="text-zinc-700">Current Time</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-blue-500 rounded"></div>
-              <span className="text-zinc-700">Upcoming</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-0.5 h-4 bg-red-500"></div>
-              <span className="text-zinc-700">Current Time</span>
+            <div className="flex items-center space-x-2 text-sm text-zinc-600">
+              <Plus className="h-4 w-4" />
+              <span>Click any time slot to add appointment</span>
             </div>
           </div>
 
@@ -401,8 +529,10 @@ const formatSelectedDate = () => {
                     {businessHours.map((hour, index) => (
                       <div
                         key={hour}
-                        className="absolute w-full border-b border-zinc-200"
+                        className="absolute w-full border-b border-zinc-200 hover:bg-yellow-50 cursor-pointer transition-colors"
                         style={{ top: `${(index / businessHours.length) * 100}%`, height: '96px' }}
+                        onClick={(e) => handleTimeSlotClick(barber.id, hour, e)}
+                        title="Click to add appointment"
                       ></div>
                     ))}
 
@@ -508,10 +638,11 @@ const formatSelectedDate = () => {
 
                     {/* Empty State */}
                     {barber.appointments.length === 0 && (
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="text-center text-zinc-400">
                           <User className="h-8 w-8 mx-auto mb-2 opacity-50" />
                           <p className="text-sm">No appointments</p>
+                          <p className="text-xs mt-1">Click to add</p>
                         </div>
                       </div>
                     )}
@@ -528,6 +659,122 @@ const formatSelectedDate = () => {
           </div>
         )}
       </section>
+
+      {/* Create Appointment Dialog */}
+      <Dialog open={!!creatingAppointment} onOpenChange={handleCloseCreateDialog}>
+        <DialogContent className="sm:max-w-md bg-white" onPointerDownOutside={(e) => e.preventDefault()}>
+          <DialogHeader className="space-y-2 pb-4 border-b border-zinc-200">
+            <DialogTitle className="text-xl font-bold text-zinc-900">Create New Appointment</DialogTitle>
+            <DialogDescription className="text-sm text-zinc-600">
+              Add a new appointment for the selected time slot.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {creatingAppointment && (
+            <div className="space-y-4 py-4">
+              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-4 rounded-lg space-y-2 text-sm border border-yellow-200">
+                <div className="text-zinc-800">
+                  <span className="font-semibold text-zinc-900">Barber:</span>{' '}
+                  {barbers.find(b => b.id === creatingAppointment.barber_id)?.name}
+                </div>
+                <div className="text-zinc-800">
+                  <span className="font-semibold text-zinc-900">Date:</span> {formatSelectedDate()}
+                </div>
+                <div className="text-zinc-800">
+                  <span className="font-semibold text-zinc-900">Time:</span> {formatTime(creatingAppointment.time)}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="text-sm font-semibold text-zinc-900 block mb-2">
+                    Customer Name *
+                  </label>
+                  <Input
+                    value={newAppointmentData.customer_name}
+                    onChange={(e) => setNewAppointmentData({...newAppointmentData, customer_name: e.target.value})}
+                    placeholder="Enter customer name"
+                    disabled={creating}
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-zinc-900 block mb-2">
+                    Customer Phone *
+                  </label>
+                  <Input
+                    value={newAppointmentData.customer_phone}
+                    onChange={(e) => setNewAppointmentData({...newAppointmentData, customer_phone: e.target.value})}
+                    placeholder="Enter phone number"
+                    disabled={creating}
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-zinc-900 block mb-2">
+                    Service *
+                  </label>
+                  <Select
+                    value={newAppointmentData.service_id}
+                    onValueChange={(value) => setNewAppointmentData({...newAppointmentData, service_id: value})}
+                    disabled={creating}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {services.map((service) => (
+                        <SelectItem key={service.id} value={service.id.toString()}>
+                          {service.name} - {service.duration}min - {service.price} RON
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-zinc-900 block mb-2">
+                    Notes (Optional)
+                  </label>
+                  <Input
+                    value={newAppointmentData.notes}
+                    onChange={(e) => setNewAppointmentData({...newAppointmentData, notes: e.target.value})}
+                    placeholder="Add any notes"
+                    disabled={creating}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={handleCloseCreateDialog}
+              disabled={creating}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreateAppointment}
+              disabled={creating}
+              className="bg-yellow-600 hover:bg-yellow-700"
+            >
+              {creating ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Appointment
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Duration Edit Dialog */}
       <Dialog open={!!editingAppointment} onOpenChange={handleCloseDurationDialog}>
