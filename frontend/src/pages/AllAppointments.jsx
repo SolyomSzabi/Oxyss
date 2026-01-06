@@ -320,6 +320,37 @@ const formatSelectedDate = () => {
     });
   };
 
+    // Calculate available time from a given start time until the next appointment or end of day
+  const calculateAvailableTime = (barberId, startTime, requestedDuration) => {
+    const barber = barbers.find(b => b.id === barberId);
+    if (!barber || !barber.appointments) return requestedDuration;
+
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const startMinutes = startHour * 60 + startMinute;
+
+    // End of business day (7 PM = 19:00)
+    const endOfDayMinutes = 19 * 60;
+
+    // Find the next appointment after the requested start time
+    let nextAppointmentMinutes = endOfDayMinutes;
+
+    barber.appointments.forEach(apt => {
+      const aptTime = apt.appointment_time || apt.time;
+      const [aptHour, aptMinute] = aptTime.split(':').map(Number);
+      const aptStartMinutes = aptHour * 60 + aptMinute;
+
+      // If this appointment starts after our requested time and before the current "next" appointment
+      if (aptStartMinutes > startMinutes && aptStartMinutes < nextAppointmentMinutes) {
+        nextAppointmentMinutes = aptStartMinutes;
+      }
+    });
+
+    // Calculate available minutes
+    const availableMinutes = nextAppointmentMinutes - startMinutes;
+
+    return Math.max(0, availableMinutes);
+  };
+
   const handleCreateAppointment = async () => {
     if (!creatingAppointment) return;
 
@@ -347,7 +378,6 @@ const formatSelectedDate = () => {
       setCreating(true);
       const token = localStorage.getItem('barber_token');
       
-      // service_id should remain as string (UUID)
       const selectedService = services.find(s => s.id.toString() === newAppointmentData.service_id.toString());
       
       if (!selectedService) {
@@ -355,12 +385,43 @@ const formatSelectedDate = () => {
         return;
       }
 
-      // Find the barber name
       const selectedBarber = barbers.find(b => b.id === creatingAppointment.barber_id);
       
       if (!selectedBarber) {
         toast.error('Barber not found');
         return;
+      }
+
+      // Calculate available time
+      const requestedDuration = selectedService.duration;
+      const availableDuration = calculateAvailableTime(
+        creatingAppointment.barber_id,
+        creatingAppointment.time,
+        requestedDuration
+      );
+
+      // If no time available at all
+      if (availableDuration === 0) {
+        toast.error('No time available at this slot. Please choose another time.');
+        setCreating(false);
+        return;
+      }
+
+      // Determine the actual duration to use
+      let actualDuration = requestedDuration;
+      let durationAdjusted = false;
+
+      if (availableDuration < requestedDuration) {
+        // Round down to nearest 15 minutes
+        actualDuration = Math.floor(availableDuration / 15) * 15;
+        
+        if (actualDuration < 15) {
+          toast.error(`Not enough time available. Need at least 15 minutes, but only ${availableDuration} minutes free.`);
+          setCreating(false);
+          return;
+        }
+        
+        durationAdjusted = true;
       }
       
       const appointmentPayload = {
@@ -369,16 +430,15 @@ const formatSelectedDate = () => {
         customer_name: newAppointmentData.customer_name.trim(),
         customer_phone: newAppointmentData.customer_phone.trim(),
         customer_email: newAppointmentData.customer_email.trim(),
-        service_id: newAppointmentData.service_id.toString(), // Keep as string
+        service_id: newAppointmentData.service_id.toString(),
         service_name: selectedService.name,
         appointment_date: creatingAppointment.date,
         appointment_time: creatingAppointment.time,
-        duration: selectedService.duration,
+        duration: actualDuration,
         price: selectedService.price,
         status: 'confirmed'
       };
       
-      // Only add notes if they exist
       if (newAppointmentData.notes.trim()) {
         appointmentPayload.notes = newAppointmentData.notes.trim();
       }
@@ -396,7 +456,12 @@ const formatSelectedDate = () => {
         }
       );
 
-      toast.success('Appointment created successfully');
+      if (durationAdjusted) {
+        toast.success(`Appointment created with adjusted duration: ${actualDuration} minutes (original: ${requestedDuration} minutes)`);
+      } else {
+        toast.success('Appointment created successfully');
+      }
+      
       handleCloseCreateDialog();
       await fetchAllAppointments();
     } catch (error) {
