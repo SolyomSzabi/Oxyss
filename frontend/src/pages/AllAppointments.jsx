@@ -320,7 +320,7 @@ const formatSelectedDate = () => {
     });
   };
 
-    // Calculate available time from a given start time until the next appointment or end of day
+  // Calculate available time from a given start time until the next appointment or end of day
   const calculateAvailableTime = (barberId, startTime, requestedDuration) => {
     const barber = barbers.find(b => b.id === barberId);
     if (!barber || !barber.appointments) return requestedDuration;
@@ -330,6 +330,19 @@ const formatSelectedDate = () => {
 
     // End of business day (7 PM = 19:00)
     const endOfDayMinutes = 19 * 60;
+
+    // Check if the requested start time conflicts with any existing appointment
+    for (const apt of barber.appointments) {
+      const aptTime = apt.appointment_time || apt.time;
+      const [aptHour, aptMinute] = aptTime.split(':').map(Number);
+      const aptStartMinutes = aptHour * 60 + aptMinute;
+      const aptEndMinutes = aptStartMinutes + (apt.duration || 45);
+
+      // If our requested start time is during an existing appointment, no time available
+      if (startMinutes >= aptStartMinutes && startMinutes < aptEndMinutes) {
+        return 0;
+      }
+    }
 
     // Find the next appointment after the requested start time
     let nextAppointmentMinutes = endOfDayMinutes;
