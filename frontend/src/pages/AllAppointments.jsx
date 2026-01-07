@@ -477,21 +477,21 @@ const handleCreateAppointment = async () => {
 
         console.log(`Checking: ${apt.customer_name} at ${aptTime}, ends at ${Math.floor(aptEndMinutes/60)}:${(aptEndMinutes%60).toString().padStart(2, '0')} (Start: ${startMinutes}, Apt: ${aptStartMinutes}-${aptEndMinutes})`);
 
-        // If clicked time is inside an existing appointment OR equals the end time
-        // Backend doesn't allow appointments to start exactly when another ends
-        if (startMinutes >= aptStartMinutes && startMinutes <= aptEndMinutes) {
-          console.log(`❌ Conflict: Clicked time ${startMinutes} conflicts with appointment ${aptStartMinutes}-${aptEndMinutes}`);
-          toast.error(`This time slot is not available. The previous appointment ends exactly at this time. Please choose a later time slot.`);
+        // If clicked time is INSIDE an existing appointment (but not at the exact end time)
+        // Appointments CAN start exactly when another ends
+        if (startMinutes >= aptStartMinutes && startMinutes < aptEndMinutes) {
+          console.log(`❌ Conflict: Clicked time ${startMinutes} is inside appointment ${aptStartMinutes}-${aptEndMinutes}`);
+          toast.error(`This time slot is not available. It conflicts with an existing appointment.`);
           setBarbers(originalBarbers); // Restore original data
           setCreating(false);
           return;
         }
 
-        // Find the next blocking appointment
-        if (aptStartMinutes > startMinutes && aptStartMinutes < startMinutes + availableDuration) {
+        // Find the next blocking appointment (appointments can touch at boundaries)
+        if (aptStartMinutes > startMinutes && aptStartMinutes <= startMinutes + availableDuration) {
           const oldAvailable = availableDuration;
-          // Leave 1 minute gap to prevent appointments from touching exactly
-          availableDuration = aptStartMinutes - startMinutes - 1;
+          // No buffer needed - appointments can start exactly when another ends
+          availableDuration = aptStartMinutes - startMinutes;
           console.log(`Next appointment blocks at ${aptTime}. Available reduced from ${oldAvailable} to ${availableDuration}`);
         }
       }
