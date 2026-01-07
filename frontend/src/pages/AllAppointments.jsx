@@ -411,24 +411,81 @@ const formatSelectedDate = () => {
       
       if (!selectedBarber) {
         toast.error('Barber not found');
+        setCreating(false);
         return;
       }
 
-      // Calculate available time
-      const requestedDuration = selectedService.duration;
-      const availableDuration = calculateAvailableTime(
-        creatingAppointment.barber_id,
-        creatingAppointment.time,
-        requestedDuration
+      // Fetch fresh appointment data directly from API to avoid stale data
+      console.log('Fetching latest appointments from API...');
+      const freshAppointmentsResponse = await axios.get(
+        `${API}/barbers/${creatingAppointment.barber_id}/appointments`,
+        {
+          params: {
+            date_from: creatingAppointment.date,
+            date_to: creatingAppointment.date
+          },   
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      console.log(`Requested: ${requestedDuration} min, Available: ${availableDuration} min`);
-      console.log('Current appointments for this barber:', selectedBarber.appointments);
+      const freshAppointments = freshAppointmentsResponse.data || [];
+      console.log('Fresh appointments from API:', freshAppointments);
 
+      // Create a temporary barber object with fresh data for calculation
+      const barberWithFreshData = {
+        ...selectedBarber,
+        appointments: freshAppointments
+      };
+
+      // Temporarily update the barbers array for calculation
+      const originalBarbers = [...barbers];
+      const barberIndex = barbers.findIndex(b => b.id === creatingAppointment.barber_id);
+      const tempBarbers = [...barbers];
+      tempBarbers[barberIndex] = barberWithFreshData;
+      setBarbers(tempBarbers);
+
+      // Calculate available time with fresh data
+      const requestedDuration = selectedService.duration;
+      
+      // Recalculate with fresh data
+      const [startHour, startMinute] = creatingAppointment.time.split(':').map(Number);
+      const startMinutes = startHour * 60 + startMinute;
+      const endOfDayMinutes = 19 * 60;
+      
+      let availableDuration = endOfDayMinutes - startMinutes; // Start with end of day
+      
+      // Check for conflicts with fresh data
+      for (const apt of freshAppointments) {
+        const aptTime = apt.appointment_time || apt.time;
+        const [aptHour, aptMinute] = aptTime.split(':').map(Number);
+        const aptStartMinutes = aptHour * 60 + aptMinute;
+        const aptEndMinutes = aptStartMinutes + (apt.duration || 45);
+
+        // If clicked time is inside an existing appointment
+        if (startMinutes >= aptStartMinutes && startMinutes < aptEndMinutes) {
+          console.log(`❌ Conflict: Clicked time is inside appointment at ${aptTime}`);
+          toast.error('This time slot is no longer available. Please refresh and try again.');
+          setBarbers(originalBarbers); // Restore original data
+          setCreating(false);
+          return;
+        }
+
+        // Find the next blocking appointment
+        if (aptStartMinutes > startMinutes && aptStartMinutes < startMinutes + availableDuration) {
+          availableDuration = aptStartMinutes - startMinutes;
+        }
+      }
+
+      console.log(`Fresh calculation - Available: ${availableDuration} min, Requested: ${requestedDuration} min`);
+
+      console.log(`Fresh calculation - Available: ${availableDuration} min, Requested: ${requestedDuration} min`);
 
       // If no time available at all
-      if (availableDuration === 0) {
-        toast.error('No time available at this slot. Please choose another time.');
+      if (availableDuration <= 0) {
+        toast.error('No time available at this slot. The schedule has been updated. Please refresh.');
+        setBarbers(originalBarbers);
         setCreating(false);
         return;
       }
@@ -477,6 +534,9 @@ const formatSelectedDate = () => {
       }
 
       console.log('Sending appointment payload:', appointmentPayload);
+      console.log('Selected date:', creatingAppointment.date);
+      console.log('Selected time:', creatingAppointment.time);
+      console.log('Duration:', actualDuration);
 
       await axios.post(
         `${API}/appointments`,
