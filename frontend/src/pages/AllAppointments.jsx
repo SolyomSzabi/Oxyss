@@ -432,6 +432,18 @@ const handleCreateAppointment = async () => {
 
       const freshAppointments = freshAppointmentsResponse.data || [];
       console.log('Fresh appointments from API:', freshAppointments);
+      
+      // Log each appointment in detail
+      console.log('Detailed appointment list:');
+      freshAppointments.forEach((apt, index) => {
+        const aptTime = apt.appointment_time || apt.time;
+        const [aptHour, aptMinute] = aptTime.split(':').map(Number);
+        const aptStartMinutes = aptHour * 60 + aptMinute;
+        const aptEndMinutes = aptStartMinutes + (apt.duration || 45);
+        const endHour = Math.floor(aptEndMinutes / 60);
+        const endMinute = aptEndMinutes % 60;
+        console.log(`  [${index}] ${apt.customer_name}: ${aptTime} - ${endHour}:${endMinute.toString().padStart(2, '0')} (${apt.duration || 45} min)`);
+      });
 
       // Create a temporary barber object with fresh data for calculation
       const barberWithFreshData = {
@@ -463,9 +475,11 @@ const handleCreateAppointment = async () => {
         const aptStartMinutes = aptHour * 60 + aptMinute;
         const aptEndMinutes = aptStartMinutes + (apt.duration || 45);
 
+        console.log(`Checking: ${apt.customer_name} at ${aptTime}, ends at ${Math.floor(aptEndMinutes/60)}:${(aptEndMinutes%60).toString().padStart(2, '0')} (Start: ${startMinutes}, Apt: ${aptStartMinutes}-${aptEndMinutes})`);
+
         // If clicked time is inside an existing appointment
         if (startMinutes >= aptStartMinutes && startMinutes < aptEndMinutes) {
-          console.log(`❌ Conflict: Clicked time is inside appointment at ${aptTime}`);
+          console.log(`❌ Conflict: Clicked time ${startMinutes} is inside appointment ${aptStartMinutes}-${aptEndMinutes}`);
           toast.error('This time slot is no longer available. Please refresh and try again.');
           setBarbers(originalBarbers); // Restore original data
           setCreating(false);
@@ -474,8 +488,10 @@ const handleCreateAppointment = async () => {
 
         // Find the next blocking appointment
         if (aptStartMinutes > startMinutes && aptStartMinutes < startMinutes + availableDuration) {
+          const oldAvailable = availableDuration;
           // Leave 1 minute gap to prevent appointments from touching exactly
           availableDuration = aptStartMinutes - startMinutes - 1;
+          console.log(`Next appointment blocks at ${aptTime}. Available reduced from ${oldAvailable} to ${availableDuration}`);
         }
       }
 
@@ -536,7 +552,7 @@ const handleCreateAppointment = async () => {
         appointment_date: creatingAppointment.date,
         appointment_time: creatingAppointment.time,
         duration: actualDuration,
-        price: selectedService.price,
+        price: selectedService.price || 0, // Ensure price is always a number
         status: 'confirmed'
       };
       
@@ -545,6 +561,7 @@ const handleCreateAppointment = async () => {
       }
 
       console.log('Sending appointment payload:', appointmentPayload);
+      console.log('Selected service details:', selectedService);
       console.log('Selected date:', creatingAppointment.date);
       console.log('Selected time:', creatingAppointment.time);
       console.log('Duration:', actualDuration);
