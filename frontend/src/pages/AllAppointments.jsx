@@ -438,13 +438,18 @@ const formatSelectedDate = () => {
       let durationAdjusted = false;
 
       if (availableDuration < requestedDuration) {
-        // Round down to nearest 15 minutes
-        actualDuration = Math.floor(availableDuration / 15) * 15;
+        // Add a small buffer (5 minutes) before the next appointment to prevent conflicts
+        // Some backends reject appointments that end exactly when another begins
+        const bufferMinutes = 5;
+        const adjustedAvailable = Math.max(0, availableDuration - bufferMinutes);
         
-        console.log(`Adjusting duration from ${requestedDuration} to ${actualDuration} minutes`);
+        // Round down to nearest 15 minutes
+        actualDuration = Math.floor(adjustedAvailable / 15) * 15;
+        
+        console.log(`Adjusting duration from ${requestedDuration} to ${actualDuration} minutes (available: ${availableDuration}, adjusted with buffer: ${adjustedAvailable})`);
         
         if (actualDuration < 15) {
-          toast.error(`Not enough time available. Need at least 15 minutes, but only ${availableDuration} minutes free.`);
+          toast.error(`Not enough time available. Need at least 20 minutes (including buffer), but only ${availableDuration} minutes free before next appointment.`);
           setCreating(false);
           return;
         }
