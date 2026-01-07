@@ -477,10 +477,11 @@ const handleCreateAppointment = async () => {
 
         console.log(`Checking: ${apt.customer_name} at ${aptTime}, ends at ${Math.floor(aptEndMinutes/60)}:${(aptEndMinutes%60).toString().padStart(2, '0')} (Start: ${startMinutes}, Apt: ${aptStartMinutes}-${aptEndMinutes})`);
 
-        // If clicked time is inside an existing appointment
-        if (startMinutes >= aptStartMinutes && startMinutes < aptEndMinutes) {
-          console.log(`❌ Conflict: Clicked time ${startMinutes} is inside appointment ${aptStartMinutes}-${aptEndMinutes}`);
-          toast.error('This time slot is no longer available. Please refresh and try again.');
+        // If clicked time is inside an existing appointment OR equals the end time
+        // Backend doesn't allow appointments to start exactly when another ends
+        if (startMinutes >= aptStartMinutes && startMinutes <= aptEndMinutes) {
+          console.log(`❌ Conflict: Clicked time ${startMinutes} conflicts with appointment ${aptStartMinutes}-${aptEndMinutes}`);
+          toast.error(`This time slot is not available. The previous appointment ends exactly at this time. Please choose a later time slot.`);
           setBarbers(originalBarbers); // Restore original data
           setCreating(false);
           return;
