@@ -423,6 +423,8 @@ const formatSelectedDate = () => {
       );
 
       console.log(`Requested: ${requestedDuration} min, Available: ${availableDuration} min`);
+      console.log('Current appointments for this barber:', selectedBarber.appointments);
+
 
       // If no time available at all
       if (availableDuration === 0) {
