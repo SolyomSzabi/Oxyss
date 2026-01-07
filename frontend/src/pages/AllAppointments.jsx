@@ -464,10 +464,10 @@ const handleCreateAppointment = async () => {
         // For larger spaces, apply a small 2-minute buffer
         let adjustedAvailable = availableDuration;
         
-        if (availableDuration >= 30) {
-          // Only apply buffer for larger time slots
-          adjustedAvailable = availableDuration - 2;
-        }
+        // if (availableDuration >= 30) {
+        //   // Only apply buffer for larger time slots
+        //   adjustedAvailable = availableDuration - 2;
+        // }
         
         // Round down to nearest 15 minutes
         actualDuration = Math.floor(adjustedAvailable / 15) * 15;
