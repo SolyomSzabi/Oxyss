@@ -445,6 +445,8 @@ const handleCreateAppointment = async () => {
 
       console.log(`Fresh calculation - Available: ${availableDuration} min, Requested: ${requestedDuration} min`);
 
+      console.log(`Fresh calculation - Available: ${availableDuration} min, Requested: ${requestedDuration} min`);
+
       // If no time available at all
       if (availableDuration <= 0) {
         toast.error('No time available at this slot. The schedule has been updated. Please refresh.');
@@ -467,12 +469,15 @@ const handleCreateAppointment = async () => {
           adjustedAvailable = availableDuration - 2;
         }
         
-        // Round down to nearest 15 minutes, but accept any duration >= 15
+        // Round down to nearest 15 minutes
         actualDuration = Math.floor(adjustedAvailable / 15) * 15;
         
-        // If rounding down gives us less than 15 minutes, but we have at least 15 available, use 15
+        console.log(`After rounding: actualDuration=${actualDuration}, adjustedAvailable=${adjustedAvailable}`);
+        
+        // If rounding down gives us 0 or less than 15, but we have at least 15 available, use 15
         if (actualDuration < 15 && availableDuration >= 15) {
           actualDuration = 15;
+          console.log(`Adjusted to minimum 15 minutes`);
         }
         
         console.log(`Adjusting duration from ${requestedDuration} to ${actualDuration} minutes (available: ${availableDuration}, adjusted: ${adjustedAvailable})`);
