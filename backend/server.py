@@ -13,7 +13,9 @@ import pytz
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, BackgroundTasks
+import aiosmtplib
+from email.message import EmailMessage
 
 # Romanian timezone
 ROMANIAN_TZ = pytz.timezone('Europe/Bucharest')
@@ -281,6 +283,7 @@ class AppointmentCreate(BaseModel):
     barber_name: str
     appointment_date: date
     appointment_time: time
+    duration: Optional[int] = None
 
 class ContactMessage(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -549,13 +552,32 @@ async def get_available_slots(barber_id: str, date: str, service_id: str):
     
     duration = service["duration"]
     
-    # Define business hours (9 AM to 7 PM)
-    business_start = time(9, 0)
-    business_end = time(19, 0)
+    # Convert date string
+    date_obj = datetime.fromisoformat(date).date()
+    weekday = date_obj.weekday()  
+    # 0 = hétfő, 5 = szombat, 6 = vasárnap
+    
+    # Nyitvatartási idők meghatározása
+    if weekday in [0, 1, 2, 3, 4]:  
+        # Hétfő – Péntek: 9:00 – 19:00
+        business_start = time(9, 0)
+        business_end = time(19, 0)
+    elif weekday == 5:
+        # Szombat: 9:00 – 13:00
+        business_start = time(9, 0)
+        business_end = time(13, 0)
+    else:
+        # Vasárnap: zárva → nincs időpont
+        return {
+            "date": date,
+            "barber_id": barber_id,
+            "service_duration": duration,
+            "slots": []
+        }
     
     # Generate all possible 15-minute time slots
     slots = []
-    date_obj = datetime.fromisoformat(date).date()
+    # date_obj = datetime.fromisoformat(date).date()
     current_time = datetime.combine(date_obj, business_start)
     end_time = datetime.combine(date_obj, business_end)
     
@@ -664,8 +686,40 @@ async def get_today_appointments():
     
     return appointments
 
+
+
+EMAIL_FROM = os.getenv("EMAIL_FROM")
+EMAIL_USERNAME = os.getenv("EMAIL_USERNAME")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+
+
+async def send_email(to: str, subject: str, body: str):
+    message = EmailMessage()
+    message["From"] = EMAIL_FROM
+    message["To"] = to
+    message["Subject"] = subject
+    message.set_content(body)
+
+    try:
+        await aiosmtplib.send(
+            message,
+            hostname=EMAIL_HOST,
+            port=EMAIL_PORT,
+            start_tls=True,
+            username=EMAIL_USERNAME,
+            password=EMAIL_PASSWORD,
+        )
+        print("Email sent successfully")
+    except Exception as e:
+        print("Email sending failed:", e)
+        raise
+
+
+
 @api_router.post("/appointments", response_model=Appointment)
-async def create_appointment(appointment_data: AppointmentCreate):
+async def create_appointment(appointment_data: AppointmentCreate, background_tasks: BackgroundTasks):
     # Get service duration for availability check
     service = await db.services.find_one({"id": appointment_data.service_id}, {"_id": 0})
     if not service:
@@ -678,7 +732,7 @@ async def create_appointment(appointment_data: AppointmentCreate):
     )
     
     price = barber_service["price"] if barber_service else service["base_price"]
-    duration = service["duration"]
+    duration = appointment_data.duration if appointment_data.duration else service["duration"]
     
     # Check availability
     availability = await check_barber_availability(
@@ -707,6 +761,90 @@ async def create_appointment(appointment_data: AppointmentCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     
     _ = await db.appointments.insert_one(doc)
+
+
+    # AUTOMATIKUS EMAIL KÜLDÉS
+    background_tasks.add_task(
+        send_email,
+        to=appointment_obj.customer_email,
+        subject="Confirmare / Visszaigazolás / Confirmation – Oxyss Style",
+        body=f"""
+🇷🇴 Confirmare Programare – Oxyss Style
+
+Dragă {appointment_obj.customer_name},
+
+Îți mulțumim că ai efectuat o programare la Oxyss Style!
+
+Detaliile programării tale:
+
+• Serviciu: {appointment_obj.service_name}
+• Stilist: {appointment_obj.barber_name}
+• Dată: {appointment_obj.appointment_date}
+• Ora: {appointment_obj.appointment_time.strftime("%H:%M")}
+• Durată estimată: {appointment_obj.duration} minute
+• Preț: {appointment_obj.price} RON
+
+Dacă dorești să modifici sau să anulezi programarea, ne poți contacta la:
+Telefon: +40 74 116 1016
+
+Te așteptăm cu drag în salonul nostru!
+
+Cu respect,
+{appointment_obj.barber_name} și echipa Oxyss Style
+
+------------------------------------------------------------
+
+🇭🇺 Foglalás visszaigazolása – Oxyss Style
+
+Kedves {appointment_obj.customer_name},
+
+Köszönjük, hogy időpontot foglalt az Oxyss Style szalonba!
+
+Az alábbiakban megtalálod a foglalásod részleteit:
+
+• Szolgáltatás: {appointment_obj.service_name}
+• Fodrász: {appointment_obj.barber_name}
+• Dátum: {appointment_obj.appointment_date}
+• Időpont: {appointment_obj.appointment_time.strftime("%H:%M")}
+• Várható időtartam: {appointment_obj.duration} perc
+• Ár: {appointment_obj.price} RON
+
+Amennyiben módosítanád vagy lemondanád az időpontot, kérjük vedd fel velünk a kapcsolatot:
+Telefon: +40 74 116 1016
+
+Várunk szeretettel az Oxyss Style szalonban!
+
+Üdvözlettel,
+{appointment_obj.barber_name} és az Oxyss Style csapat
+
+------------------------------------------------------------
+
+🇬🇧 Appointment Confirmation – Oxyss Style
+
+Dear {appointment_obj.customer_name},
+
+Thank you for booking an appointment at Oxyss Style!
+
+Here are the details of your appointment:
+
+• Service: {appointment_obj.service_name}
+• Hair Stylist: {appointment_obj.barber_name}
+• Date: {appointment_obj.appointment_date}
+• Time: {appointment_obj.appointment_time.strftime("%H:%M")}
+• Estimated duration: {appointment_obj.duration} minutes
+• Price: {appointment_obj.price} RON
+
+If you need to modify or cancel your appointment, feel free to contact us:
+Phone: +40 74 116 1016
+
+We look forward to welcoming you at Oxyss Style!
+
+Best regards,
+{appointment_obj.barber_name} and the Oxyss Style Team
+"""
+    )
+    # -----------------------------
+
     return appointment_obj
 
 @api_router.get("/appointments/{appointment_id}", response_model=Appointment)
@@ -785,6 +923,28 @@ async def update_appointment_duration(appointment_id: str, duration_update: dict
         "duration": new_duration,
         "appointment_id": appointment_id
     }
+
+@api_router.delete("/appointments/{appointment_id}")
+async def delete_appointment(appointment_id: str, current_barber: dict = Depends(get_current_barber)):
+    """Delete an appointment - authenticated barbers only"""
+    
+    # Verify appointment exists
+    appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    # Delete the appointment
+    result = await db.appointments.delete_one({"id": appointment_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    return {
+        "message": "Appointment deleted successfully", 
+        "appointment_id": appointment_id,
+        "customer_name": appointment.get("customer_name", ""),
+        "appointment_time": appointment.get("appointment_time", "")
+    }    
 
 # Contact messages endpoints
 @api_router.post("/contact", response_model=ContactMessage)

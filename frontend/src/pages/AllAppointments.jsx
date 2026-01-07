@@ -320,59 +320,6 @@ const formatSelectedDate = () => {
     });
   };
 
-  // Calculate available time from a given start time until the next appointment or end of day
-  const calculateAvailableTime = (barberId, startTime, requestedDuration) => {
-    const barber = barbers.find(b => b.id === barberId);
-    if (!barber || !barber.appointments) return requestedDuration;
-
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const startMinutes = startHour * 60 + startMinute;
-
-    // End of business day (7 PM = 19:00)
-    const endOfDayMinutes = 19 * 60;
-
-    // First, check all existing appointments for conflicts
-    for (const apt of barber.appointments) {
-      const aptTime = apt.appointment_time || apt.time;
-      const [aptHour, aptMinute] = aptTime.split(':').map(Number);
-      const aptStartMinutes = aptHour * 60 + aptMinute;
-      const aptEndMinutes = aptStartMinutes + (apt.duration || 45);
-
-      // Case 1: If our requested start time falls within an existing appointment
-      if (startMinutes >= aptStartMinutes && startMinutes < aptEndMinutes) {
-        console.log(`Conflict: Clicked time ${startTime} is during existing appointment at ${aptTime}`);
-        return 0;
-      }
-
-      // Case 2: If an existing appointment starts before us but ends after our start time
-      if (aptStartMinutes < startMinutes && aptEndMinutes > startMinutes) {
-        console.log(`Conflict: Previous appointment extends into clicked time`);
-        return 0;
-      }
-    }
-
-    // Find the earliest blocking time (either next appointment start or end of day)
-    let nextBlockingMinutes = endOfDayMinutes;
-
-    barber.appointments.forEach(apt => {
-      const aptTime = apt.appointment_time || apt.time;
-      const [aptHour, aptMinute] = aptTime.split(':').map(Number);
-      const aptStartMinutes = aptHour * 60 + aptMinute;
-
-      // If this appointment starts after our requested time and before the current "next blocking time"
-      if (aptStartMinutes > startMinutes && aptStartMinutes < nextBlockingMinutes) {
-        nextBlockingMinutes = aptStartMinutes;
-      }
-    });
-
-    // Calculate available minutes
-    const availableMinutes = nextBlockingMinutes - startMinutes;
-
-    console.log(`Available time from ${startTime}: ${availableMinutes} minutes (until ${Math.floor(nextBlockingMinutes/60)}:${(nextBlockingMinutes%60).toString().padStart(2, '0')})`);
-
-    return Math.max(0, availableMinutes);
-  };
-
 const handleCreateAppointment = async () => {
     if (!creatingAppointment) return;
 
@@ -495,8 +442,6 @@ const handleCreateAppointment = async () => {
           console.log(`Next appointment blocks at ${aptTime}. Available reduced from ${oldAvailable} to ${availableDuration}`);
         }
       }
-
-      console.log(`Fresh calculation - Available: ${availableDuration} min, Requested: ${requestedDuration} min`);
 
       console.log(`Fresh calculation - Available: ${availableDuration} min, Requested: ${requestedDuration} min`);
 
