@@ -589,7 +589,7 @@ const handleCreateAppointment = async () => {
   return (
     <div className="min-h-screen bg-zinc-50 pt-16">
       {/* Header Section */}
-      <section className="bg-white border-b sticky top-16 z-10">
+      <section className="bg-white border-b sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-3">
             <Button
