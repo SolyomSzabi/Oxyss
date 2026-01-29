@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, Clock, DollarSign, User, Mail, Phone, CheckCircle, Loader2 } from 'lucide-react';
+import { CalendarIcon, Clock, DollarSign, User, Mail, Phone, CheckCircle, Loader2, Info } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -319,18 +319,6 @@ const Booking = () => {
                             <div className="flex-1">
                               <h4 className="font-semibold text-zinc-900 mb-1">{barber.name}</h4>
                               <p className="text-sm text-zinc-600 mb-2">{barber.description}</p>
-                              {/* <div className="flex items-center space-x-2">
-                                <Badge variant="outline" className="text-xs">
-                                  {barber.experience_years}+ years
-                                </Badge>
-                              </div>
-                              <div className="flex flex-wrap gap-1 mt-2">
-                                {barber.specialties.slice(0, 2).map((specialty, idx) => (
-                                  <Badge key={idx} variant="secondary" className="text-xs bg-zinc-100 text-zinc-600">
-                                    {specialty}
-                                  </Badge>
-                                ))}
-                              </div> */}
                             </div>
                           </div>
                         </div>
@@ -375,9 +363,23 @@ const Booking = () => {
                                       onClick={() => handleServiceSelect(service.id)}
                                       data-testid={`service-option-${service.id}`}
                                     >
-                                      <h4 className="font-semibold text-zinc-900 mb-2">{service.service_name}</h4>
-                                      <p className="text-sm text-zinc-600 mb-3">{service.service_description}</p>
-                                      <div className="flex justify-between items-center">
+                                      <div className="flex items-start justify-between mb-2">
+                                        <h4 className="font-semibold text-zinc-900">{service.service_name}</h4>
+                                        <Popover>
+                                          <PopoverTrigger asChild onClick={(e) => e.stopPropagation()}>
+                                            <button className="text-yellow-600 hover:text-yellow-700 transition-colors">
+                                              <Info className="h-5 w-5" />
+                                            </button>
+                                          </PopoverTrigger>
+                                          <PopoverContent className="w-80 bg-white" onClick={(e) => e.stopPropagation()}>
+                                            <div className="space-y-2">
+                                              <h4 className="font-semibold text-zinc-900">{service.service_name}</h4>
+                                              <p className="text-sm text-zinc-600">{service.service_description}</p>
+                                            </div>
+                                          </PopoverContent>
+                                        </Popover>
+                                      </div>
+                                      <div className="flex justify-between items-center mt-3">
                                         <div className="flex items-center space-x-3">
                                           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
                                             <Clock className="h-3 w-3 mr-1" />
