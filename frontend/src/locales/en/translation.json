@@ -12,15 +12,33 @@
       "title": "Master Hair Studio",
       "subtitle": "Where traditional craftsmanship meets modern style",
       "bookNow": "Book Now",
-      "viewServices": "View Services"
+      "viewServices": "View Services",
+      "location": "Str. Ratinului, nr.959, Crasna, Sălaj, Romania",
+      "hours": "Open 9AM - 7PM",
+      "rating": "5/5 Rating"
     },
     "services": {
       "title": "Our Services",
-      "subtitle" :"From classic cuts to modern styles, we offer comprehensive grooming services tailored to your needs.",
-      "viewAll": "View All Services"
+      "subtitle": "From classic cuts to modern styles, we offer comprehensive grooming services tailored to your needs.",
+      "viewAll": "View All Services",
+      "preview": {
+        "mensHaircut": {
+          "name": "Men's Haircut",
+          "description": "Washing • Cutting • Styling"
+        },
+        "mensBronze": {
+          "name": "Men's BRONZE",
+          "description": "Haircut • Beard Trim"
+        },
+        "mensGold": {
+          "name": "Men's OXY'SS GOLD",
+          "description": "Hair wash with head massage • Haircut • Beard • Styling • Eyebrows • Ears • Nose"
+        }
+      }
     },
     "whyChoose": {
       "title": "Why Choose Oxy's?",
+      "subtitle": "Experience the difference that quality, expertise, and attention to detail make.",
       "experience": {
         "title": "Expert Barbers",
         "desc": "Our skilled team brings years of experience"
@@ -34,15 +52,47 @@
         "desc": "Relax in our contemporary, welcoming space"
       }
     },
+    "gallery": {
+      "title": "Our Work Speaks",
+      "subtitle": "See the transformation and craftsmanship that sets us apart.",
+      "viewFull": "View Full Gallery"
+    },
     "cta": {
       "title": "Ready for a Fresh Look?",
-      "subtitle": "Book your appointment today and experience the Oxy's difference",
-      "button": "Book Appointment"
+      "subtitle": "Book your appointment today and experience the Oxy'ss difference. Walk in ordinary, walk out extraordinary.",
+      "button": "Book Your Appointment Now"
     }
   },
   "services": {
     "title": "Our Services",
     "subtitle": "Professional grooming services tailored to your style",
+    "bookAppointment": "Book Appointment",
+    "bookThisService": "Book This Service",
+    "from": "From",
+    "tryAgain": "Try Again",
+    "error": "Failed to load services",
+    "whatMakesSpecial": {
+      "title": "What Makes Us Special",
+      "precision": {
+        "title": "Precision Cuts",
+        "description": "Every cut is executed with meticulous attention to detail"
+      },
+      "products": {
+        "title": "Premium Products",
+        "description": "We use only high-quality professional products"
+      },
+      "consultation": {
+        "title": "Personal Consultation",
+        "description": "We listen to your needs and provide expert recommendations"
+      }
+    },
+    "pricing": {
+      "title": "Transparent Pricing",
+      "subtitle": "All our services are priced fairly with no hidden costs",
+      "noteTitle": "Note",
+      "noteDescription": "Prices may vary based on hair length and complexity. Final price will be confirmed during consultation.",
+      "bookButton": "Schedule Your Appointment"
+    },
     "categories": {
       "men": "Men",
       "women": "Women",

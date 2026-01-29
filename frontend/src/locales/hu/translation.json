@@ -1,29 +1,47 @@
 {
   "nav": {
-    "home": "Kezdőlap",
+    "home": "Főoldal",
     "services": "Szolgáltatások",
     "gallery": "Galéria",
     "about": "Rólunk",
     "contact": "Kapcsolat",
-    "bookAppointment": "Foglalás"
+    "bookAppointment": "Időpontfoglalás"
   },
   "home": {
     "hero": {
-      "title": "Prémium Borbély Élmény",
+      "title": "Mester Haj Stúdió",
       "subtitle": "Ahol a hagyományos mesterség találkozik a modern stílussal",
-      "bookNow": "Foglaljon Most",
-      "viewServices": "Szolgáltatások Megtekintése"
+      "bookNow": "Foglalj Most",
+      "viewServices": "Szolgáltatások Megtekintése",
+      "location": "Str. Ratinului, nr.959, Crasna, Sălaj, Románia",
+      "hours": "Nyitva 9:00 - 19:00",
+      "rating": "5/5 Értékelés"
     },
     "services": {
       "title": "Szolgáltatásaink",
-      "subtitle" :"From classic cuts to modern styles, we offer comprehensive grooming services tailored to your needs.",
-      "viewAll": "Összes Szolgáltatás Megtekintése"
+      "subtitle": "A klasszikus vágásoktól a modern stílusokig, átfogó ápolási szolgáltatásokat kínálunk az Ön igényeire szabva.",
+      "viewAll": "Összes Szolgáltatás Megtekintése",
+      "preview": {
+        "mensHaircut": {
+          "name": "Férfi Hajvágás",
+          "description": "Hajmosás • Vágás • Styling"
+        },
+        "mensBronze": {
+          "name": "Férfi BRONZE",
+          "description": "Hajvágás • Szakáll Igazítás"
+        },
+        "mensGold": {
+          "name": "Férfi OXY'SS GOLD",
+          "description": "Hajmosás fejmasszázzsal • Hajvágás • Szakáll • Styling • Szemöldök • Fül • Orr"
+        }
+      }
     },
     "whyChoose": {
-      "title": "Miért Válassza az Oxy's-t?",
+      "title": "Miért Válassz Minket?",
+      "subtitle": "Tapasztald meg a különbséget, amit a minőség, szakértelem és a részletekre való odafigyelés jelent.",
       "experience": {
-        "title": "Szakértő Borbélyok",
-        "desc": "Tapasztalt csapatunk évek óta dolgozik a szakmában"
+        "title": "Szakértő Fodrászok",
+        "desc": "Képzett csapatunk több év tapasztalatot hoz"
       },
       "quality": {
         "title": "Prémium Termékek",
@@ -31,61 +49,93 @@
       },
       "atmosphere": {
         "title": "Modern Légkör",
-        "desc": "Pihenjen meg modern, barátságos terünkben"
+        "desc": "Relaxálj kortárs, barátságos terünkben"
       }
     },
+    "gallery": {
+      "title": "A Munkánk Magáért Beszél",
+      "subtitle": "Lásd az átalakulást és a mesterséget, ami megkülönböztet minket.",
+      "viewFull": "Teljes Galéria Megtekintése"
+    },
     "cta": {
-      "title": "Készen Áll egy Friss Megjelenésre?",
-      "subtitle": "Foglaljon időpontot ma és tapasztalja meg az Oxy's különbséget",
-      "button": "Időpont Foglalása"
+      "title": "Készen Állsz Egy Friss Megjelenésre?",
+      "subtitle": "Foglalj időpontot ma és tapasztald meg az Oxy'ss különbséget. Lépj be hétköznapiként, lépj ki rendkívüliként.",
+      "button": "Foglalj Időpontot Most"
     }
   },
   "services": {
     "title": "Szolgáltatásaink",
     "subtitle": "Professzionális ápolási szolgáltatások az Ön stílusához igazítva",
+    "bookAppointment": "Időpontfoglalás",
+    "bookThisService": "Foglald Le Ezt a Szolgáltatást",
+    "from": "Már",
+    "tryAgain": "Próbáld Újra",
+    "error": "Nem sikerült betölteni a szolgáltatásokat",
+    "whatMakesSpecial": {
+      "title": "Mi Tesz Minket Különlegessé",
+      "precision": {
+        "title": "Precíz Vágások",
+        "description": "Minden vágást aprólékos figyelemmel hajtunk végre"
+      },
+      "products": {
+        "title": "Prémium Termékek",
+        "description": "Csak magas minőségű professzionális termékeket használunk"
+      },
+      "consultation": {
+        "title": "Személyes Konzultáció",
+        "description": "Meghallgatjuk igényeidet és szakértői ajánlásokat adunk"
+      }
+    },
+    "pricing": {
+      "title": "Átlátható Árazás",
+      "subtitle": "Minden szolgáltatásunk tisztességesen van árazva, rejtett költségek nélkül",
+      "noteTitle": "Megjegyzés",
+      "noteDescription": "Az árak a haj hosszától és bonyolultságától függően változhatnak. A végső árat konzultáció során erősítjük meg.",
+      "bookButton": "Időpont Foglalása"
+    },
     "categories": {
       "men": "Férfiak",
       "women": "Nők",
       "kids": "Gyerekek"
     },
     "duration": "Időtartam",
-    "startingFrom": "Kezdő ár",
-    "bookNow": "Foglaljon Most"
+    "startingFrom": "Már",
+    "bookNow": "Foglalj Most"
   },
   "about": {
-    "title": "Az Oxy's Barbershop-ról",
-    "subtitle": "Az Ön prémium ápolási célpontja",
+    "title": "Az Oxy's Fodrászatról",
+    "subtitle": "A prémium ápolás célpontja",
     "story": {
       "title": "Történetünk",
-      "text": "A klasszikus borbélyság és a modern stílus iránti szenvedéllyel alapítva, az Oxy's Barbershop a közösség sarokkövévé vált. A hagyományos technikákat ötvözzük a kortárs trendekkel, hogy kivételes ápolási élményeket nyújtsunk."
+      "text": "A klasszikus fodrászat és a modern stílus iránti szenvedéllyel alapítva, az Oxy's Fodrászat a közösség sarokköve lett. Ötvözzük a hagyományos technikákat a kortárs trendekkel, hogy kivételes ápolási élményeket nyújtsunk."
     },
     "team": {
       "title": "Ismerje Meg Csapatunkat",
-      "subtitle": "Szakértő borbélyok, akik az Ön stílusának szentelik magukat"
+      "subtitle": "Szakértő fodrászok, akik a stílusodnak szentelik magukat"
     },
     "values": {
       "title": "Értékeink",
       "quality": {
         "title": "Minőség Mindenekelőtt",
-        "desc": "Soha nem engedünk a szolgáltatásaink minőségéből"
+        "desc": "Soha nem alkudunk meg szolgáltatásaink minőségében"
       },
       "customer": {
-        "title": "Ügyfél Fókusz",
-        "desc": "Az Ön elégedettsége a legfontosabb prioritásunk"
+        "title": "Ügyfélközpontúság",
+        "desc": "Az Ön elégedettsége a legfőbb prioritásunk"
       },
       "innovation": {
         "title": "Innováció",
-        "desc": "Naprakészek vagyunk a legújabb trendekkel és technikákkal"
+        "desc": "Naprakészek maradunk a legújabb trendekkel és technikákkal"
       }
     }
   },
   "gallery": {
     "title": "Galéria",
-    "subtitle": "Fedezze fel munkánkat és nézze meg az átalakulásokat"
+    "subtitle": "Fedezd fel munkánkat és lásd az átalakulásokat"
   },
   "contact": {
-    "title": "Lépjen Kapcsolatba Velünk",
-    "subtitle": "Vegye fel velünk a kapcsolatot",
+    "title": "Lépj Kapcsolatba Velünk",
+    "subtitle": "Vedd fel velünk a kapcsolatot",
     "info": {
       "title": "Kapcsolati Információk",
       "address": "Cím",
@@ -94,47 +144,47 @@
       "hours": "Nyitvatartás"
     },
     "form": {
-      "title": "Küldjön nekünk üzenetet",
-      "name": "Az Ön Neve",
-      "email": "Az Ön Email Címe",
-      "message": "Az Ön Üzenete",
+      "title": "Küldj nekünk üzenetet",
+      "name": "Neved",
+      "email": "Email címed",
+      "message": "Üzeneted",
       "send": "Üzenet Küldése",
       "sending": "Küldés...",
       "success": "Üzenet sikeresen elküldve!",
-      "error": "Hiba az üzenet küldésekor"
+      "error": "Nem sikerült elküldeni az üzenetet"
     },
     "schedule": {
-      "weekdays": "Hétfő - Péntek: 9:00 - 20:00",
-      "saturday": "Szombat: 8:00 - 18:00",
-      "sunday": "Vasárnap: 10:00 - 16:00"
+      "weekdays": "Hé - Pé: 9:00 - 20:00",
+      "saturday": "Szo: 8:00 - 18:00",
+      "sunday": "Vas: 10:00 - 16:00"
     }
   },
   "booking": {
-    "title": "Foglaljon Időpontot",
-    "subtitle": "Válassza ki a preferált borbélyt, szolgáltatást, dátumot és időpontot",
+    "title": "Időpont Foglalás",
+    "subtitle": "Válaszd ki a kedvenc fodrászodat, szolgáltatást, dátumot és időt",
     "steps": {
-      "barber": "Borbély Kiválasztása",
-      "service": "Szolgáltatás Kiválasztása",
-      "datetime": "Dátum és Idő",
-      "details": "Az Ön Adatai"
+      "barber": "Válassz Fodrászt",
+      "service": "Válassz Szolgáltatást",
+      "datetime": "Dátum & Idő",
+      "details": "Adataid"
     },
-    "selectBarber": "Válassza Ki a Borbélyt",
-    "selectService": "Válasszon Szolgáltatást",
-    "selectDate": "Válasszon Dátumot",
-    "selectTime": "Válasszon Időpontot",
-    "availableSlots": "Elérhető Időpontok",
-    "noSlots": "Nincs elérhető időpont erre a dátumra",
-    "yourDetails": "Az Ön Adatai",
+    "selectBarber": "Válaszd Ki a Fodrászod",
+    "selectService": "Válassz Egy Szolgáltatást",
+    "selectDate": "Válassz Dátumot",
+    "selectTime": "Válassz Időt",
+    "availableSlots": "Szabad Időpontok",
+    "noSlots": "Nincs szabad időpont erre a dátumra",
+    "yourDetails": "Adataid",
     "fullName": "Teljes Név",
     "email": "Email Cím",
     "phone": "Telefonszám",
-    "bookingButton": "Időpont Foglalása",
+    "bookingButton": "Foglalás",
     "booking": "Foglalás...",
-    "success": "Időpont sikeresen lefoglalva!",
-    "error": "Hiba a foglalás során",
+    "success": "Foglalás sikeresen megtörtént!",
+    "error": "Hiba történt a foglalás során",
     "summary": {
       "title": "Foglalás Összegzése",
-      "barber": "Borbély",
+      "barber": "Fodrász",
       "service": "Szolgáltatás",
       "date": "Dátum",
       "time": "Idő",

@@ -9,40 +9,90 @@
   },
   "home": {
     "hero": {
-      "title": "Experiență Premium de Frizerie",
+      "title": "Studio Profesional de Coafură",
       "subtitle": "Unde meșteșugul tradițional întâlnește stilul modern",
       "bookNow": "Programează-te Acum",
-      "viewServices": "Vezi Serviciile"
+      "viewServices": "Vezi Serviciile",
+      "location": "Str. Ratinului, nr.959, Crasna, Sălaj, România",
+      "hours": "Deschis 9:00 - 19:00",
+      "rating": "Rating 5/5"
     },
     "services": {
       "title": "Serviciile Noastre",
-      "subtitle" :"From classic cuts to modern styles, we offer comprehensive grooming services tailored to your needs.",
-      "viewAll": "Vezi Toate Serviciile"
+      "subtitle": "De la tunsorile clasice la stilurile moderne, oferim servicii complete de îngrijire personalizate pentru nevoile tale.",
+      "viewAll": "Vezi Toate Serviciile",
+      "preview": {
+        "mensHaircut": {
+          "name": "Tunsoare Bărbați",
+          "description": "Spălare • Tunsoare • Styling"
+        },
+        "mensBronze": {
+          "name": "Bărbați BRONZE",
+          "description": "Tunsoare • Aranjare Barbă"
+        },
+        "mensGold": {
+          "name": "Bărbați OXY'SS GOLD",
+          "description": "Spălare păr cu masaj de cap • Tunsoare • Barbă • Styling • Sprâncene • Urechi • Nas"
+        }
+      }
     },
     "whyChoose": {
       "title": "De Ce Să Alegi Oxy's?",
+      "subtitle": "Experimentează diferența pe care o face calitatea, expertiza și atenția la detalii.",
       "experience": {
         "title": "Frizeri Experți",
         "desc": "Echipa noastră calificată aduce ani de experiență"
       },
       "quality": {
         "title": "Produse Premium",
-        "desc": "Folosim doar cele mai fine produse de îngrijire"
+        "desc": "Folosim doar cele mai bune produse de îngrijire"
       },
       "atmosphere": {
         "title": "Atmosferă Modernă",
         "desc": "Relaxează-te în spațiul nostru contemporan și primitor"
       }
     },
+    "gallery": {
+      "title": "Munca Noastră Vorbește",
+      "subtitle": "Vezi transformarea și meșteșugul care ne face unici.",
+      "viewFull": "Vezi Galeria Completă"
+    },
     "cta": {
       "title": "Pregătit pentru un Look Nou?",
-      "subtitle": "Programează-te astăzi și experimentează diferența Oxy's",
-      "button": "Programează-te"
+      "subtitle": "Programează-te astăzi și experimentează diferența Oxy'ss. Intră obișnuit, ieși extraordinar.",
+      "button": "Programează-te Acum"
     }
   },
   "services": {
     "title": "Serviciile Noastre",
     "subtitle": "Servicii profesionale de îngrijire adaptate stilului tău",
+    "bookAppointment": "Programează-te",
+    "bookThisService": "Rezervă Acest Serviciu",
+    "from": "De la",
+    "tryAgain": "Încearcă Din Nou",
+    "error": "Nu s-au putut încărca serviciile",
+    "whatMakesSpecial": {
+      "title": "Ce Ne Face Speciali",
+      "precision": {
+        "title": "Tunsorile Precise",
+        "description": "Fiecare tunsoare este executată cu atenție meticuloasă la detalii"
+      },
+      "products": {
+        "title": "Produse Premium",
+        "description": "Folosim doar produse profesionale de înaltă calitate"
+      },
+      "consultation": {
+        "title": "Consultație Personalizată",
+        "description": "Ascultăm nevoile tale și oferim recomandări de expert"
+      }
+    },
+    "pricing": {
+      "title": "Prețuri Transparente",
+      "subtitle": "Toate serviciile noastre sunt prețuite corect, fără costuri ascunse",
+      "noteTitle": "Notă",
+      "noteDescription": "Prețurile pot varia în funcție de lungimea părului și complexitate. Prețul final va fi confirmat în timpul consultației.",
+      "bookButton": "Programează-te"
+    },
     "categories": {
       "men": "Bărbați",
       "women": "Femei",

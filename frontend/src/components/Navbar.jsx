@@ -58,7 +58,7 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            {/* <LanguageSwitcher /> */}
+            <LanguageSwitcher />
             <Link to="/booking">
               <Button 
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-6"
@@ -71,7 +71,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center space-x-2">
-            {/* <LanguageSwitcher /> */}
+            <LanguageSwitcher />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm">
