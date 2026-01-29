@@ -1,264 +1,296 @@
 {
   "nav": {
-    "home": "Főoldal",
-    "services": "Szolgáltatások",
-    "gallery": "Galéria",
-    "about": "Rólunk",
-    "contact": "Kapcsolat",
-    "bookAppointment": "Időpontfoglalás"
+    "home": "Acasă",
+    "services": "Servicii",
+    "gallery": "Galerie",
+    "about": "Despre Noi",
+    "contact": "Contact",
+    "bookAppointment": "Programează-te"
   },
   "home": {
     "hero": {
-      "title": "Mester Haj Stúdió",
-      "subtitle": "Ahol a hagyományos mesterség találkozik a modern stílussal",
-      "bookNow": "Foglalj Most",
-      "viewServices": "Szolgáltatások Megtekintése",
-      "location": "Str. Ratinului, nr.959, Crasna, Sălaj, Románia",
-      "hours": "Nyitva 9:00 - 19:00",
-      "rating": "5/5 Értékelés"
+      "title": "Studio Profesional de Coafură",
+      "subtitle": "Unde meșteșugul tradițional întâlnește stilul modern",
+      "bookNow": "Programează-te Acum",
+      "viewServices": "Vezi Serviciile",
+      "location": "Str. Ratinului, nr.959, Crasna, Sălaj, România",
+      "hours": "Deschis 9:00 - 19:00",
+      "rating": "Rating 5/5"
     },
     "services": {
-      "title": "Szolgáltatásaink",
-      "subtitle": "A klasszikus vágásoktól a modern stílusokig, átfogó ápolási szolgáltatásokat kínálunk az Ön igényeire szabva.",
-      "viewAll": "Összes Szolgáltatás Megtekintése",
+      "title": "Serviciile Noastre",
+      "subtitle": "De la tunsorile clasice la stilurile moderne, oferim servicii complete de îngrijire personalizate pentru nevoile tale.",
+      "viewAll": "Vezi Toate Serviciile",
       "preview": {
         "mensHaircut": {
-          "name": "Férfi Hajvágás",
-          "description": "Hajmosás • Vágás • Styling"
+          "name": "Tunsoare Bărbați",
+          "description": "Spălare • Tunsoare • Styling"
         },
         "mensBronze": {
-          "name": "Férfi BRONZE",
-          "description": "Hajvágás • Szakáll Igazítás"
+          "name": "Bărbați BRONZE",
+          "description": "Tunsoare • Aranjare Barbă"
         },
         "mensGold": {
-          "name": "Férfi OXY'SS GOLD",
-          "description": "Hajmosás fejmasszázzsal • Hajvágás • Szakáll • Styling • Szemöldök • Fül • Orr"
+          "name": "Bărbați OXY'SS GOLD",
+          "description": "Spălare păr cu masaj de cap • Tunsoare • Barbă • Styling • Sprâncene • Urechi • Nas"
         }
       }
     },
     "whyChoose": {
-      "title": "Miért Válassz Minket?",
-      "subtitle": "Tapasztald meg a különbséget, amit a minőség, szakértelem és a részletekre való odafigyelés jelent.",
+      "title": "De Ce Să Alegi Oxy's?",
+      "subtitle": "Experimentează diferența pe care o face calitatea, expertiza și atenția la detalii.",
       "experience": {
-        "title": "Szakértő Fodrászok",
-        "desc": "Képzett csapatunk több év tapasztalatot hoz"
+        "title": "Frizeri Experți",
+        "desc": "Echipa noastră calificată aduce ani de experiență"
       },
       "quality": {
-        "title": "Prémium Termékek",
-        "desc": "Csak a legjobb ápolási termékeket használjuk"
+        "title": "Produse Premium",
+        "desc": "Folosim doar cele mai bune produse de îngrijire"
       },
       "atmosphere": {
-        "title": "Modern Légkör",
-        "desc": "Relaxálj kortárs, barátságos terünkben"
+        "title": "Atmosferă Modernă",
+        "desc": "Relaxează-te în spațiul nostru contemporan și primitor"
       }
     },
     "gallery": {
-      "title": "A Munkánk Magáért Beszél",
-      "subtitle": "Lásd az átalakulást és a mesterséget, ami megkülönböztet minket.",
-      "viewFull": "Teljes Galéria Megtekintése"
+      "title": "Munca Noastră Vorbește",
+      "subtitle": "Vezi transformarea și meșteșugul care ne face unici.",
+      "viewFull": "Vezi Galeria Completă"
     },
     "cta": {
-      "title": "Készen Állsz Egy Friss Megjelenésre?",
-      "subtitle": "Foglalj időpontot ma és tapasztald meg az Oxy'ss különbséget. Lépj be hétköznapiként, lépj ki rendkívüliként.",
-      "button": "Foglalj Időpontot Most"
+      "title": "Pregătit pentru un Look Nou?",
+      "subtitle": "Programează-te astăzi și experimentează diferența Oxy'ss. Intră obișnuit, ieși extraordinar.",
+      "button": "Programează-te Acum"
     }
   },
   "services": {
-    "title": "Szolgáltatásaink",
-    "subtitle": "Professzionális ápolási szolgáltatások az Ön stílusához igazítva",
-    "bookAppointment": "Időpontfoglalás",
-    "bookThisService": "Foglald Le Ezt a Szolgáltatást",
-    "from": "Már",
-    "tryAgain": "Próbáld Újra",
-    "error": "Nem sikerült betölteni a szolgáltatásokat",
+    "title": "Serviciile Noastre",
+    "subtitle": "Servicii profesionale de îngrijire adaptate stilului tău",
+    "bookAppointment": "Programează-te",
+    "bookThisService": "Rezervă Acest Serviciu",
+    "from": "De la",
+    "tryAgain": "Încearcă Din Nou",
+    "error": "Nu s-au putut încărca serviciile",
     "whatMakesSpecial": {
-      "title": "Mi Tesz Minket Különlegessé",
+      "title": "Ce Ne Face Speciali",
       "precision": {
-        "title": "Precíz Vágások",
-        "description": "Minden vágást aprólékos figyelemmel hajtunk végre"
+        "title": "Tunsorile Precise",
+        "description": "Fiecare tunsoare este executată cu atenție meticuloasă la detalii"
       },
       "products": {
-        "title": "Prémium Termékek",
-        "description": "Csak magas minőségű professzionális termékeket használunk"
+        "title": "Produse Premium",
+        "description": "Folosim doar produse profesionale de înaltă calitate"
       },
       "consultation": {
-        "title": "Személyes Konzultáció",
-        "description": "Meghallgatjuk igényeidet és szakértői ajánlásokat adunk"
+        "title": "Consultație Personalizată",
+        "description": "Ascultăm nevoile tale și oferim recomandări de expert"
       }
     },
     "pricing": {
-      "title": "Átlátható Árazás",
-      "subtitle": "Minden szolgáltatásunk tisztességesen van árazva, rejtett költségek nélkül",
-      "noteTitle": "Megjegyzés",
-      "noteDescription": "Az árak a haj hosszától és bonyolultságától függően változhatnak. A végső árat konzultáció során erősítjük meg.",
-      "bookButton": "Időpont Foglalása"
+      "title": "Prețuri Transparente",
+      "subtitle": "Toate serviciile noastre sunt prețuite corect, fără costuri ascunse",
+      "noteTitle": "Notă",
+      "noteDescription": "Prețurile pot varia în funcție de lungimea părului și complexitate. Prețul final va fi confirmat în timpul consultației.",
+      "bookButton": "Programează-te"
     },
     "categories": {
-      "men": "Férfiak",
-      "women": "Nők",
-      "kids": "Gyerekek"
+      "men": "Bărbați",
+      "women": "Femei",
+      "kids": "Copii"
     },
-    "duration": "Időtartam",
-    "startingFrom": "Már",
-    "bookNow": "Foglalj Most"
+    "duration": "Durată",
+    "startingFrom": "Începând de la",
+    "bookNow": "Programează-te Acum"
   },
   "about": {
-    "title": "Az Oxy's Fodrászatról",
-    "subtitle": "A prémium ápolás célpontja",
+    "title": "Despre Oxy's Barbershop",
+    "subtitle": "Destinația ta pentru îngrijire premium",
     "story": {
-      "title": "Történetünk",
-      "text": "A klasszikus fodrászat és a modern stílus iránti szenvedéllyel alapítva, az Oxy's Fodrászat a közösség sarokköve lett. Ötvözzük a hagyományos technikákat a kortárs trendekkel, hogy kivételes ápolási élményeket nyújtsunk."
+      "title": "Povestea Noastră",
+      "text": "Înființat cu pasiune pentru frizeria clasică și stilul modern, Oxy's Barbershop a devenit un pilon al comunității. Combinăm tehnicile tradiționale cu tendințele contemporane pentru a oferi experiențe excepționale de îngrijire."
     },
     "team": {
-      "title": "Ismerje Meg Csapatunkat",
-      "subtitle": "Szakértő fodrászok, akik a stílusodnak szentelik magukat"
+      "title": "Cunoaște Echipa Noastră",
+      "subtitle": "Frizeri experți dedicați stilului tău"
     },
     "values": {
-      "title": "Értékeink",
+      "title": "Valorile Noastre",
       "quality": {
-        "title": "Minőség Mindenekelőtt",
-        "desc": "Soha nem alkudunk meg szolgáltatásaink minőségében"
+        "title": "Calitate În Primul Rând",
+        "desc": "Nu compromitem niciodată calitatea serviciilor noastre"
       },
       "customer": {
-        "title": "Ügyfélközpontúság",
-        "desc": "Az Ön elégedettsége a legfőbb prioritásunk"
+        "title": "Focus pe Client",
+        "desc": "Satisfacția ta este prioritatea noastră principală"
       },
       "innovation": {
-        "title": "Innováció",
-        "desc": "Naprakészek maradunk a legújabb trendekkel és technikákkal"
+        "title": "Inovație",
+        "desc": "Rămânem la curent cu cele mai noi tendințe și tehnici"
       }
     }
   },
   "gallery": {
-    "title": "Galériánk",
-    "subtitle": "Fedezd fel portfóliónkat, amely bemutatja az Oxy'ss Hair Studio művészetét és mesterségbeli tudását. Minden vágás a precizitás és stílus történetét meséli el.",
+    "title": "Galeria Noastră",
+    "subtitle": "Explorează portofoliul nostru care prezintă arta și meșteșugul care definește Oxy'ss Hair Studio. Fiecare tunsoare spune o poveste de precizie și stil.",
     "filters": {
-      "all": "Minden Munka",
-      "haircuts": "Hajvágások",
-      "beard": "Szakáll Munkák",
+      "all": "Toate Lucrările",
+      "haircuts": "Tunsorile",
+      "beard": "Lucrări Barbă",
       "styling": "Styling",
-      "shop": "Szalonunk"
+      "shop": "Salonul Nostru"
     },
-    "noResults": "Nincs kép ebben a kategóriában.",
+    "noResults": "Nu s-au găsit imagini în această categorie.",
     "cta": {
-      "title": "Készen Állsz a Legjobb Megjelenésedre?",
-      "subtitle": "Csatlakozz elégedett ügyfeleinkhez és tapasztald meg az Oxy'ss különbséget. Foglalj időpontot és hagyd, hogy megalkossuk következő jellegzetes megjelenésedet.",
-      "bookButton": "Időpont Foglalása",
-      "servicesButton": "Szolgáltatások Megtekintése"
+      "title": "Pregătit să Arăți Excelent?",
+      "subtitle": "Alătură-te clienților noștri mulțumiți și experimentează diferența Oxy'ss. Programează-te și lasă-ne să creăm următorul tău look semnătură.",
+      "bookButton": "Programează-te",
+      "servicesButton": "Vezi Serviciile"
     }
   },
   "contact": {
-    "title": "Lépj Kapcsolatba Velünk",
-    "subtitle": "Vedd fel velünk a kapcsolatot időpontfoglaláshoz, kérdésekhez, vagy csak hogy köszönj. Azért vagyunk itt, hogy segítsünk a legjobban kinézned és érezned magad.",
+    "title": "Contactează-ne",
+    "subtitle": "Ia legătura cu noi pentru programări, întrebări, sau doar pentru a saluta. Suntem aici să te ajutăm să arăți și să te simți cât mai bine.",
     "getInTouch": {
-      "title": "Lépj Kapcsolatba",
-      "subtitle": "Szeretnénk hallani rólad. Akár időpontot szeretnél foglalni, kérdéseid vannak szolgáltatásainkkal kapcsolatban, vagy visszajelzést szeretnél adni, ne habozz kapcsolatba lépni velünk."
+      "title": "Ia Legătura",
+      "subtitle": "Ne-ar plăcea să auzim de la tine. Fie că vrei să programezi o întâlnire, ai întrebări despre serviciile noastre, sau vrei să oferi feedback, nu ezita să ne contactezi."
     },
     "info": {
       "visit": {
-        "title": "Látogass Meg Minket",
+        "title": "Vizitează-ne",
         "address1": "Str. Ratinului, nr.959",
-        "address2": "Crasna, Sălaj, Románia",
-        "action": "Útvonal Megtekintése"
+        "address2": "Crasna, Sălaj, România",
+        "action": "Obține Direcții"
       },
       "call": {
-        "title": "Hívj Minket",
+        "title": "Sună-ne",
         "phone": "+40 74 116 1016",
-        "action": "Hívás Most"
+        "action": "Sună Acum"
       },
       "email": {
-        "title": "Írj Nekünk",
+        "title": "Trimite-ne Email",
         "address": "oxyssstyle@gmail.com",
-        "action": "Email Küldése"
+        "action": "Trimite Email"
       }
     },
     "hours": {
-      "title": "Nyitvatartási Idő",
-      "weekdays": "Hétfő - Péntek",
+      "title": "Program de Lucru",
+      "weekdays": "Luni - Vineri",
       "weekdaysHours": "9:00 - 19:00",
-      "saturday": "Szombat",
+      "saturday": "Sâmbătă",
       "saturdayHours": "9:00 - 13:00",
-      "note": "6 napon át nyitva vagyunk az Ön kényelme érdekében"
+      "note": "Suntem deschiși 6 zile pe săptămână pentru confortul tău"
     },
     "map": {
-      "title": "Találj Meg Minket"
+      "title": "Găsește-ne"
     }
   },
   "booking": {
-    "title": "Időpont Foglalás",
-    "subtitle": "Válaszd ki a kedvenc fodrászodat, szolgáltatást, dátumot és időt",
+    "title": "Programează-te",
+    "subtitle": "Programează vizita la Oxy'ss Style în câțiva pași simpli.",
+    "loading": "Se încarcă sistemul de programare...",
     "steps": {
-      "barber": "Válassz Fodrászt",
-      "service": "Válassz Szolgáltatást",
-      "datetime": "Dátum & Idő",
-      "details": "Adataid"
+      "step1": {
+        "title": "Alege Serviciul și Friz erul",
+        "chooseBarber": "Alege Frizerul",
+        "chooseService": "Alege Serviciul cu",
+        "loadingServices": "Se încarcă serviciile...",
+        "categoryLabel": " - Servicii",
+        "summaryTitle": "Rezumatul Selecției",
+        "summaryService": "Serviciu",
+        "summaryBarber": "Frizer"
+      },
+      "step2": {
+        "title": "Alege Data și Ora",
+        "yourSelection": "Selecția Ta:",
+        "service": "Serviciu",
+        "barber": "Frizer",
+        "selectDate": "Alege Data",
+        "availableSlots": "Ore Disponibile",
+        "selectDateFirst": "Te rugăm să alegi mai întâi o dată",
+        "loadingSlots": "Se încarcă orele disponibile...",
+        "noSlots": "Nu sunt ore disponibile pentru data selectată",
+        "unavailable": "Indisponibil",
+        "selected": "Selectat"
+      },
+      "step3": {
+        "title": "Informații de Contact",
+        "summaryTitle": "Rezumatul Programării:",
+        "service": "Serviciu",
+        "barber": "Frizer",
+        "date": "Data",
+        "time": "Ora",
+        "duration": "Durată",
+        "price": "Preț",
+        "minutes": "minute",
+        "fullName": "Nume Complet",
+        "phone": "Număr de Telefon",
+        "email": "Adresă de Email",
+        "note": "Notă",
+        "noteText": "Vom trimite un email de confirmare și este posibil să te sunăm pentru a confirma programarea. Te rugăm să ajungi cu 5 minute mai devreme."
+      },
+      "step4": {
+        "title": "Programare Confirmată!",
+        "successTitle": "Programare Realizată cu Succes!",
+        "successMessage": "Îți mulțumim că ai ales Oxy'ss Barbershop. Am primit cererea ta de programare și te vom contacta în curând pentru a confirma programarea.",
+        "detailsTitle": "Detaliile Programării:",
+        "service": "Serviciu",
+        "barber": "Frizer",
+        "date": "Data",
+        "time": "Ora",
+        "customer": "Client",
+        "contact": "Contact",
+        "bookAnother": "Programează Altă Întâlnire"
+      }
     },
-    "selectBarber": "Válaszd Ki a Fodrászod",
-    "selectService": "Válassz Egy Szolgáltatást",
-    "selectDate": "Válassz Dátumot",
-    "selectTime": "Válassz Időt",
-    "availableSlots": "Szabad Időpontok",
-    "noSlots": "Nincs szabad időpont erre a dátumra",
-    "yourDetails": "Adataid",
-    "fullName": "Teljes Név",
-    "email": "Email Cím",
-    "phone": "Telefonszám",
-    "bookingButton": "Foglalás",
-    "booking": "Foglalás...",
-    "success": "Foglalás sikeresen megtörtént!",
-    "error": "Hiba történt a foglalás során",
-    "summary": {
-      "title": "Foglalás Összegzése",
-      "barber": "Fodrász",
-      "service": "Szolgáltatás",
-      "date": "Dátum",
-      "time": "Idő",
-      "duration": "Időtartam",
-      "price": "Ár"
+    "navigation": {
+      "previous": "Anterior",
+      "nextStep": "Pasul Următor",
+      "bookAppointment": "Programează",
+      "booking": "Se programează..."
     }
   },
   "common": {
-    "loading": "Betöltés...",
-    "error": "Hiba",
-    "cancel": "Mégse",
-    "confirm": "Megerősítés",
-    "close": "Bezárás",
-    "save": "Mentés",
-    "edit": "Szerkesztés",
-    "delete": "Törlés",
-    "back": "Vissza",
-    "next": "Következő",
-    "previous": "Előző",
-    "min": "perc",
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "cancel": "Anulează",
+    "confirm": "Confirmă",
+    "close": "Închide",
+    "save": "Salvează",
+    "edit": "Editează",
+    "delete": "Șterge",
+    "back": "Înapoi",
+    "next": "Următorul",
+    "previous": "Anterior",
+    "min": "min",
     "currency": "RON"
   },
   "footer": {
     "brand": {
       "name": "Oxy'ss",
-      "tagline": "Prémium Haj Stúdió",
-      "description": "Tapasztald meg a legjobb hajvágási szolgáltatásokat az Oxy'ss-nél. Képzett fodrászaink ötvözik a hagyományos technikákat a modern stílussal, hogy tökéletes vágást kapj."
+      "tagline": "Studio Profesional de Coafură",
+      "description": "Experimentează cele mai bune servicii de coafură la Oxy'ss. Frizerii noștri calificați combină tehnicile tradiționale cu stilul modern pentru a-ți oferi tunsoarea perfectă."
     },
     "quickLinks": {
-      "title": "Gyors Linkek",
-      "home": "Főoldal",
-      "services": "Szolgáltatások",
-      "gallery": "Galéria",
-      "about": "Rólunk",
-      "contact": "Kapcsolat"
+      "title": "Link-uri Rapide",
+      "home": "Acasă",
+      "services": "Servicii",
+      "gallery": "Galerie",
+      "about": "Despre Noi",
+      "contact": "Contact"
     },
     "contactInfo": {
-      "title": "Kapcsolati Információk",
-      "address": "Str. Ratinului, nr.959, Crasna, Sălaj, Románia",
+      "title": "Informații Contact",
+      "address": "Str. Ratinului, nr.959, Crasna, Sălaj, România",
       "phone": "+40 74 116 1016",
       "email": "oxyssstyle@gmail.com",
       "hours": {
-        "weekdays": "Hé-Pé: 9:00 - 19:00",
-        "saturday": "Szo: 9:00 - 13:00"
+        "weekdays": "Lun-Vin: 9:00 - 19:00",
+        "saturday": "Sâm: 9:00 - 13:00"
       }
     },
     "bottom": {
-      "copyright": "© 2025 Oxy'ss Fodrászat. Minden jog fenntartva.",
-      "staffLogin": "Személyzeti Bejelentkezés"
+      "copyright": "© 2025 Oxy'ss Barbershop. Toate drepturile rezervate.",
+      "staffLogin": "Login Personal"
     }
   }
 }

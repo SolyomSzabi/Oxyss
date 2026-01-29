@@ -155,6 +155,8 @@ class Barber(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     description: str
+    description_hu: str
+    description_ro: str
     experience_years: int
     specialties: List[str]
     image_url: Optional[str] = None
@@ -163,6 +165,8 @@ class Barber(BaseModel):
 class BarberCreate(BaseModel):
     name: str
     description: str
+    description_hu: str
+    description_ro: str
     experience_years: int
     specialties: List[str]
     image_url: Optional[str] = None
@@ -173,14 +177,22 @@ class Service(BaseModel):
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
+    name_hu: str
+    name_ro: str
     description: str
+    description_hu: str
+    description_ro: str
     duration: int  # in minutes
     base_price: float  # base price, can be overridden per barber
     category: str = "Men"  # Men, Women, Kids
 
 class ServiceCreate(BaseModel):
     name: str
+    name_hu: str
+    name_ro: str
     description: str
+    description_hu: str
+    description_ro: str
     duration: int
     base_price: float
     category: str = "Men"
@@ -209,7 +221,11 @@ class BarberServiceWithDetails(BaseModel):
     price: float
     is_available: bool
     service_name: str
+    service_name_hu: str
+    service_name_ro: str
     service_description: str
+    service_description_hu: str
+    service_description_ro: str
     duration: int
     category: str = "Men"
 
@@ -409,7 +425,11 @@ async def get_barber_services(barber_id: str):
             "price": 1,
             "is_available": 1,
             "service_name": "$service_info.name",
+            "service_name_hu": "$service_info.name_hu",
+            "service_name_ro": "$service_info.name_ro",
             "service_description": "$service_info.description",
+            "service_description_hu": "$service_info.description_hu",
+            "service_description_ro": "$service_info.description_ro",
             "duration": "$service_info.duration",
             "category": "$service_info.category"
         }}

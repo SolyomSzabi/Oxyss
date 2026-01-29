@@ -186,35 +186,67 @@
   },
   "booking": {
     "title": "Book Your Appointment",
-    "subtitle": "Choose your preferred barber, service, date and time",
+    "subtitle": "Schedule your visit to Oxy'ss Style in just a few simple steps.",
+    "loading": "Loading booking system...",
     "steps": {
-      "barber": "Select Barber",
-      "service": "Select Service",
-      "datetime": "Date & Time",
-      "details": "Your Details"
+      "step1": {
+        "title": "Select Service & Hair Stylist",
+        "chooseBarber": "Choose Your Hair Stylist",
+        "chooseService": "Choose Your Service with",
+        "loadingServices": "Loading services...",
+        "categoryLabel": "'s Services",
+        "summaryTitle": "Selection Summary",
+        "summaryService": "Service",
+        "summaryBarber": "Hair Stylist"
+      },
+      "step2": {
+        "title": "Choose Date & Time",
+        "yourSelection": "Your Selection:",
+        "service": "Service",
+        "barber": "Hair Stylist",
+        "selectDate": "Select Date",
+        "availableSlots": "Available Time Slots",
+        "selectDateFirst": "Please select a date first",
+        "loadingSlots": "Loading available slots...",
+        "noSlots": "No available slots for selected date",
+        "unavailable": "Unavailable",
+        "selected": "Selected"
+      },
+      "step3": {
+        "title": "Contact Information",
+        "summaryTitle": "Appointment Summary:",
+        "service": "Service",
+        "barber": "Hair Stylist",
+        "date": "Date",
+        "time": "Time",
+        "duration": "Duration",
+        "price": "Price",
+        "minutes": "minutes",
+        "fullName": "Full Name",
+        "phone": "Phone Number",
+        "email": "Email Address",
+        "note": "Note",
+        "noteText": "We'll send a confirmation email and may call to confirm your appointment. Please arrive 5 minutes early for your scheduled time."
+      },
+      "step4": {
+        "title": "Booking Confirmed!",
+        "successTitle": "Appointment Booked Successfully!",
+        "successMessage": "Thank you for choosing Oxy'ss Barbershop. We've received your booking request and will contact you shortly to confirm your appointment.",
+        "detailsTitle": "Appointment Details:",
+        "service": "Service",
+        "barber": "Hair Stylist",
+        "date": "Date",
+        "time": "Time",
+        "customer": "Customer",
+        "contact": "Contact",
+        "bookAnother": "Book Another Appointment"
+      }
     },
-    "selectBarber": "Select Your Barber",
-    "selectService": "Select a Service",
-    "selectDate": "Select Date",
-    "selectTime": "Select Time",
-    "availableSlots": "Available Time Slots",
-    "noSlots": "No available slots for this date",
-    "yourDetails": "Your Details",
-    "fullName": "Full Name",
-    "email": "Email Address",
-    "phone": "Phone Number",
-    "bookingButton": "Book Appointment",
-    "booking": "Booking...",
-    "success": "Appointment booked successfully!",
-    "error": "Failed to book appointment",
-    "summary": {
-      "title": "Booking Summary",
-      "barber": "Barber",
-      "service": "Service",
-      "date": "Date",
-      "time": "Time",
-      "duration": "Duration",
-      "price": "Price"
+    "navigation": {
+      "previous": "Previous",
+      "nextStep": "Next Step",
+      "bookAppointment": "Book Appointment",
+      "booking": "Booking..."
     }
   },
   "common": {
