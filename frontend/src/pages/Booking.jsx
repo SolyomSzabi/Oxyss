@@ -354,7 +354,7 @@ const Booking = () => {
                               <div key={category}>
                                 <h4 className="text-md font-semibold text-zinc-700 mb-3 flex items-center">
                                   <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-                                    {category}{t('booking.steps.step1.categoryLabel')}
+                                    {category}
                                   </span>
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
