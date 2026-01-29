@@ -186,35 +186,67 @@
   },
   "booking": {
     "title": "Programează-te",
-    "subtitle": "Alege frizerul, serviciul, data și ora preferată",
+    "subtitle": "Programează vizita la Oxy'ss Style în câțiva pași simpli.",
+    "loading": "Se încarcă sistemul de programare...",
     "steps": {
-      "barber": "Alege Frizerul",
-      "service": "Alege Serviciul",
-      "datetime": "Data & Ora",
-      "details": "Detaliile Tale"
+      "step1": {
+        "title": "Alege Serviciul și Friz erul",
+        "chooseBarber": "Alege Frizerul",
+        "chooseService": "Alege Serviciul cu",
+        "loadingServices": "Se încarcă serviciile...",
+        "categoryLabel": " - Servicii",
+        "summaryTitle": "Rezumatul Selecției",
+        "summaryService": "Serviciu",
+        "summaryBarber": "Frizer"
+      },
+      "step2": {
+        "title": "Alege Data și Ora",
+        "yourSelection": "Selecția Ta:",
+        "service": "Serviciu",
+        "barber": "Frizer",
+        "selectDate": "Alege Data",
+        "availableSlots": "Ore Disponibile",
+        "selectDateFirst": "Te rugăm să alegi mai întâi o dată",
+        "loadingSlots": "Se încarcă orele disponibile...",
+        "noSlots": "Nu sunt ore disponibile pentru data selectată",
+        "unavailable": "Indisponibil",
+        "selected": "Selectat"
+      },
+      "step3": {
+        "title": "Informații de Contact",
+        "summaryTitle": "Rezumatul Programării:",
+        "service": "Serviciu",
+        "barber": "Frizer",
+        "date": "Data",
+        "time": "Ora",
+        "duration": "Durată",
+        "price": "Preț",
+        "minutes": "minute",
+        "fullName": "Nume Complet",
+        "phone": "Număr de Telefon",
+        "email": "Adresă de Email",
+        "note": "Notă",
+        "noteText": "Vom trimite un email de confirmare și este posibil să te sunăm pentru a confirma programarea. Te rugăm să ajungi cu 5 minute mai devreme."
+      },
+      "step4": {
+        "title": "Programare Confirmată!",
+        "successTitle": "Programare Realizată cu Succes!",
+        "successMessage": "Îți mulțumim că ai ales Oxy'ss Barbershop. Am primit cererea ta de programare și te vom contacta în curând pentru a confirma programarea.",
+        "detailsTitle": "Detaliile Programării:",
+        "service": "Serviciu",
+        "barber": "Frizer",
+        "date": "Data",
+        "time": "Ora",
+        "customer": "Client",
+        "contact": "Contact",
+        "bookAnother": "Programează Altă Întâlnire"
+      }
     },
-    "selectBarber": "Alege Frizerul Tău",
-    "selectService": "Alege un Serviciu",
-    "selectDate": "Alege Data",
-    "selectTime": "Alege Ora",
-    "availableSlots": "Ore Disponibile",
-    "noSlots": "Nu sunt ore disponibile pentru această dată",
-    "yourDetails": "Detaliile Tale",
-    "fullName": "Nume Complet",
-    "email": "Adresă de Email",
-    "phone": "Număr de Telefon",
-    "bookingButton": "Programează",
-    "booking": "Se programează...",
-    "success": "Programare realizată cu succes!",
-    "error": "Eroare la programare",
-    "summary": {
-      "title": "Rezumatul Programării",
-      "barber": "Frizer",
-      "service": "Serviciu",
-      "date": "Data",
-      "time": "Ora",
-      "duration": "Durată",
-      "price": "Preț"
+    "navigation": {
+      "previous": "Anterior",
+      "nextStep": "Pasul Următor",
+      "bookAppointment": "Programează",
+      "booking": "Se programează..."
     }
   },
   "common": {
