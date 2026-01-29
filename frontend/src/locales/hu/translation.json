@@ -130,33 +130,58 @@
     }
   },
   "gallery": {
-    "title": "Galéria",
-    "subtitle": "Fedezd fel munkánkat és lásd az átalakulásokat"
+    "title": "Galériánk",
+    "subtitle": "Fedezd fel portfóliónkat, amely bemutatja az Oxy'ss Hair Studio művészetét és mesterségbeli tudását. Minden vágás a precizitás és stílus történetét meséli el.",
+    "filters": {
+      "all": "Minden Munka",
+      "haircuts": "Hajvágások",
+      "beard": "Szakáll Munkák",
+      "styling": "Styling",
+      "shop": "Szalonunk"
+    },
+    "noResults": "Nincs kép ebben a kategóriában.",
+    "cta": {
+      "title": "Készen Állsz a Legjobb Megjelenésedre?",
+      "subtitle": "Csatlakozz elégedett ügyfeleinkhez és tapasztald meg az Oxy'ss különbséget. Foglalj időpontot és hagyd, hogy megalkossuk következő jellegzetes megjelenésedet.",
+      "bookButton": "Időpont Foglalása",
+      "servicesButton": "Szolgáltatások Megtekintése"
+    }
   },
   "contact": {
     "title": "Lépj Kapcsolatba Velünk",
-    "subtitle": "Vedd fel velünk a kapcsolatot",
+    "subtitle": "Vedd fel velünk a kapcsolatot időpontfoglaláshoz, kérdésekhez, vagy csak hogy köszönj. Azért vagyunk itt, hogy segítsünk a legjobban kinézned és érezned magad.",
+    "getInTouch": {
+      "title": "Lépj Kapcsolatba",
+      "subtitle": "Szeretnénk hallani rólad. Akár időpontot szeretnél foglalni, kérdéseid vannak szolgáltatásainkkal kapcsolatban, vagy visszajelzést szeretnél adni, ne habozz kapcsolatba lépni velünk."
+    },
     "info": {
-      "title": "Kapcsolati Információk",
-      "address": "Cím",
-      "phone": "Telefon",
-      "email": "Email",
-      "hours": "Nyitvatartás"
+      "visit": {
+        "title": "Látogass Meg Minket",
+        "address1": "Str. Ratinului, nr.959",
+        "address2": "Crasna, Sălaj, Románia",
+        "action": "Útvonal Megtekintése"
+      },
+      "call": {
+        "title": "Hívj Minket",
+        "phone": "+40 74 116 1016",
+        "action": "Hívás Most"
+      },
+      "email": {
+        "title": "Írj Nekünk",
+        "address": "oxyssstyle@gmail.com",
+        "action": "Email Küldése"
+      }
     },
-    "form": {
-      "title": "Küldj nekünk üzenetet",
-      "name": "Neved",
-      "email": "Email címed",
-      "message": "Üzeneted",
-      "send": "Üzenet Küldése",
-      "sending": "Küldés...",
-      "success": "Üzenet sikeresen elküldve!",
-      "error": "Nem sikerült elküldeni az üzenetet"
+    "hours": {
+      "title": "Nyitvatartási Idő",
+      "weekdays": "Hétfő - Péntek",
+      "weekdaysHours": "9:00 - 19:00",
+      "saturday": "Szombat",
+      "saturdayHours": "9:00 - 13:00",
+      "note": "6 napon át nyitva vagyunk az Ön kényelme érdekében"
     },
-    "schedule": {
-      "weekdays": "Hé - Pé: 9:00 - 20:00",
-      "saturday": "Szo: 8:00 - 18:00",
-      "sunday": "Vas: 10:00 - 16:00"
+    "map": {
+      "title": "Találj Meg Minket"
     }
   },
   "booking": {
@@ -206,5 +231,34 @@
     "previous": "Előző",
     "min": "perc",
     "currency": "RON"
+  },
+  "footer": {
+    "brand": {
+      "name": "Oxy'ss",
+      "tagline": "Prémium Haj Stúdió",
+      "description": "Tapasztald meg a legjobb hajvágási szolgáltatásokat az Oxy'ss-nél. Képzett fodrászaink ötvözik a hagyományos technikákat a modern stílussal, hogy tökéletes vágást kapj."
+    },
+    "quickLinks": {
+      "title": "Gyors Linkek",
+      "home": "Főoldal",
+      "services": "Szolgáltatások",
+      "gallery": "Galéria",
+      "about": "Rólunk",
+      "contact": "Kapcsolat"
+    },
+    "contactInfo": {
+      "title": "Kapcsolati Információk",
+      "address": "Str. Ratinului, nr.959, Crasna, Sălaj, Románia",
+      "phone": "+40 74 116 1016",
+      "email": "oxyssstyle@gmail.com",
+      "hours": {
+        "weekdays": "Hé-Pé: 9:00 - 19:00",
+        "saturday": "Szo: 9:00 - 13:00"
+      }
+    },
+    "bottom": {
+      "copyright": "© 2025 Oxy'ss Fodrászat. Minden jog fenntartva.",
+      "staffLogin": "Személyzeti Bejelentkezés"
+    }
   }
 }

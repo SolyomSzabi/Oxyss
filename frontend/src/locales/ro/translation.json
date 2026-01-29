@@ -130,33 +130,58 @@
     }
   },
   "gallery": {
-    "title": "Galerie",
-    "subtitle": "Explorează munca noastră și vezi transformările"
+    "title": "Galeria Noastră",
+    "subtitle": "Explorează portofoliul nostru care prezintă arta și meșteșugul care definește Oxy'ss Hair Studio. Fiecare tunsoare spune o poveste de precizie și stil.",
+    "filters": {
+      "all": "Toate Lucrările",
+      "haircuts": "Tunsorile",
+      "beard": "Lucrări Barbă",
+      "styling": "Styling",
+      "shop": "Salonul Nostru"
+    },
+    "noResults": "Nu s-au găsit imagini în această categorie.",
+    "cta": {
+      "title": "Pregătit să Arăți Excelent?",
+      "subtitle": "Alătură-te clienților noștri mulțumiți și experimentează diferența Oxy'ss. Programează-te și lasă-ne să creăm următorul tău look semnătură.",
+      "bookButton": "Programează-te",
+      "servicesButton": "Vezi Serviciile"
+    }
   },
   "contact": {
     "title": "Contactează-ne",
-    "subtitle": "Ia legătura cu noi",
+    "subtitle": "Ia legătura cu noi pentru programări, întrebări, sau doar pentru a saluta. Suntem aici să te ajutăm să arăți și să te simți cât mai bine.",
+    "getInTouch": {
+      "title": "Ia Legătura",
+      "subtitle": "Ne-ar plăcea să auzim de la tine. Fie că vrei să programezi o întâlnire, ai întrebări despre serviciile noastre, sau vrei să oferi feedback, nu ezita să ne contactezi."
+    },
     "info": {
-      "title": "Informații de Contact",
-      "address": "Adresă",
-      "phone": "Telefon",
-      "email": "Email",
-      "hours": "Program"
+      "visit": {
+        "title": "Vizitează-ne",
+        "address1": "Str. Ratinului, nr.959",
+        "address2": "Crasna, Sălaj, România",
+        "action": "Obține Direcții"
+      },
+      "call": {
+        "title": "Sună-ne",
+        "phone": "+40 74 116 1016",
+        "action": "Sună Acum"
+      },
+      "email": {
+        "title": "Trimite-ne Email",
+        "address": "oxyssstyle@gmail.com",
+        "action": "Trimite Email"
+      }
     },
-    "form": {
-      "title": "Trimite-ne un mesaj",
-      "name": "Numele Tău",
-      "email": "Email-ul Tău",
-      "message": "Mesajul Tău",
-      "send": "Trimite Mesaj",
-      "sending": "Se trimite...",
-      "success": "Mesaj trimis cu succes!",
-      "error": "Eroare la trimiterea mesajului"
+    "hours": {
+      "title": "Program de Lucru",
+      "weekdays": "Luni - Vineri",
+      "weekdaysHours": "9:00 - 19:00",
+      "saturday": "Sâmbătă",
+      "saturdayHours": "9:00 - 13:00",
+      "note": "Suntem deschiși 6 zile pe săptămână pentru confortul tău"
     },
-    "schedule": {
-      "weekdays": "Lun - Vin: 9:00 - 20:00",
-      "saturday": "Sâm: 8:00 - 18:00",
-      "sunday": "Dum: 10:00 - 16:00"
+    "map": {
+      "title": "Găsește-ne"
     }
   },
   "booking": {
@@ -206,5 +231,34 @@
     "previous": "Anterior",
     "min": "min",
     "currency": "RON"
+  },
+  "footer": {
+    "brand": {
+      "name": "Oxy'ss",
+      "tagline": "Studio Profesional de Coafură",
+      "description": "Experimentează cele mai bune servicii de coafură la Oxy'ss. Frizerii noștri calificați combină tehnicile tradiționale cu stilul modern pentru a-ți oferi tunsoarea perfectă."
+    },
+    "quickLinks": {
+      "title": "Link-uri Rapide",
+      "home": "Acasă",
+      "services": "Servicii",
+      "gallery": "Galerie",
+      "about": "Despre Noi",
+      "contact": "Contact"
+    },
+    "contactInfo": {
+      "title": "Informații Contact",
+      "address": "Str. Ratinului, nr.959, Crasna, Sălaj, România",
+      "phone": "+40 74 116 1016",
+      "email": "oxyssstyle@gmail.com",
+      "hours": {
+        "weekdays": "Lun-Vin: 9:00 - 19:00",
+        "saturday": "Sâm: 9:00 - 13:00"
+      }
+    },
+    "bottom": {
+      "copyright": "© 2025 Oxy'ss Barbershop. Toate drepturile rezervate.",
+      "staffLogin": "Login Personal"
+    }
   }
 }
