@@ -369,8 +369,12 @@ const Booking = () => {
                                       onClick={() => handleServiceSelect(service.id)}
                                       data-testid={`service-option-${service.id}`}
                                     >
-                                      <h4 className="font-semibold text-zinc-900 mb-2">{service.service_name}</h4>
-                                      <p className="text-sm text-zinc-600 mb-3">{service.service_description}</p>
+                                      <h4 className="font-semibold text-zinc-900">
+                                        {getLocalizedField(service, 'service_name')}
+                                      </h4>
+                                      <p className="text-sm text-zinc-600">
+                                        {getLocalizedField(service, 'service_description')}
+                                      </p>
                                       <div className="flex justify-between items-center">
                                         <div className="flex items-center space-x-3">
                                           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
