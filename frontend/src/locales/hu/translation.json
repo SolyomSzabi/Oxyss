@@ -65,38 +65,38 @@
   },
   "services": {
     "title": "Szolgáltatásaink",
-    "subtitle": "Professzionális ápolási szolgáltatások az Ön stílusához igazítva",
+    "subtitle": "Fedezd fel átfogó prémium ápolási szolgáltatásainkat, amelyek mindegyike precizitással és gondossággal készült, hogy tökéletes megjelenést biztosítsunk.",
     "bookAppointment": "Időpontfoglalás",
     "bookThisService": "Foglald Le Ezt a Szolgáltatást",
     "from": "Már",
     "tryAgain": "Próbáld Újra",
     "error": "Nem sikerült betölteni a szolgáltatásokat",
+    "categories": {
+      "men": "Férfi Szolgáltatások",
+      "women": "Női Szolgáltatások",
+      "children": "Gyermek Szolgáltatások"
+    },
     "whatMakesSpecial": {
-      "title": "Mi Tesz Minket Különlegessé",
+      "title": "Mi Teszi Különlegessé Szolgáltatásainkat?",
       "precision": {
         "title": "Precíz Vágások",
-        "description": "Minden vágást aprólékos figyelemmel hajtunk végre"
+        "description": "Minden vágást aprólékos figyelemmel és több éves tapasztalattal hajtunk végre."
       },
       "products": {
         "title": "Prémium Termékek",
-        "description": "Csak magas minőségű professzionális termékeket használunk"
+        "description": "Csak a legjobb ápolási termékeket és professzionális minőségű eszközöket használunk."
       },
       "consultation": {
         "title": "Személyes Konzultáció",
-        "description": "Meghallgatjuk igényeidet és szakértői ajánlásokat adunk"
+        "description": "Minden szolgáltatás egy konzultációval kezdődik, hogy megértsük stílusodat és preferenciáidat."
       }
     },
     "pricing": {
-      "title": "Átlátható Árazás",
-      "subtitle": "Minden szolgáltatásunk tisztességesen van árazva, rejtett költségek nélkül",
-      "noteTitle": "Megjegyzés",
-      "noteDescription": "Az árak a haj hosszától és bonyolultságától függően változhatnak. A végső árat konzultáció során erősítjük meg.",
-      "bookButton": "Időpont Foglalása"
-    },
-    "categories": {
-      "men": "Férfiak",
-      "women": "Nők",
-      "kids": "Gyerekek"
+      "title": "Személyre Szabott Árazás",
+      "subtitle": "Tapasztalt fodrászaink különböző árszinteken kínálnak szolgáltatásokat szakértelmük és specializációjuk alapján. Válaszd ki kedvenc fodrászodat a foglalás során a pontos árak megtekintéséhez.",
+      "noteTitle": "*Árazási Megjegyzés",
+      "noteDescription": "A feltüntetett árak kezdő árak. Minden fodrásznak saját árképzése van tapasztalata és specializációja alapján. A végső árat akkor erősítjük meg, amikor a foglalási folyamat során kiválasztod a kívánt fodrászt.",
+      "bookButton": "Foglalj Ma a Szolgáltatásodra"
     },
     "duration": "Időtartam",
     "startingFrom": "Már",

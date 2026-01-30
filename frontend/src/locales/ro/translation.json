@@ -65,38 +65,38 @@
   },
   "services": {
     "title": "Serviciile Noastre",
-    "subtitle": "Servicii profesionale de îngrijire adaptate stilului tău",
+    "subtitle": "Descoperă gama noastră cuprinzătoare de servicii premium de îngrijire, fiecare realizat cu precizie și grijă pentru a-ți oferi aspectul perfect.",
     "bookAppointment": "Programează-te",
     "bookThisService": "Rezervă Acest Serviciu",
     "from": "De la",
     "tryAgain": "Încearcă Din Nou",
     "error": "Nu s-au putut încărca serviciile",
+    "categories": {
+      "men": "Servicii pentru Bărbați",
+      "women": "Servicii pentru Femei",
+      "children": "Servicii pentru Copii"
+    },
     "whatMakesSpecial": {
-      "title": "Ce Ne Face Speciali",
+      "title": "Ce Face Serviciile Noastre Speciale?",
       "precision": {
         "title": "Tunsorile Precise",
-        "description": "Fiecare tunsoare este executată cu atenție meticuloasă la detalii"
+        "description": "Fiecare tunsoare este executată cu atenție meticuloasă la detalii și ani de experiență."
       },
       "products": {
         "title": "Produse Premium",
-        "description": "Folosim doar produse profesionale de înaltă calitate"
+        "description": "Folosim doar cele mai bune produse de îngrijire și unelte de calitate profesională."
       },
       "consultation": {
         "title": "Consultație Personalizată",
-        "description": "Ascultăm nevoile tale și oferim recomandări de expert"
+        "description": "Fiecare serviciu începe cu o consultație pentru a înțelege stilul și preferințele tale."
       }
     },
     "pricing": {
-      "title": "Prețuri Transparente",
-      "subtitle": "Toate serviciile noastre sunt prețuite corect, fără costuri ascunse",
-      "noteTitle": "Notă",
-      "noteDescription": "Prețurile pot varia în funcție de lungimea părului și complexitate. Prețul final va fi confirmat în timpul consultației.",
-      "bookButton": "Programează-te"
-    },
-    "categories": {
-      "men": "Bărbați",
-      "women": "Femei",
-      "kids": "Copii"
+      "title": "Prețuri Personalizate",
+      "subtitle": "Frizerii noștri experimentați oferă servicii la diferite niveluri de prețuri bazate pe expertiza și specializările lor. Alege frizerul preferat în timpul programării pentru a vedea prețurile exacte.",
+      "noteTitle": "*Notă despre Prețuri",
+      "noteDescription": "Prețurile afișate sunt tarife de pornire. Fiecare frizer are propriile prețuri bazate pe experiență și specializări. Prețul final va fi confirmat când vei selecta frizerul preferat în timpul procesului de programare.",
+      "bookButton": "Rezervă Serviciul Tău Astăzi"
     },
     "duration": "Durată",
     "startingFrom": "Începând de la",
@@ -190,7 +190,7 @@
     "loading": "Se încarcă sistemul de programare...",
     "steps": {
       "step1": {
-        "title": "Alege Serviciul și Friz erul",
+        "title": "Alege Serviciul și Frizerul",
         "chooseBarber": "Alege Frizerul",
         "chooseService": "Alege Serviciul cu",
         "loadingServices": "Se încarcă serviciile...",

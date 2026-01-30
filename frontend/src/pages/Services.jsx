@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,9 +11,21 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const Services = () => {
+  const { t, i18n } = useTranslation();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Helper function to get localized field
+  const getLocalizedField = (item, fieldName) => {
+    const currentLang = i18n.language;
+    if (currentLang === 'hu') {
+      return item[`${fieldName}_hu`] || item[fieldName] || '';
+    } else if (currentLang === 'ro') {
+      return item[`${fieldName}_ro`] || item[fieldName] || '';
+    }
+    return item[fieldName] || '';
+  };
 
   useEffect(() => {
     fetchServices();
@@ -39,7 +52,7 @@ const Services = () => {
       
       setServices(uniqueServices);
     } catch (err) {
-      setError('Failed to load services');
+      setError(t('services.error'));
       console.error('Error fetching services:', err);
     } finally {
       setLoading(false);
@@ -51,7 +64,7 @@ const Services = () => {
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center pt-16">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-yellow-600" />
-          <p className="text-zinc-600">Loading services...</p>
+          <p className="text-zinc-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -63,7 +76,7 @@ const Services = () => {
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
           <Button onClick={fetchServices} variant="outline">
-            Try Again
+            {t('services.tryAgain')}
           </Button>
         </div>
       </div>
@@ -76,11 +89,10 @@ const Services = () => {
       <section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold font-heading text-zinc-900 mb-6">
-            Our Services
+            {t('services.title')}
           </h1>
           <p className="text-xl text-zinc-600 max-w-3xl mx-auto mb-8">
-            Discover our comprehensive range of premium grooming services, each crafted 
-            with precision and care to give you the perfect look.
+            {t('services.subtitle')}
           </p>
           <Link to="/booking">
             <Button 
@@ -88,7 +100,7 @@ const Services = () => {
               className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-8"
               data-testid="services-book-now-btn"
             >
-              Book Appointment
+              {t('services.bookAppointment')}
             </Button>
           </Link>
         </div>
@@ -105,7 +117,7 @@ const Services = () => {
             return (
               <div key={category} className="mb-16 last:mb-0">
                 <h2 className="text-3xl font-bold font-heading text-zinc-900 mb-8 text-center">
-                  {category}'s Services
+                  {t(`services.categories.${category.toLowerCase()}`)}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {categoryServices.map((service) => (
@@ -117,12 +129,12 @@ const Services = () => {
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-2">
                           <CardTitle className="text-xl font-semibold text-zinc-900">
-                            {service.name}
+                            {getLocalizedField(service, 'name')}
                           </CardTitle>
                           <Scissors className="h-5 w-5 text-yellow-600" />
                         </div>
                         <p className="text-zinc-600 leading-relaxed">
-                          {service.description}
+                          {getLocalizedField(service, 'description')}
                         </p>
                       </CardHeader>
                       <CardContent className="pt-0">
@@ -130,10 +142,14 @@ const Services = () => {
                           <div className="flex items-center space-x-4">
                             <div className="flex items-center space-x-1">
                               <Clock className="h-4 w-4 text-zinc-400" />
-                              <span className="text-sm text-zinc-600">{service.duration} min</span>
+                              <span className="text-sm text-zinc-600">
+                                {service.duration} {t('common.min')}
+                              </span>
                             </div>
                             <div className="flex items-center space-x-1">
-                              <span className="text-lg font-bold text-yellow-600">From {service.base_price} RON</span>
+                              <span className="text-lg font-bold text-yellow-600">
+                                {t('services.from')} {service.base_price} {t('common.currency')}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -142,7 +158,7 @@ const Services = () => {
                             className="w-full bg-zinc-900 hover:bg-zinc-800 text-white opacity-0 group-hover:opacity-100 transition-opacity"
                             data-testid={`book-service-${service.id}`}
                           >
-                            Book This Service
+                            {t('services.bookThisService')}
                           </Button>
                         </Link>
                       </CardContent>
@@ -155,12 +171,12 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Service Categories */}
+      {/* Service Features */}
       <section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-zinc-900 mb-6">
-              What Makes Our Services Special?
+              {t('services.whatMakesSpecial.title')}
             </h2>
           </div>
 
@@ -169,9 +185,11 @@ const Services = () => {
               <div className="bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Scissors className="h-8 w-8 text-yellow-600" />
               </div>
-              <h3 className="text-xl font-semibold text-zinc-900 mb-3">Precision Cuts</h3>
+              <h3 className="text-xl font-semibold text-zinc-900 mb-3">
+                {t('services.whatMakesSpecial.precision.title')}
+              </h3>
               <p className="text-zinc-600">
-                Every cut is executed with meticulous attention to detail and years of expertise.
+                {t('services.whatMakesSpecial.precision.description')}
               </p>
             </div>
 
@@ -179,9 +197,11 @@ const Services = () => {
               <div className="bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🧴</span>
               </div>
-              <h3 className="text-xl font-semibold text-zinc-900 mb-3">Premium Products</h3>
+              <h3 className="text-xl font-semibold text-zinc-900 mb-3">
+                {t('services.whatMakesSpecial.products.title')}
+              </h3>
               <p className="text-zinc-600">
-                We use only the finest grooming products and professional-grade tools.
+                {t('services.whatMakesSpecial.products.description')}
               </p>
             </div>
 
@@ -189,9 +209,11 @@ const Services = () => {
               <div className="bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">💬</span>
               </div>
-              <h3 className="text-xl font-semibold text-zinc-900 mb-3">Personal Consultation</h3>
+              <h3 className="text-xl font-semibold text-zinc-900 mb-3">
+                {t('services.whatMakesSpecial.consultation.title')}
+              </h3>
               <p className="text-zinc-600">
-                Each service begins with a consultation to understand your style and preferences.
+                {t('services.whatMakesSpecial.consultation.description')}
               </p>
             </div>
           </div>
@@ -202,36 +224,16 @@ const Services = () => {
       <section className="section-padding bg-zinc-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6">
-            Personalized Pricing
+            {t('services.pricing.title')}
           </h2>
           <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto">
-            Our experienced hairdressers offer services at different pricing levels based on their 
-            expertise and specializations. Choose your preferred hairdresser during booking to see exact pricing.
+            {t('services.pricing.subtitle')}
           </p>
           <div className="bg-yellow-600/20 border border-yellow-600/30 rounded-lg p-4 mb-8 max-w-3xl mx-auto">
             <p className="text-yellow-200 text-sm">
-              <strong>*Pricing Note:</strong> Prices shown are starting rates. Each hairdresser has their own pricing 
-              based on experience and specializations. Final pricing will be confirmed when you select 
-              your preferred hairdresser during the booking process.
+              <strong>{t('services.pricing.noteTitle')}:</strong> {t('services.pricing.noteDescription')}
             </p>
           </div>
-          
-          {/* <div className="bg-zinc-800 rounded-lg p-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-              <div>
-                <p className="text-sm text-gray-400 mb-1">Average Service Time</p>
-                <p className="text-2xl font-bold text-yellow-400">30 - 120 min</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-400 mb-1">Price Range</p>
-                <p className="text-2xl font-bold text-yellow-400">38 - 200 RON</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-400 mb-1">Payment Methods</p>
-                <p className="text-lg text-white">Cash • Card • Digital</p>
-              </div>
-            </div>
-          </div> */}
 
           <Link to="/booking">
             <Button 
@@ -239,7 +241,7 @@ const Services = () => {
               className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-8"
               data-testid="pricing-book-now-btn"
             >
-              Book Your Service Today
+              {t('services.pricing.bookButton')}
             </Button>
           </Link>
         </div>

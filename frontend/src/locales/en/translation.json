@@ -65,38 +65,38 @@
   },
   "services": {
     "title": "Our Services",
-    "subtitle": "Professional grooming services tailored to your style",
+    "subtitle": "Discover our comprehensive range of premium grooming services, each crafted with precision and care to give you the perfect look.",
     "bookAppointment": "Book Appointment",
     "bookThisService": "Book This Service",
     "from": "From",
     "tryAgain": "Try Again",
     "error": "Failed to load services",
+    "categories": {
+      "men": "Men's Services",
+      "women": "Women's Services",
+      "children": "Children's Services"
+    },
     "whatMakesSpecial": {
-      "title": "What Makes Us Special",
+      "title": "What Makes Our Services Special?",
       "precision": {
         "title": "Precision Cuts",
-        "description": "Every cut is executed with meticulous attention to detail"
+        "description": "Every cut is executed with meticulous attention to detail and years of expertise."
       },
       "products": {
         "title": "Premium Products",
-        "description": "We use only high-quality professional products"
+        "description": "We use only the finest grooming products and professional-grade tools."
       },
       "consultation": {
         "title": "Personal Consultation",
-        "description": "We listen to your needs and provide expert recommendations"
+        "description": "Each service begins with a consultation to understand your style and preferences."
       }
     },
     "pricing": {
-      "title": "Transparent Pricing",
-      "subtitle": "All our services are priced fairly with no hidden costs",
-      "noteTitle": "Note",
-      "noteDescription": "Prices may vary based on hair length and complexity. Final price will be confirmed during consultation.",
-      "bookButton": "Schedule Your Appointment"
-    },
-    "categories": {
-      "men": "Men",
-      "women": "Women",
-      "kids": "Kids"
+      "title": "Personalized Pricing",
+      "subtitle": "Our experienced hairdressers offer services at different pricing levels based on their expertise and specializations. Choose your preferred hairdresser during booking to see exact pricing.",
+      "noteTitle": "*Pricing Note",
+      "noteDescription": "Prices shown are starting rates. Each hairdresser has their own pricing based on experience and specializations. Final pricing will be confirmed when you select your preferred hairdresser during the booking process.",
+      "bookButton": "Book Your Service Today"
     },
     "duration": "Duration",
     "startingFrom": "Starting from",
