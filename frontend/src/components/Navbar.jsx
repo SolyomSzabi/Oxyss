@@ -78,8 +78,8 @@ const Navbar = () => {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-white">
-                <div className="flex flex-col space-y-6 mt-8">
+              <SheetContent side="right" className="w-[300px] bg-white flex flex-col">
+                <div className="flex flex-col space-y-6 mt-8 flex-1">
                   <div className="flex items-center space-x-2">
                     <div className="bg-zinc-900 p-2 rounded-lg">
                       <Scissors className="h-6 w-6 text-yellow-500" />
@@ -92,7 +92,7 @@ const Navbar = () => {
                     </div>
                   </div>
                   
-                  <div className="flex flex-col space-y-4">
+                  <div className="flex flex-col space-y-4 flex-1">
                     {navLinks.map((link) => (
                       <Link
                         key={link.href}
@@ -112,6 +112,17 @@ const Navbar = () => {
                       >
                         {t('nav.bookAppointment')}
                       </Button>
+                    </Link>
+                  </div>
+                  
+                  {/* Staff Login at Bottom */}
+                  <div className="border-t border-zinc-200 pt-4 mt-auto">
+                    <Link 
+                      to="/barber-dashboard" 
+                      onClick={() => setIsOpen(false)}
+                      className="text-sm text-zinc-500 hover:text-yellow-600 transition-colors flex items-center justify-center"
+                    >
+                      {t('footer.bottom.staffLogin')}
                     </Link>
                   </div>
                 </div>
