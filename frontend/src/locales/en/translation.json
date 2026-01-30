@@ -291,6 +291,10 @@
     "bottom": {
       "copyright": "© 2025 Oxy'ss Barbershop. All rights reserved.",
       "staffLogin": "Staff Login"
+    },
+    "developer": {
+      "madeBy": "Website created by",
+      "websiteDesign": "Custom Website Design & Development"
     }
   }
 }

@@ -291,6 +291,10 @@
     "bottom": {
       "copyright": "© 2025 Oxy'ss Barbershop. Toate drepturile rezervate.",
       "staffLogin": "Login Personal"
+    },
+    "developer": {
+      "madeBy": "Website creat de",
+      "websiteDesign": "Design și Dezvoltare Website Personalizat"
     }
   }
 }

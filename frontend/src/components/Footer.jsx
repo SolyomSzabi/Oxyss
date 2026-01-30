@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Scissors, MapPin, Clock, Phone, Mail } from 'lucide-react';
+import { Scissors, MapPin, Clock, Phone, Mail, Code } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -109,14 +109,37 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-zinc-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-zinc-400 text-sm">
-            {t('footer.bottom.copyright')}
-          </p>
-          <div className="mt-4 md:mt-0">
-            <Link to="/barber-dashboard" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
-              {t('footer.bottom.staffLogin')}
-            </Link>
+        <div className="border-t border-zinc-800 mt-8 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-zinc-400 text-sm">
+              {t('footer.bottom.copyright')}
+            </p>
+            <div className="flex items-center gap-4">
+              <Link to="/barber-dashboard" className="text-zinc-400 hover:text-yellow-400 text-sm transition-colors">
+                {t('footer.bottom.staffLogin')}
+              </Link>
+            </div>
+          </div>
+          
+          {/* Web Developer Credit */}
+          <div className="mt-6 pt-6 border-t border-zinc-800">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 text-sm text-zinc-500">
+              <div className="flex items-center gap-2">
+                <Code className="h-4 w-4 text-yellow-400" />
+                <span>{t('footer.developer.madeBy')}</span>
+                <span className="text-yellow-400 font-semibold">Sólyom Szabolcs</span>
+              </div>
+              <span className="hidden md:inline">•</span>
+              <a 
+                href="tel:+40742345678" 
+                className="flex items-center gap-2 hover:text-yellow-400 transition-colors"
+              >
+                <Phone className="h-3 w-3" />
+                <span>+40 757 630 225</span>
+              </a>
+              <span className="hidden md:inline">•</span>
+              <span className="text-zinc-600">{t('footer.developer.websiteDesign')}</span>
+            </div>
           </div>
         </div>
       </div>

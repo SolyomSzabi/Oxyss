@@ -291,6 +291,10 @@
     "bottom": {
       "copyright": "© 2025 Oxy'ss Fodrászat. Minden jog fenntartva.",
       "staffLogin": "Személyzeti Bejelentkezés"
+    },
+    "developer": {
+      "madeBy": "Weboldalt készítette",
+      "websiteDesign": "Egyedi Weboldal Tervezés és Fejlesztés"
     }
   }
 }
