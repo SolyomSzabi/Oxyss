@@ -17,13 +17,13 @@ const Home = () => {
   const services = [
     {
       nameKey: 'home.services.preview.mensHaircut.name',
-      price: '63 RON',
+      price: '70 RON',
       duration: '30 min',
       descriptionKey: 'home.services.preview.mensHaircut.description'
     },
     {
       nameKey: 'home.services.preview.mensBronze.name',
-      price: '85 RON',
+      price: '95 RON',
       duration: '45 min',
       descriptionKey: 'home.services.preview.mensBronze.description'
     },
