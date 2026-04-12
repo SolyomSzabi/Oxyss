@@ -296,5 +296,12 @@
       "madeBy": "Weboldalt készítette",
       "websiteDesign": "Egyedi Weboldal Tervezés és Fejlesztés"
     }
+  },
+  "reviews": {
+    "title": "Vendégeink véleménye",
+    "subtitle": "Amit ügyfeleink mondanak rólunk",
+    "ratings": "értékelés",
+    "viewAll": "Az összes értékelés megtekintése a Google-on",
+    "noText": "Pozitív értékelés"
   }
 }

@@ -296,5 +296,12 @@
       "madeBy": "Website creat de",
       "websiteDesign": "Design și Dezvoltare Website Personalizat"
     }
+  },
+  "reviews": {
+    "title": "Părerile clienților noștri",
+    "subtitle": "Ce spun clienții despre noi",
+    "ratings": "recenzii",
+    "viewAll": "Vezi toate recenziile pe Google",
+    "noText": "Recenzie pozitivă"
   }
 }

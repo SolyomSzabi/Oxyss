@@ -296,5 +296,12 @@
       "madeBy": "Website created by",
       "websiteDesign": "Custom Website Design & Development"
     }
+  },
+  "reviews": {
+    "title": "What Our Clients Say",
+    "subtitle": "Real reviews from our valued customers",
+    "ratings": "reviews",
+    "viewAll": "View all reviews on Google",
+    "noText": "Positive review"
   }
 }
