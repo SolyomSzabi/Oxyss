@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Star, ExternalLink } from "lucide-react";
+import axios from "axios";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 const PLACE_ID = "ChIJg-gd3M5lSEcRdneKQxwkmes";
 
 const StarRating = ({ rating }) => (
@@ -49,13 +52,10 @@ const GoogleReviews = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/reviews")
+    axios
+      .get(`${API}/reviews`)
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-      })
-      .then((json) => {
-        setData(json);
+        setData(res.data);
         setLoading(false);
       })
       .catch(() => {
