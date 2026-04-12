@@ -10,10 +10,11 @@ import gallery1 from "@/assets/gallery1.jpg";
 import gallery2 from "@/assets/gallery2.jpg";
 import gallery3 from "@/assets/gallery3.jpg";
 import gallery4 from "@/assets/gallery4.jpg";
-import GoogleReviews from "@/components/GoogleReviews";
+import GoogleReviews, { useGoogleReviews } from "@/components/GoogleReviews";
 
 const Home = () => {
   const { t } = useTranslation();
+  const { data: reviewData } = useGoogleReviews();
   
   const services = [
     {
@@ -114,7 +115,11 @@ const Home = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Star className="h-5 w-5 text-yellow-400 fill-current" />
-              <span>{t('home.hero.rating')}</span>
+              <span>
+                {reviewData
+                  ? `${reviewData.overallRating?.toFixed(1)}/5 (${reviewData.totalRatings} ${t('reviews.ratings', 'értékelés')})`
+                  : t('home.hero.rating')}
+              </span>
             </div>
           </div>
         </div>
@@ -251,7 +256,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+      
       <GoogleReviews />
 
       {/* CTA Section */}

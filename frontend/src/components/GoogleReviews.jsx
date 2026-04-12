@@ -8,6 +8,30 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 const PLACE_ID = "ChIJg-gd3M5lSEcRdneKQxwkmes";
 
+// ── Exportált hook – használható Home.jsx-ben is ──────────
+export const useGoogleReviews = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(`${API}/reviews`)
+      .then((res) => {
+        setData(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
+  }, []);
+
+  return { data, loading, error };
+};
+
+// ─────────────────────────────────────────────────────────
+
 const StarRating = ({ rating }) => (
   <div className="flex gap-0.5">
     {[1, 2, 3, 4, 5].map((star) => (
@@ -47,22 +71,7 @@ const SkeletonCard = () => (
 
 const GoogleReviews = () => {
   const { t } = useTranslation();
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get(`${API}/reviews`)
-      .then((res) => {
-        setData(res.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
-  }, []);
+  const { data, loading, error } = useGoogleReviews();
 
   if (error) return null;
 
@@ -70,7 +79,6 @@ const GoogleReviews = () => {
     <section className="section-padding bg-zinc-50" data-testid="reviews-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Fejléc */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold font-heading text-zinc-900 mb-4">
             {t("reviews.title", "Vendégeink véleménye")}
@@ -79,14 +87,9 @@ const GoogleReviews = () => {
             {t("reviews.subtitle", "Amit ügyfeleink mondanak rólunk")}
           </p>
 
-          {/* Összesített értékelés badge */}
           {!loading && data && (
             <div className="inline-flex items-center gap-3 bg-white border border-zinc-200 rounded-full px-6 py-3 shadow-sm">
-              <img
-                src="https://www.google.com/favicon.ico"
-                alt="Google"
-                className="h-5 w-5"
-              />
+              <img src="https://www.google.com/favicon.ico" alt="Google" className="h-5 w-5" />
               <span className="text-2xl font-bold text-zinc-900">
                 {data.overallRating?.toFixed(1)}
               </span>
@@ -98,7 +101,6 @@ const GoogleReviews = () => {
           )}
         </div>
 
-        {/* Kártyák */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading
             ? [...Array(3)].map((_, i) => <SkeletonCard key={i} />)
@@ -107,51 +109,36 @@ const GoogleReviews = () => {
                   key={index}
                   className="bg-white rounded-xl p-6 shadow-sm border border-zinc-100 flex flex-col gap-4 hover:shadow-md transition-shadow duration-200"
                 >
-                  {/* Szerző */}
                   <div className="flex items-center gap-3">
                     {review.avatar ? (
-                      <img
-                        src={review.avatar}
-                        alt={review.author}
-                        className="h-10 w-10 rounded-full object-cover"
-                      />
+                      <img src={review.avatar} alt={review.author} className="h-10 w-10 rounded-full object-cover" />
                     ) : (
                       <div className="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold text-lg">
                         {review.author?.[0] ?? "?"}
                       </div>
                     )}
                     <div>
-                      <p className="font-semibold text-zinc-900 text-sm">
-                        {review.author}
-                      </p>
+                      <p className="font-semibold text-zinc-900 text-sm">{review.author}</p>
                       <p className="text-zinc-400 text-xs">{review.time}</p>
                     </div>
                   </div>
 
-                  {/* Csillagok */}
                   <StarRating rating={review.rating} />
 
-                  {/* Szöveg */}
                   <p className="text-zinc-600 text-sm leading-relaxed flex-1">
                     {review.text?.length > 200
                       ? review.text.slice(0, 200) + "…"
                       : review.text || t("reviews.noText", "Pozitív értékelés")}
                   </p>
 
-                  {/* Google logo */}
                   <div className="flex items-center gap-1 mt-auto pt-2 border-t border-zinc-50">
-                    <img
-                      src="https://www.google.com/favicon.ico"
-                      alt="Google"
-                      className="h-3 w-3"
-                    />
+                    <img src="https://www.google.com/favicon.ico" alt="Google" className="h-3 w-3" />
                     <span className="text-xs text-zinc-400">Google Review</span>
                   </div>
                 </div>
               ))}
         </div>
 
-        {/* Link a Google-ra */}
         {!loading && (
           <div className="text-center mt-10">
             <a
