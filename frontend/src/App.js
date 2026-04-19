@@ -4,22 +4,25 @@ import { Toaster } from "@/components/ui/sonner";
 import "./App.css";
 import "./i18n";
 
-// Import pages
+// Pages
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import Gallery from "./pages/Gallery";
-import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
 import BarberDashboard from "./pages/BarberDashboard";
 import BarberLogin from "./pages/BarberLogin";
 import AllAppointments from "./pages/AllAppointments";
-import { AuthProvider } from "./contexts/AuthContext";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CookiePolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
-// Import components
+// Components
+import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import CookieBanner from "./components/CookieBanner";
 
 function App() {
   return (
@@ -39,9 +42,14 @@ function App() {
               <Route path="/barber-login" element={<BarberLogin />} />
               <Route path="/barber-dashboard" element={<BarberDashboard />} />
               <Route path="/all-appointments" element={<AllAppointments />} />
+              {/* Legal pages */}
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/cookies" element={<CookiePolicy />} />
+              <Route path="/terms" element={<TermsAndConditions />} />
             </Routes>
           </main>
           <Footer />
+          <CookieBanner />
           <Toaster />
         </BrowserRouter>
       </AuthProvider>

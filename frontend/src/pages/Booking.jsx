@@ -42,7 +42,8 @@ const Booking = () => {
     appointmentTime: '',
     customerName: '',
     customerEmail: '',
-    customerPhone: ''
+    customerPhone: '',
+    gdprConsent: false,   // ← GDPR consent field
   });
 
   // Helper function to get localized field
@@ -168,10 +169,10 @@ const Booking = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setBookingData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -182,9 +183,11 @@ const Booking = () => {
       case 2:
         return bookingData.appointmentDate && bookingData.appointmentTime !== '';
       case 3:
+        // Step 3 now also requires GDPR consent
         return bookingData.customerName !== '' && 
                bookingData.customerEmail !== '' && 
-               bookingData.customerPhone !== '';
+               bookingData.customerPhone !== '' &&
+               bookingData.gdprConsent === true;
       default:
         return false;
     }
@@ -196,6 +199,13 @@ const Booking = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Double-check consent before submitting
+    if (!bookingData.gdprConsent) {
+      toast.error('Trebuie să accepți politica de confidențialitate pentru a continua.');
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -601,6 +611,54 @@ const Booking = () => {
                       <strong>{t('booking.steps.step3.note')}:</strong> {t('booking.steps.step3.noteText')}
                     </p>
                   </div>
+
+                  {/* ── GDPR Consent Checkbox ── */}
+                  <div className="border-t border-zinc-200 pt-6">
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <div className="flex-shrink-0 mt-0.5">
+                        <input
+                          type="checkbox"
+                          id="gdprConsent"
+                          name="gdprConsent"
+                          checked={bookingData.gdprConsent}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 rounded border-zinc-300 accent-yellow-500 cursor-pointer"
+                          required
+                          data-testid="gdpr-consent-checkbox"
+                        />
+                      </div>
+                      <span className="text-sm text-zinc-600 leading-relaxed">
+                        Am citit și sunt de acord cu{' '}
+                        <a
+                          href="/privacy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-yellow-600 hover:underline font-medium"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Politica de Confidențialitate
+                        </a>
+                        {' '}și{' '}
+                        <a
+                          href="/terms"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-yellow-600 hover:underline font-medium"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Termenii și Condițiile
+                        </a>
+                        . Înțeleg că datele mele personale (nume, email, telefon) vor fi
+                        prelucrate de Oxy'ss Hair Studio exclusiv pentru gestionarea programării.{' '}
+                        <span className="text-red-500">*</span>
+                      </span>
+                    </label>
+                    {!bookingData.gdprConsent && (
+                      <p className="text-xs text-zinc-400 mt-1.5 ml-7">
+                        Câmp obligatoriu — necesar pentru finalizarea programării.
+                      </p>
+                    )}
+                  </div>
                 </form>
               )}
 
@@ -642,7 +700,8 @@ const Booking = () => {
                         appointmentTime: '',
                         customerName: '',
                         customerEmail: '',
-                        customerPhone: ''
+                        customerPhone: '',
+                        gdprConsent: false,
                       });
                           
                       setTimeout(() => {

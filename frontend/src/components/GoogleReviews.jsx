@@ -1,8 +1,9 @@
 // src/components/GoogleReviews.jsx
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Star, ExternalLink } from "lucide-react";
+import { Star, ExternalLink, Cookie } from "lucide-react";
 import axios from "axios";
+import { useCookieConsent } from "@/components/CookieBanner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -10,11 +11,20 @@ const PLACE_ID = "ChIJg-gd3M5lSEcRdneKQxwkmes";
 
 // ── Exportált hook – használható Home.jsx-ben is ──────────
 export const useGoogleReviews = () => {
+  const { consent } = useCookieConsent();
+  const googleAllowed = consent?.thirdParty === true;
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    // Only fetch if user has accepted third-party cookies
+    if (!googleAllowed) {
+      setLoading(false);
+      return;
+    }
+
     axios
       .get(`${API}/reviews`)
       .then((res) => {
@@ -25,9 +35,9 @@ export const useGoogleReviews = () => {
         setError(true);
         setLoading(false);
       });
-  }, []);
+  }, [googleAllowed]); // re-run if consent changes
 
-  return { data, loading, error };
+  return { data, loading, error, googleAllowed };
 };
 
 // ─────────────────────────────────────────────────────────
@@ -69,9 +79,58 @@ const SkeletonCard = () => (
   </div>
 );
 
+// ── Blocked state shown when third-party cookies not accepted ─
+const ReviewsBlocked = () => {
+  const { t } = useTranslation();
+
+  const openCookieSettings = () => {
+    // Clear the stored consent so the banner re-appears
+    try {
+      localStorage.removeItem("oxyss_cookie_consent");
+    } catch {}
+    window.location.reload();
+  };
+
+  return (
+    <section className="section-padding bg-zinc-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl md:text-5xl font-bold font-heading text-zinc-900 mb-4">
+            {t("reviews.title", "Recenziile Clienților")}
+          </h2>
+        </div>
+        <div className="flex flex-col items-center justify-center py-16 gap-4 bg-white rounded-2xl border border-zinc-100 shadow-sm">
+          <div className="bg-zinc-100 rounded-full p-4">
+            <Cookie className="h-8 w-8 text-zinc-400" />
+          </div>
+          <p className="font-semibold text-zinc-700 text-lg">
+            {t("reviews.cookieBlocked.title", "Recenziile necesită cookie-uri Google")}
+          </p>
+          <p className="text-zinc-500 text-sm max-w-sm text-center">
+            {t(
+              "reviews.cookieBlocked.desc",
+              "Pentru a vedea recenziile Google, acceptă cookie-urile terțe în setările de confidențialitate."
+            )}
+          </p>
+          <button
+            onClick={openCookieSettings}
+            className="mt-2 bg-yellow-600 hover:bg-yellow-500 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm"
+          >
+            {t("reviews.cookieBlocked.button", "Gestionează preferințele cookie")}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ── Main component ────────────────────────────────────────
 const GoogleReviews = () => {
   const { t } = useTranslation();
-  const { data, loading, error } = useGoogleReviews();
+  const { data, loading, error, googleAllowed } = useGoogleReviews();
+
+  // Show blocked state if third-party cookies not accepted
+  if (!googleAllowed) return <ReviewsBlocked />;
 
   if (error) return null;
 
