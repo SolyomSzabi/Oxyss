@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Scissors, MapPin, Clock, Phone, Mail, Code } from 'lucide-react';
+import { useCookieConsent } from './CookieBanner';
 
 const FacebookIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -17,6 +18,7 @@ const InstagramIcon = () => (
 
 const Footer = () => {
   const { t } = useTranslation();
+  const { resetConsent } = useCookieConsent();
 
   return (
     <footer className="bg-zinc-900 text-white">
@@ -93,6 +95,16 @@ const Footer = () => {
                   Termeni și Condiții
                 </Link>
               </li>
+              <li className="pt-2 border-t border-zinc-800 mt-2">
+                <a
+                  href="https://anpc.ro"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-400 hover:text-yellow-400 transition-colors text-sm"
+                >
+                  ANPC — Protecția Consumatorilor
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -145,6 +157,22 @@ const Footer = () => {
                 <Link to="/terms" className="text-zinc-600 hover:text-zinc-400 text-xs transition-colors">
                   Termeni
                 </Link>
+                <span className="text-zinc-700 text-xs">·</span>
+                <a
+                  href="https://anpc.ro"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-600 hover:text-zinc-400 text-xs transition-colors"
+                >
+                  ANPC
+                </a>
+                <span className="text-zinc-700 text-xs">·</span>
+                <button
+                  onClick={resetConsent}
+                  className="text-zinc-600 hover:text-zinc-400 text-xs transition-colors cursor-pointer bg-transparent border-0 p-0"
+                >
+                  Cookie Setări
+                </button>
               </div>
             </div>
             <div className="flex items-center gap-4">

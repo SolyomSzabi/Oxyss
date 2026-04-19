@@ -210,19 +210,6 @@ const TermsAndConditions = () => {
             În cazul în care soluționarea amiabilă nu este posibilă, disputele vor fi supuse
             <strong> instanțelor competente din România</strong>.
           </p>
-          <p>
-            Ca alternativă, ai dreptul să utilizezi platforma europeană de soluționare online a
-            litigiilor:{' '}
-            <a
-              href="https://ec.europa.eu/consumers/odr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-yellow-600 hover:underline"
-            >
-              ec.europa.eu/consumers/odr
-            </a>
-            .
-          </p>
         </Section>
 
         <Section icon={FileText} title="10. Modificări ale termenilor">

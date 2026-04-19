@@ -23,7 +23,14 @@ export const useCookieConsent = () => {
     setConsentState(value);
   };
 
-  return { consent, saveConsent };
+  const resetConsent = () => {
+    try {
+      localStorage.removeItem(CONSENT_KEY);
+    } catch {}
+    setConsentState(null);
+  };
+
+  return { consent, saveConsent, resetConsent };
 };
 
 // ─── Main Banner Component ────────────────────────────────────────────────────
@@ -43,7 +50,7 @@ const CookieBanner = () => {
     }
   }, [consent]);
 
-  if (!visible || consent !== null) return null;
+  if (!visible) return null;
 
   const handleAcceptAll = () => {
     saveConsent({ necessary: true, functional: true, thirdParty: true, date: new Date().toISOString() });
