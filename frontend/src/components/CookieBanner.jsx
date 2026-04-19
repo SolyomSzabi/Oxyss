@@ -23,20 +23,27 @@ export const useCookieConsent = () => {
     setConsentState(value);
   };
 
-  const resetConsent = () => {
-    try {
-      localStorage.removeItem(CONSENT_KEY);
-    } catch {}
-    setConsentState(null);
-  };
-
-  return { consent, saveConsent, resetConsent };
+  return { consent, saveConsent };
 };
 
 // ─── Main Banner Component ────────────────────────────────────────────────────
 const CookieBanner = () => {
   const { consent, saveConsent } = useCookieConsent();
   const [visible, setVisible] = useState(false);
+
+  const resetConsent = () => {
+    try {
+      localStorage.removeItem(CONSENT_KEY);
+    } catch {}
+    setVisible(true);
+  };
+
+  // Listen for external reset requests (e.g. from Footer)
+  React.useEffect(() => {
+    const handler = () => resetConsent();
+    window.addEventListener('oxyss:open-cookie-settings', handler);
+    return () => window.removeEventListener('oxyss:open-cookie-settings', handler);
+  }, []);
   const [showDetails, setShowDetails] = useState(false);
   const [functional, setFunctional] = useState(true);
   const [thirdParty, setThirdParty] = useState(false);
