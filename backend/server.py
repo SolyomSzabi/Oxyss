@@ -16,6 +16,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends, HTTPException, status, BackgroundTasks
 import aiosmtplib
 from email.message import EmailMessage
+import httpx
 
 # Romanian timezone
 ROMANIAN_TZ = pytz.timezone('Europe/Bucharest')
@@ -39,7 +40,7 @@ db = client[os.environ['DB_NAME']]
 # Authentication setup
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-for-jwt-tokens-change-in-production')
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 480  # 8 hours
+ACCESS_TOKEN_EXPIRE_MINUTES = 4320  # 8 hours
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
@@ -57,6 +58,8 @@ export_router = APIRouter()
 
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
 DB_NAME = os.getenv("DB_NAME", "test_database")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GOOGLE_PLACE_ID = os.getenv("GOOGLE_PLACE_ID")
 
 # Use separate variables for sync export client to avoid overwriting async client
 export_client = MongoClient(MONGO_URL)
@@ -1245,6 +1248,50 @@ async def migrate_appointments():
         "errors": error_count,
         "total": len(appointments)
     }
+
+@api_router.get("/reviews")
+async def get_google_reviews():
+    """Fetch Google Reviews for the barbershop via Places API"""
+    if not GOOGLE_API_KEY or not GOOGLE_PLACE_ID:
+        raise HTTPException(status_code=500, detail="Google API not configured")
+ 
+    url = "https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+        "place_id": GOOGLE_PLACE_ID,
+        "fields": "name,rating,reviews,user_ratings_total",
+        "language": "hu",
+        "key": GOOGLE_API_KEY,
+    }
+ 
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(url, params=params, timeout=10.0)
+            response.raise_for_status()
+            data = response.json()
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Google API error: {str(e)}")
+ 
+    result = data.get("result", {})
+    reviews_raw = result.get("reviews", [])
+ 
+    # Legjobb értékelések először, max 6 db
+    top_reviews = sorted(reviews_raw, key=lambda r: r.get("rating", 0), reverse=True)[:6]
+ 
+    return {
+        "salonName": result.get("name", "Oxyss Style"),
+        "overallRating": result.get("rating"),
+        "totalRatings": result.get("user_ratings_total"),
+        "reviews": [
+            {
+                "author": r.get("author_name"),
+                "avatar": r.get("profile_photo_url"),
+                "rating": r.get("rating"),
+                "text": r.get("text", ""),
+                "time": r.get("relative_time_description", ""),
+            }
+            for r in top_reviews
+        ],
+    }    
 
 # Include the router in the main app
 app.include_router(api_router)
