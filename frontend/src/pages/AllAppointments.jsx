@@ -55,7 +55,7 @@ const AllAppointments = () => {
   const [services, setServices] = useState([]);
 
   // Break state
-  const [creatingBreak, setCreatingBreak] = useState(null); // { barber_id }
+  const [creatingBreak, setCreatingBreak] = useState(null);
   const [newBreakData, setNewBreakData] = useState({
     start_time: '',
     end_time: '',
@@ -64,6 +64,10 @@ const AllAppointments = () => {
   const [savingBreak, setSavingBreak] = useState(false);
   const [deletingBreak, setDeletingBreak] = useState(null);
   const [deletingBreakConfirm, setDeletingBreakConfirm] = useState(false);
+
+  // Slot picker popup state
+  const [slotPickerAnchor, setSlotPickerAnchor] = useState(null);
+  // { barber_id, hour, minute, x, y }
 
   const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i);
   const timeSlots = [];
@@ -114,7 +118,6 @@ const AllAppointments = () => {
               }).catch(() => ({ data: [] }))
             ]);
 
-            // Filter breaks to only show ones matching the selected date
             const allBreaks = breaksResponse.data || [];
             const filteredBreaks = allBreaks.filter(b => {
               const breakDate = b.break_date || b.date;
@@ -216,6 +219,36 @@ const AllAppointments = () => {
     };
   };
 
+  // ── Slot picker ───────────────────────────────────────────────────────────
+
+  const handleTimeSlotClick = (barberId, hour, minute, event) => {
+    if (event.target.closest('.appointment-card') || event.target.closest('.break-card')) return;
+    setSlotPickerAnchor({
+      barber_id: barberId,
+      hour,
+      minute,
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
+  const handleSlotPickerAppointment = () => {
+    if (!slotPickerAnchor) return;
+    const timeString = `${slotPickerAnchor.hour.toString().padStart(2, '0')}:${slotPickerAnchor.minute.toString().padStart(2, '0')}:00`;
+    setCreatingAppointment({ barber_id: slotPickerAnchor.barber_id, time: timeString, date: selectedDate });
+    setNewAppointmentData({ customer_name: '', customer_phone: '', customer_email: '', service_id: '', notes: '' });
+    setSlotPickerAnchor(null);
+  };
+
+  const handleSlotPickerBreak = () => {
+    if (!slotPickerAnchor) return;
+    const pad = (n) => n.toString().padStart(2, '0');
+    const timeStr = `${pad(slotPickerAnchor.hour)}:${pad(slotPickerAnchor.minute)}`;
+    setCreatingBreak({ barber_id: slotPickerAnchor.barber_id });
+    setNewBreakData({ start_time: timeStr, end_time: '', title: 'Break' });
+    setSlotPickerAnchor(null);
+  };
+
   // ── Appointment handlers ──────────────────────────────────────────────────
 
   const handleEditDuration = (appointment) => {
@@ -276,15 +309,6 @@ const AllAppointments = () => {
     } finally {
       setDeleting(false);
     }
-  };
-
-  const handleTimeSlotClick = (barberId, hour, minute, event) => {
-    if (event.target.closest('.appointment-card') || event.target.closest('.break-card')) return;
-    const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
-    setCreatingAppointment({ barber_id: barberId, time: timeString, date: selectedDate });
-    setNewAppointmentData({
-      customer_name: '', customer_phone: '', customer_email: '', service_id: '', notes: ''
-    });
   };
 
   const handleCloseCreateDialog = () => {
@@ -401,11 +425,6 @@ const AllAppointments = () => {
   };
 
   // ── Break handlers ────────────────────────────────────────────────────────
-
-  const handleOpenBreakDialog = (barberId) => {
-    setCreatingBreak({ barber_id: barberId });
-    setNewBreakData({ start_time: '', end_time: '', title: 'Break' });
-  };
 
   const handleCloseBreakDialog = () => {
     setCreatingBreak(null);
@@ -567,7 +586,7 @@ const AllAppointments = () => {
             </div>
             <div className="flex items-center space-x-2 text-sm text-zinc-600">
               <Plus className="h-4 w-4" />
-              <span>Click any time slot to add appointment</span>
+              <span>Click any time slot to add appointment or break</span>
             </div>
           </div>
 
@@ -587,8 +606,8 @@ const AllAppointments = () => {
               {/* Barber Columns */}
               {barbers.map((barber) => (
                 <div key={barber.id} className="flex-1 min-w-64 border-r relative">
-                  {/* Barber Header */}
-                  <div className="h-12 border-b bg-zinc-900 text-white flex items-center justify-between px-3">
+                  {/* Barber Header — Break gomb eltávolítva */}
+                  <div className="h-12 border-b bg-zinc-900 text-white flex items-center px-3">
                     <div>
                       <div className="font-semibold text-sm">{barber.name}</div>
                       <div className="text-xs text-gray-300">
@@ -596,14 +615,6 @@ const AllAppointments = () => {
                         {barber.breaks?.length > 0 && ` · ${barber.breaks.length} break${barber.breaks.length !== 1 ? 's' : ''}`}
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleOpenBreakDialog(barber.id)}
-                      className="flex items-center gap-1 text-xs bg-orange-500 hover:bg-orange-400 text-white px-2 py-1 rounded transition-colors"
-                      title="Add break for this barber"
-                    >
-                      <Coffee className="h-3 w-3" />
-                      <span>Break</span>
-                    </button>
                   </div>
 
                   {/* Timeline */}
@@ -627,7 +638,7 @@ const AllAppointments = () => {
                           height: `${100 / timeSlots.length}%`
                         }}
                         onClick={(e) => handleTimeSlotClick(barber.id, slot.hour, slot.minute, e)}
-                        title={`Click to add appointment at ${slot.hour}:${slot.minute.toString().padStart(2, '0')}`}
+                        title={`Click to add at ${slot.hour}:${slot.minute.toString().padStart(2, '0')}`}
                       >
                         {slot.minute !== 0 && (
                           <span className="absolute left-1 top-0 text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -759,6 +770,44 @@ const AllAppointments = () => {
           </div>
         )}
       </section>
+
+      {/* ── Slot Picker Popup ── */}
+      {slotPickerAnchor && (
+        <>
+          {/* Backdrop to close on outside click */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setSlotPickerAnchor(null)}
+          />
+          <div
+            className="fixed z-50 bg-white border border-zinc-200 rounded-xl shadow-2xl p-1.5 flex gap-1"
+            style={{
+              top: slotPickerAnchor.y - 10,
+              left: slotPickerAnchor.x - 10,
+              transform: 'translateY(-100%)',
+            }}
+          >
+            <div className="px-2 py-1 text-[10px] font-semibold text-zinc-400 flex items-center self-center whitespace-nowrap">
+              {slotPickerAnchor.hour}:{slotPickerAnchor.minute.toString().padStart(2, '0')}
+            </div>
+            <div className="w-px bg-zinc-100 self-stretch" />
+            <button
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 text-sm font-medium text-zinc-800 transition-colors whitespace-nowrap"
+              onClick={handleSlotPickerAppointment}
+            >
+              <Plus className="h-4 w-4 text-blue-600 flex-shrink-0" />
+              Foglalás
+            </button>
+            <button
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-orange-50 text-sm font-medium text-zinc-800 transition-colors whitespace-nowrap"
+              onClick={handleSlotPickerBreak}
+            >
+              <Coffee className="h-4 w-4 text-orange-500 flex-shrink-0" />
+              Szünet
+            </button>
+          </div>
+        </>
+      )}
 
       {/* ── Create Appointment Dialog ── */}
       <Dialog open={!!creatingAppointment} onOpenChange={handleCloseCreateDialog}>
