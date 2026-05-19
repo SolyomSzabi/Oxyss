@@ -53,7 +53,11 @@ const TermsAndConditions = () => {
         <Section icon={FileText} title="1. Informații despre societate">
           <div className="bg-zinc-50 rounded-lg p-4 space-y-2">
             <p><strong>Denumire comercială:</strong> Oxy'ss Hair Studio</p>
-            <p><strong>Adresă:</strong> Str. Ratinului, nr. 959, Crasna, Sălaj, România</p>
+            <p><strong>Persoană juridică:</strong> OXY STYLE S.R.L.</p>
+            <p><strong>Formă juridică:</strong> Societate cu Răspundere Limitată (S.R.L.)</p>
+            <p><strong>Cod Unic de Înregistrare (CUI):</strong> 51184625</p>
+            <p><strong>Nr. Registrul Comerțului:</strong> J28/205/2025</p>
+            <p><strong>Sediu social:</strong> Sat Crasna, Comuna Crasna, Nr. 1444, Jud. Sălaj, România</p>
             <p><strong>Telefon:</strong> +40 74 116 1016</p>
             <p><strong>Email:</strong> oxyssstyle@gmail.com</p>
           </div>
