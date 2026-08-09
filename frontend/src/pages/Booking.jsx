@@ -16,6 +16,12 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Program utáni foglalás: csak ez a 2 service, külön áron, 19:00-21:00 között
+const AFTER_HOURS_PRICING = {
+  'b5a81fce-8d76-4837-a7df-46d658881e1c': 120, // Férfi Hajvágás
+  'ceae8f66-1620-4c46-9423-45f3ccb4481a': 145, // Férfi BRONZE (Hajvágás + Szakáll)
+};
+
 const Booking = () => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
@@ -27,6 +33,10 @@ const Booking = () => {
   const [barbers, setBarbers] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const [availableDates, setAvailableDates] = useState(null); // null = még nincs betöltve; Set('yyyy-MM-dd') = betöltve
+  const [availableDatesMonth, setAvailableDatesMonth] = useState(null); // { year, month } amire az availableDates vonatkozik
+  const [calendarMonth, setCalendarMonth] = useState(new Date());
+  const [loadingDates, setLoadingDates] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -40,6 +50,7 @@ const Booking = () => {
     barberServiceId: '',
     appointmentDate: null,
     appointmentTime: '',
+    isAfterHours: false,
     customerName: '',
     customerEmail: '',
     customerPhone: '',
@@ -60,6 +71,12 @@ const Booking = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (bookingData.barberId && bookingData.serviceId) {
+      fetchAvailableDates(bookingData.barberId, bookingData.serviceId, calendarMonth);
+    }
+  }, [bookingData.barberId, bookingData.serviceId, calendarMonth]);
 
   const fetchData = async () => {
     try {
@@ -110,6 +127,29 @@ const Booking = () => {
     }
   };
 
+  const fetchAvailableDates = async (barberId, serviceId, month) => {
+    if (!barberId || !serviceId) return;
+
+    try {
+      setLoadingDates(true);
+      const response = await axios.get(`${API}/barbers/${barberId}/available-dates`, {
+        params: {
+          year: month.getFullYear(),
+          month: month.getMonth() + 1,
+          service_id: serviceId
+        }
+      });
+      setAvailableDates(new Set(response.data.available_dates || []));
+      setAvailableDatesMonth({ year: month.getFullYear(), month: month.getMonth() });
+    } catch (err) {
+      console.error('Error fetching available dates:', err);
+      // Hiba esetén ne blokkoljunk semmit, csak a régi múlt/vasárnap szabályok maradnak érvényben
+      setAvailableDates(null);
+    } finally {
+      setLoadingDates(false);
+    }
+  };
+
   const handleServiceSelect = (barberServiceId) => {
     const barberService = services.find(s => s.id === barberServiceId);
     const newServiceId = barberService?.service_id || '';
@@ -119,8 +159,11 @@ const Booking = () => {
       serviceId: newServiceId,
       serviceName: getLocalizedField(barberService, 'service_name') || barberService?.service_name || '',
       barberServiceId: barberServiceId,
-      appointmentTime: ''
+      appointmentTime: '',
+      isAfterHours: false
     }));
+    setAvailableDates(null);
+    setAvailableDatesMonth(null);
     
     if (bookingData.barberId && bookingData.appointmentDate && newServiceId) {
       fetchAvailableSlots(bookingData.barberId, bookingData.appointmentDate, newServiceId);
@@ -145,6 +188,8 @@ const Booking = () => {
       serviceId: '',
       serviceName: ''
     }));
+    setAvailableDates(null);
+    setAvailableDatesMonth(null);
     
     fetchBarberServices(barberId);
   };
@@ -153,7 +198,8 @@ const Booking = () => {
     setBookingData(prev => ({
       ...prev,
       appointmentDate: date,
-      appointmentTime: ''
+      appointmentTime: '',
+      isAfterHours: false
     }));
     
     if (bookingData.barberId && bookingData.serviceId) {
@@ -162,10 +208,20 @@ const Booking = () => {
   };
 
   const handleTimeSelect = (time) => {
+    const slot = availableSlots.find(s => s.time === time);
     setBookingData(prev => ({
       ...prev,
-      appointmentTime: time
+      appointmentTime: time,
+      isAfterHours: slot?.after_hours || false
     }));
+  };
+
+  // Program utáni foglalásnál a különleges ár, egyébként a normál (barber-specifikus) ár
+  const getEffectivePrice = () => {
+    if (bookingData.isAfterHours && AFTER_HOURS_PRICING[bookingData.serviceId] !== undefined) {
+      return AFTER_HOURS_PRICING[bookingData.serviceId];
+    }
+    return selectedServiceDetails?.price;
   };
 
   const handleInputChange = (e) => {
@@ -438,10 +494,15 @@ const Booking = () => {
                           <div className="flex items-center space-x-2">
                             <Badge variant="secondary">{selectedServiceDetails.duration} {t('common.min')}</Badge>
                             <span className="font-semibold text-green-600">
-                              {selectedServiceDetails.price} {t('common.currency')}
+                              {getEffectivePrice()} {t('common.currency')}
                             </span>
                           </div>
                         </div>
+                        {bookingData.isAfterHours && (
+                          <p className="text-sm text-yellow-700">
+                            Program utáni időpont (19:00–21:00) – akciós ár
+                          </p>
+                        )}
                         {bookingData.barberName && (
                           <div className="flex items-center">
                             <span className="text-zinc-700">
@@ -464,17 +525,35 @@ const Booking = () => {
                           mode="single"
                           selected={bookingData.appointmentDate}
                           onSelect={handleDateSelect}
+                          month={calendarMonth}
+                          onMonthChange={setCalendarMonth}
                           disabled={(date) => {
                             const today = new Date();
                             today.setHours(0, 0, 0, 0);
                             const checkDate = new Date(date);
                             checkDate.setHours(0, 0, 0, 0);
-                            
-                            return checkDate < today || date.getDay() === 0;
+
+                            if (checkDate < today || date.getDay() === 0) return true;
+
+                            // Ha az adott hónapra már betöltöttük a szabad napokat, a teljesen
+                            // üres napok (se normál, se program utáni időpont) nem választhatók
+                            if (
+                              availableDates &&
+                              availableDatesMonth &&
+                              checkDate.getFullYear() === availableDatesMonth.year &&
+                              checkDate.getMonth() === availableDatesMonth.month
+                            ) {
+                              return !availableDates.has(format(checkDate, 'yyyy-MM-dd'));
+                            }
+
+                            return false;
                           }}
                           className="rounded-md border bg-white relative z-10"
                           data-testid="appointment-calendar"
                         />
+                        {loadingDates && (
+                          <p className="text-xs text-zinc-400 mt-2">Szabad napok betöltése…</p>
+                        )}
                       </div>
                     </div>
 
@@ -499,28 +578,61 @@ const Booking = () => {
                           <p>{t('booking.steps.step2.noSlots')}</p>
                         </div>
                       ) : (
-                        <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
-                          {availableSlots.map((slot) => (
-                            <Button
-                              key={slot.time}
-                              variant={bookingData.appointmentTime === slot.time ? "default" : "outline"}
-                              onClick={() => slot.available && handleTimeSelect(slot.time)}
-                              disabled={!slot.available}
-                              className={`text-sm ${
-                                bookingData.appointmentTime === slot.time
-                                  ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                                  : slot.available 
-                                    ? 'border-zinc-300 hover:bg-zinc-50'
-                                    : 'border-red-200 bg-red-50 text-red-400 cursor-not-allowed'
-                              }`}
-                              data-testid={`time-slot-${slot.time}`}
-                            >
-                              {slot.time}
-                              {!slot.available && (
-                                <span className="block text-xs mt-1">{t('booking.steps.step2.unavailable')}</span>
-                              )}
-                            </Button>
-                          ))}
+                        <div className="max-h-80 overflow-y-auto space-y-4">
+                          <div className="grid grid-cols-2 gap-2">
+                            {availableSlots.filter(slot => !slot.after_hours).map((slot) => (
+                              <Button
+                                key={slot.time}
+                                variant={bookingData.appointmentTime === slot.time ? "default" : "outline"}
+                                onClick={() => slot.available && handleTimeSelect(slot.time)}
+                                disabled={!slot.available}
+                                className={`text-sm ${
+                                  bookingData.appointmentTime === slot.time
+                                    ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                                    : slot.available 
+                                      ? 'border-zinc-300 hover:bg-zinc-50'
+                                      : 'border-red-200 bg-red-50 text-red-400 cursor-not-allowed'
+                                }`}
+                                data-testid={`time-slot-${slot.time}`}
+                              >
+                                {slot.time}
+                                {!slot.available && (
+                                  <span className="block text-xs mt-1">{t('booking.steps.step2.unavailable')}</span>
+                                )}
+                              </Button>
+                            ))}
+                          </div>
+
+                          {availableSlots.some(slot => slot.after_hours) && (
+                            <div>
+                              <p className="text-sm font-semibold text-yellow-700 mb-2 border-t pt-3">
+                                Program utáni időpontok (19:00–21:00) – {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
+                              </p>
+                              <div className="grid grid-cols-2 gap-2">
+                                {availableSlots.filter(slot => slot.after_hours).map((slot) => (
+                                  <Button
+                                    key={slot.time}
+                                    variant={bookingData.appointmentTime === slot.time ? "default" : "outline"}
+                                    onClick={() => slot.available && handleTimeSelect(slot.time)}
+                                    disabled={!slot.available}
+                                    className={`text-sm ${
+                                      bookingData.appointmentTime === slot.time
+                                        ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                                        : slot.available
+                                          ? 'border-yellow-400 hover:bg-yellow-50'
+                                          : 'border-red-200 bg-red-50 text-red-400 cursor-not-allowed'
+                                    }`}
+                                    data-testid={`time-slot-${slot.time}`}
+                                  >
+                                    {slot.time}
+                                    {!slot.available && (
+                                      <span className="block text-xs mt-1">{t('booking.steps.step2.unavailable')}</span>
+                                    )}
+                                  </Button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -549,7 +661,7 @@ const Booking = () => {
                       <p><strong>{t('booking.steps.step3.date')}:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>{t('booking.steps.step3.time')}:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>{t('booking.steps.step3.duration')}:</strong> {selectedServiceDetails?.duration} {t('booking.steps.step3.minutes')}</p>
-                      <p><strong>{t('booking.steps.step3.price')}:</strong> {selectedServiceDetails?.price} {t('common.currency')}</p>
+                      <p><strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}{bookingData.isAfterHours && ' (program utáni ár)'}</p>
                     </div>
                   </div>
 
@@ -698,11 +810,15 @@ const Booking = () => {
                         barberServiceId: '',
                         appointmentDate: null,
                         appointmentTime: '',
+                        isAfterHours: false,
                         customerName: '',
                         customerEmail: '',
                         customerPhone: '',
                         gdprConsent: false,
                       });
+                      setAvailableDates(null);
+                      setAvailableDatesMonth(null);
+                      setCalendarMonth(new Date());
                           
                       setTimeout(() => {
                         window.scrollTo({ top: 0, behavior: "smooth" });

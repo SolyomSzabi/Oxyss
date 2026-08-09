@@ -69,9 +69,9 @@ const AllAppointments = () => {
   const [slotPickerAnchor, setSlotPickerAnchor] = useState(null);
   // { barber_id, hour, minute, x, y }
 
-  const businessHours = Array.from({ length: 10 }, (_, i) => 9 + i);
+  const businessHours = Array.from({ length: 12 }, (_, i) => 9 + i); // 9:00 – 21:00 (program utáni sávval együtt)
   const timeSlots = [];
-  for (let hour = 9; hour < 19; hour++) {
+  for (let hour = 9; hour < 21; hour++) {
     for (let minute = 0; minute < 60; minute += 15) {
       timeSlots.push({ hour, minute });
     }
@@ -181,9 +181,9 @@ const AllAppointments = () => {
   const getCurrentTimePosition = () => {
     const hours = currentTime.getHours();
     const minutes = currentTime.getMinutes();
-    if (hours < 9 || hours >= 19) return null;
+    if (hours < 9 || hours >= 21) return null;
     const totalMinutes = (hours - 9) * 60 + minutes;
-    const totalBusinessMinutes = 10 * 60;
+    const totalBusinessMinutes = 12 * 60;
     return (totalMinutes / totalBusinessMinutes) * 100;
   };
 
@@ -197,8 +197,8 @@ const AllAppointments = () => {
   const getAppointmentPosition = (appointmentTime, duration) => {
     const [hours, minutes] = appointmentTime.split(':').map(Number);
     const startMinutes = (hours - 9) * 60 + minutes;
-    const top = (startMinutes / (10 * 60)) * 100;
-    const height = (duration / (10 * 60)) * 100;
+    const top = (startMinutes / (12 * 60)) * 100;
+    const height = (duration / (12 * 60)) * 100;
     return {
       top: `${top}%`,
       height: `calc(${height}% - 4px)`
@@ -211,8 +211,8 @@ const AllAppointments = () => {
     const startMinutes = (startHour - 9) * 60 + startMinute;
     const endMinutes = (endHour - 9) * 60 + endMinute;
     const duration = endMinutes - startMinutes;
-    const top = (startMinutes / (10 * 60)) * 100;
-    const height = (duration / (10 * 60)) * 100;
+    const top = (startMinutes / (12 * 60)) * 100;
+    const height = (duration / (12 * 60)) * 100;
     return {
       top: `${Math.max(0, top)}%`,
       height: `calc(${height}% - 2px)`
@@ -345,7 +345,7 @@ const AllAppointments = () => {
 
       const [startHour, startMinute] = creatingAppointment.time.split(':').map(Number);
       const startMinutes = startHour * 60 + startMinute;
-      const endOfDayMinutes = 19 * 60;
+      const endOfDayMinutes = 21 * 60; // program utáni sáv (19:00-21:00) is beleférjen
       let availableDuration = endOfDayMinutes - startMinutes;
 
       for (const apt of freshAppointments) {
