@@ -727,7 +727,7 @@ const AllAppointments = () => {
                         >
                           <div className={`appointment-card h-full rounded p-1 shadow-md border-l-4 border ${
                             isAfterHours
-                              ? 'bg-purple-50 border-purple-500 border-purple-200'
+                              ? 'bg-emerald-50 border-emerald-500 border-emerald-200'
                               : isPast
                                 ? 'bg-green-50 border-green-500 border-green-200'
                                 : 'bg-blue-50 border-blue-500 border-blue-200'
@@ -737,7 +737,7 @@ const AllAppointments = () => {
                                 <div className="font-bold text-zinc-900 truncate text-[9px] flex items-center gap-1">
                                   {formatTime(appointment.appointment_time || appointment.time)}
                                   {isAfterHours && (
-                                    <span className="bg-purple-600 text-white px-1 rounded text-[7px] leading-tight" title="Program utáni foglalás">
+                                    <span className="bg-emerald-600 text-white px-1 rounded text-[7px] leading-tight" title="Program utáni foglalás">
                                       PU
                                     </span>
                                   )}
@@ -758,7 +758,7 @@ const AllAppointments = () => {
                                   {appointment.status === 'confirmed' && <Edit2 className="w-2 h-2 text-zinc-500" />}
                                 </div>
                                 <div className={`px-1 py-0.5 rounded font-bold text-[8px] leading-none whitespace-nowrap ${
-                                  isAfterHours ? 'bg-purple-200 text-purple-900' : 'bg-yellow-100 text-yellow-800'
+                                  isAfterHours ? 'bg-emerald-200 text-emerald-900' : 'bg-yellow-100 text-yellow-800'
                                 }`}>
                                   {appointment.price || '?'} RON
                                 </div>
