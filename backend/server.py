@@ -17,6 +17,7 @@ from fastapi import Depends, HTTPException, status, BackgroundTasks
 import aiosmtplib
 from email.message import EmailMessage
 import httpx
+import calendar as calendar_module
 
 # Romanian timezone
 ROMANIAN_TZ = pytz.timezone('Europe/Bucharest')
@@ -28,6 +29,37 @@ def get_romanian_now():
 def get_romanian_today():
     """Get today's date in Romanian timezone"""
     return get_romanian_now().date()
+
+# ── Program utáni foglalás (after-hours booking) ──
+# Csak ez a 2 szolgáltatás foglalható a nyitvatartás után, külön áron.
+# Az ablak naponta eltérő: hétköznap a 19:00-kor záró program után, szombaton a 13:00-kor záró után.
+AFTER_HOURS_PRICING = {
+    "b5a81fce-8d76-4837-a7df-46d658881e1c": 120.0,  # Férfi Hajvágás / Men's Haircut
+    "ceae8f66-1620-4c46-9423-45f3ccb4481a": 145.0,  # Férfi BRONZE (Hajvágás + Szakáll)
+}
+
+def is_after_hours_service(service_id: str) -> bool:
+    return service_id in AFTER_HOURS_PRICING
+
+def get_after_hours_window(weekday: int):
+    """
+    Program utáni ablak a hét napja szerint (0=hétfő ... 6=vasárnap):
+    - Hétfő-Péntek: 19:00-21:00 (a 9:00-19:00-s program után)
+    - Szombat: 13:00-15:00 (a 9:00-13:00-s program után)
+    - Vasárnap: nincs (a szalon egész nap zárva, nincs "program")
+    """
+    if weekday in [0, 1, 2, 3, 4]:
+        return time(19, 0), time(21, 0)
+    elif weekday == 5:
+        return time(13, 0), time(15, 0)
+    return None
+
+def is_after_hours_time(appointment_date: date, t: time) -> bool:
+    window = get_after_hours_window(appointment_date.weekday())
+    if window is None:
+        return False
+    window_start, window_end = window
+    return window_start <= t < window_end
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -564,24 +596,85 @@ async def check_barber_availability(barber_id: str, date: str, start_time: str, 
     
     return {"available": True, "reason": "Time slot available"}
 
-@api_router.get("/barbers/{barber_id}/available-slots")
-async def get_available_slots(barber_id: str, date: str, service_id: str):
-    """Get all available time slots for a barber on a specific date for a specific service"""
-    
-    # Get service duration
+async def get_next_after_hours_slot(barber_id: str, date: str, duration: int):
+    """
+    A program utáni ablakban (napi bontásban: hétköznap 19:00-21:00, szombaton 13:00-15:00)
+    csak a legkorábbi szabad, hézag nélküli időpontot adja vissza - nem szabad tetszőleges
+    később kezdődő időpontot választani, hogy a fodrász ne várjon feleslegesen.
+    """
+    date_obj = datetime.fromisoformat(date).date()
+    window = get_after_hours_window(date_obj.weekday())
+    if window is None:
+        return None
+    window_start, window_end = window
+
+    existing_appointments = await db.appointments.find({
+        "barber_id": barber_id,
+        "appointment_date": date,
+        "status": {"$in": ["confirmed", "pending"]}
+    }, {"_id": 0}).to_list(1000)
+
+    existing_breaks = await db.barber_breaks.find({
+        "barber_id": barber_id,
+        "break_date": date
+    }, {"_id": 0}).to_list(1000)
+
+    # Az after-hours ablakkal ütköző foglaltságok (foglalás + szünet) összegyűjtése, rendezve
+    busy_intervals = []
+    for appointment in existing_appointments:
+        appt_start = datetime.strptime(appointment["appointment_time"][:5], '%H:%M').time()
+        appt_duration = appointment.get("duration", 45)
+        appt_end = (datetime.combine(date_obj, appt_start) + timedelta(minutes=appt_duration)).time()
+        if appt_start < window_end and appt_end > window_start:
+            busy_intervals.append((max(appt_start, window_start), min(appt_end, window_end)))
+
+    for break_item in existing_breaks:
+        break_start = datetime.strptime(break_item["start_time"][:5], '%H:%M').time()
+        break_end = datetime.strptime(break_item["end_time"][:5], '%H:%M').time()
+        if break_start < window_end and break_end > window_start:
+            busy_intervals.append((max(break_start, window_start), min(break_end, window_end)))
+
+    busy_intervals.sort(key=lambda iv: iv[0])
+
+    # Sorban végigmegyünk a foglaltságokon, és megkeressük az első hézag nélküli szabad helyet
+    candidate = window_start
+    for busy_start, busy_end in busy_intervals:
+        candidate_end = (datetime.combine(date_obj, candidate) + timedelta(minutes=duration)).time()
+        if candidate_end <= busy_start:
+            break  # elfér a candidate és a következő foglaltság között
+        if busy_end > candidate:
+            candidate = busy_end  # ugorjunk a foglaltság végére
+
+    candidate_end = (datetime.combine(date_obj, candidate) + timedelta(minutes=duration)).time()
+    if candidate_end > window_end:
+        return None  # nincs több hely az ablakban
+
+    # Ha a nap már elmúlt (mai napra), ne kínáljuk fel a múltbeli időpontot
+    if date == get_romanian_today().isoformat():
+        candidate_dt = ROMANIAN_TZ.localize(datetime.combine(date_obj, candidate))
+        if candidate_dt <= get_romanian_now():
+            return None
+
+    return candidate
+
+async def _compute_slots_for_date(barber_id: str, date: str, service_id: str):
+    """
+    Belső segédfüggvény: egy adott napra kiszámolja a duration-t és a slot listát
+    (normál nyitvatartás + a 2 kijelölt servicenél a program utáni egyetlen szabad hely).
+    Ezt használja mind a /available-slots, mind a /available-dates végpont.
+    """
     service = await db.services.find_one({"id": service_id}, {"_id": 0})
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
-    
+
     duration = service["duration"]
-    
-    # Convert date string
+
     date_obj = datetime.fromisoformat(date).date()
-    weekday = date_obj.weekday()  
+    weekday = date_obj.weekday()
     # 0 = hétfő, 5 = szombat, 6 = vasárnap
-    
+
     # Nyitvatartási idők meghatározása
-    if weekday in [0, 1, 2, 3, 4]:  
+    if weekday in [0, 1, 2, 3, 4]:
         # Hétfő – Péntek: 9:00 – 19:00
         business_start = time(9, 0)
         business_end = time(19, 0)
@@ -590,45 +683,85 @@ async def get_available_slots(barber_id: str, date: str, service_id: str):
         business_start = time(9, 0)
         business_end = time(13, 0)
     else:
-        # Vasárnap: zárva → nincs időpont
-        return {
-            "date": date,
-            "barber_id": barber_id,
-            "service_duration": duration,
-            "slots": []
-        }
-    
-    # Generate all possible 15-minute time slots
+        # Vasárnap: zárva → nincs időpont (a program utáni foglalás sem, mert nincs "program")
+        return duration, []
+
+    # Nyitvatartási időablakok: alap program (normál rács) + program utáni ablak
+    # (a program utáni ablaknál csak a legkorábbi szabad, hézag nélküli időpontot kínáljuk fel)
     slots = []
-    # date_obj = datetime.fromisoformat(date).date()
+
     current_time = datetime.combine(date_obj, business_start)
     end_time = datetime.combine(date_obj, business_end)
-    
     while current_time + timedelta(minutes=duration) <= end_time:
         slot_time = current_time.time()
-        
-        # Check availability for this slot
         availability = await check_barber_availability(
-            barber_id, 
-            date, 
-            slot_time.strftime('%H:%M'), 
+            barber_id,
+            date,
+            slot_time.strftime('%H:%M'),
             duration
         )
-        
         slots.append({
             "time": slot_time.strftime('%H:%M'),
             "available": availability["available"],
-            "reason": availability.get("reason", "")
+            "reason": availability.get("reason", ""),
+            "after_hours": False,
+            "price": None
         })
-        
-        # Move to next 15-minute slot
         current_time += timedelta(minutes=15)
-    
+
+    if is_after_hours_service(service_id):
+        next_slot = await get_next_after_hours_slot(barber_id, date, duration)
+        if next_slot is not None:
+            slots.append({
+                "time": next_slot.strftime('%H:%M'),
+                "available": True,
+                "reason": "",
+                "after_hours": True,
+                "price": AFTER_HOURS_PRICING[service_id]
+            })
+
+    return duration, slots
+
+@api_router.get("/barbers/{barber_id}/available-slots")
+async def get_available_slots(barber_id: str, date: str, service_id: str):
+    """Get all available time slots for a barber on a specific date for a specific service"""
+    duration, slots = await _compute_slots_for_date(barber_id, date, service_id)
     return {
         "date": date,
         "barber_id": barber_id,
         "service_duration": duration,
         "slots": slots
+    }
+
+@api_router.get("/barbers/{barber_id}/available-dates")
+async def get_available_dates(barber_id: str, year: int, month: int, service_id: str):
+    """
+    Egy adott hónapra visszaadja, mely napokon van legalább egy szabad időpont
+    (normál nyitvatartási vagy program utáni), hogy a naptárban a teljesen üres
+    napok ne legyenek kattinthatók.
+    """
+    # Ellenőrizzük, hogy a service létezik (404, ha nem)
+    service = await db.services.find_one({"id": service_id}, {"_id": 0})
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+
+    days_in_month = calendar_module.monthrange(year, month)[1]
+    today = get_romanian_today()
+
+    available_dates = []
+    for day in range(1, days_in_month + 1):
+        date_obj = date(year, month, day)
+        if date_obj < today:
+            continue
+        date_str = date_obj.isoformat()
+        _, slots = await _compute_slots_for_date(barber_id, date_str, service_id)
+        if any(s["available"] for s in slots):
+            available_dates.append(date_str)
+
+    return {
+        "barber_id": barber_id,
+        "service_id": service_id,
+        "available_dates": available_dates
     }
 
 # Appointments endpoints
@@ -756,7 +889,32 @@ async def create_appointment(appointment_data: AppointmentCreate, background_tas
     
     price = barber_service["price"] if barber_service else service["base_price"]
     duration = appointment_data.duration if appointment_data.duration else service["duration"]
-    
+    is_after_hours_booking = False
+
+    # Program utáni foglalás: külön ár, csak a kijelölt 2 servicenél és csak a program utáni
+    # ablakban (napi bontásban), és csak a ténylegesen soron következő (hézag nélküli) időpontra
+    if is_after_hours_service(appointment_data.service_id):
+        if is_after_hours_time(appointment_data.appointment_date, appointment_data.appointment_time):
+            next_slot = await get_next_after_hours_slot(
+                appointment_data.barber_id,
+                appointment_data.appointment_date.isoformat(),
+                duration
+            )
+            if next_slot is None or appointment_data.appointment_time != next_slot:
+                if next_slot:
+                    detail = f"This is not the next available after-hours slot (next: {next_slot.strftime('%H:%M')})"
+                else:
+                    detail = "This is not the next available after-hours slot (window is full)"
+                raise HTTPException(status_code=400, detail=detail)
+            price = AFTER_HOURS_PRICING[appointment_data.service_id]
+            is_after_hours_booking = True
+    elif is_after_hours_time(appointment_data.appointment_date, appointment_data.appointment_time):
+        # Más service nem foglalható a program utáni ablakban
+        raise HTTPException(
+            status_code=400,
+            detail="This service cannot be booked in the after-hours window"
+        )
+
     # Check availability
     availability = await check_barber_availability(
         appointment_data.barber_id,
@@ -786,6 +944,16 @@ async def create_appointment(appointment_data: AppointmentCreate, background_tas
     _ = await db.appointments.insert_one(doc)
 
 
+    # Program utáni foglalás jelzése az e-mailben (az ablak a nap szerint eltérő)
+    if is_after_hours_booking:
+        _ah_window = get_after_hours_window(appointment_data.appointment_date.weekday())
+        _ah_label = f"{_ah_window[0].strftime('%H:%M')}-{_ah_window[1].strftime('%H:%M')}" if _ah_window else ""
+    else:
+        _ah_label = ""
+    after_hours_note_ro = f"\n• Notă: Programare în afara programului normal ({_ah_label})" if is_after_hours_booking else ""
+    after_hours_note_hu = f"\n• Megjegyzés: Program utáni időpont ({_ah_label})" if is_after_hours_booking else ""
+    after_hours_note_en = f"\n• Note: After-hours appointment ({_ah_label})" if is_after_hours_booking else ""
+
     # AUTOMATIKUS EMAIL KÜLDÉS
     background_tasks.add_task(
         send_email,
@@ -805,7 +973,7 @@ Detaliile programării tale:
 • Dată: {appointment_obj.appointment_date}
 • Ora: {appointment_obj.appointment_time.strftime("%H:%M")}
 • Durată estimată: {appointment_obj.duration} minute
-• Preț: {appointment_obj.price} RON
+• Preț: {appointment_obj.price} RON{after_hours_note_ro}
 
 Dacă dorești să modifici sau să anulezi programarea, ne poți contacta la:
 Telefon: +40 74 116 1016
@@ -830,7 +998,7 @@ Az alábbiakban megtalálod a foglalásod részleteit:
 • Dátum: {appointment_obj.appointment_date}
 • Időpont: {appointment_obj.appointment_time.strftime("%H:%M")}
 • Várható időtartam: {appointment_obj.duration} perc
-• Ár: {appointment_obj.price} RON
+• Ár: {appointment_obj.price} RON{after_hours_note_hu}
 
 Amennyiben módosítanád vagy lemondanád az időpontot, kérjük vedd fel velünk a kapcsolatot:
 Telefon: +40 74 116 1016
@@ -855,7 +1023,7 @@ Here are the details of your appointment:
 • Date: {appointment_obj.appointment_date}
 • Time: {appointment_obj.appointment_time.strftime("%H:%M")}
 • Estimated duration: {appointment_obj.duration} minutes
-• Price: {appointment_obj.price} RON
+• Price: {appointment_obj.price} RON{after_hours_note_en}
 
 If you need to modify or cancel your appointment, feel free to contact us:
 Phone: +40 74 116 1016
