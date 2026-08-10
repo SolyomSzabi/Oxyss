@@ -250,8 +250,8 @@
     },
     "afterHours": {
       "badge": "DUPĂ PROGRAM",
-      "noteSelected": "{{window}} – poți programa și la această oră",
-      "slotsHeader": "{{window}} – disponibil și după program: {{price}} {{currency}}"
+      "noteSelected": "{{window}} – disponibil cu taxă suplimentară",
+      "slotsHeader": "{{window}} – disponibil cu taxă suplimentară"
     }
   },
   "common": {

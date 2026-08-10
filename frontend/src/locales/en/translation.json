@@ -250,8 +250,8 @@
     },
     "afterHours": {
       "badge": "AFTER HOURS",
-      "noteSelected": "{{window}} – still bookable at this time",
-      "slotsHeader": "{{window}} – also bookable after hours: {{price}} {{currency}}"
+      "noteSelected": "{{window}} – bookable with a surcharge",
+      "slotsHeader": "{{window}} – bookable with a surcharge"
     }
   },
   "common": {

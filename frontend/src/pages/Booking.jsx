@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, Clock, CheckCircle, Loader2 } from 'lucide-react';
+import { CalendarIcon, Clock, CheckCircle, Loader2, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -502,6 +502,11 @@ const Booking = () => {
                           </span>
                           <div className="flex items-center space-x-2">
                             <Badge variant="secondary">{selectedServiceDetails.duration} {t('common.min')}</Badge>
+                            {bookingData.isAfterHours && (
+                              <span className="text-sm text-zinc-400 line-through">
+                                {selectedServiceDetails.price} {t('common.currency')}
+                              </span>
+                            )}
                             <span className="font-semibold text-green-600">
                               {getEffectivePrice()} {t('common.currency')}
                             </span>
@@ -509,6 +514,7 @@ const Booking = () => {
                         </div>
                         {bookingData.isAfterHours && (
                           <div className="flex items-center gap-2 bg-green-100 border border-green-300 rounded px-3 py-2">
+                            <TrendingUp className="h-4 w-4 text-green-700 flex-shrink-0" />
                             <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
                               {t('booking.afterHours.badge')}
                             </span>
@@ -619,17 +625,24 @@ const Booking = () => {
 
                           {availableSlots.some(slot => slot.after_hours) && (
                             <div>
-                              <div className="flex items-center gap-2 mb-2 mt-3">
+                              <div className="flex items-center gap-2 mb-2 mt-3 flex-wrap">
+                                <TrendingUp className="h-4 w-4 text-green-700 flex-shrink-0" />
                                 <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
                                   {t('booking.afterHours.badge')}
                                 </span>
                                 <p className="text-sm font-semibold text-green-800">
-                                  {t('booking.afterHours.slotsHeader', {
-                                    window: getAfterHoursWindowLabel(bookingData.appointmentDate),
-                                    price: AFTER_HOURS_PRICING[bookingData.serviceId],
-                                    currency: t('common.currency')
-                                  })}
+                                  {t('booking.afterHours.slotsHeader', { window: getAfterHoursWindowLabel(bookingData.appointmentDate) })}
                                 </p>
+                                {selectedServiceDetails && (
+                                  <span className="text-sm">
+                                    <span className="text-zinc-400 line-through mr-1">
+                                      {selectedServiceDetails.price} {t('common.currency')}
+                                    </span>
+                                    <span className="font-bold text-green-800">
+                                      {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
+                                    </span>
+                                  </span>
+                                )}
                               </div>
                               <div className="grid grid-cols-2 gap-2">
                                 {availableSlots.filter(slot => slot.after_hours).map((slot) => (
@@ -685,10 +698,17 @@ const Booking = () => {
                       <p><strong>{t('booking.steps.step3.time')}:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>{t('booking.steps.step3.duration')}:</strong> {selectedServiceDetails?.duration} {t('booking.steps.step3.minutes')}</p>
                       <p>
-                        <strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}
+                        <strong>{t('booking.steps.step3.price')}:</strong>{' '}
+                        {bookingData.isAfterHours && (
+                          <span className="text-zinc-400 line-through mr-1">
+                            {selectedServiceDetails?.price} {t('common.currency')}
+                          </span>
+                        )}
+                        {getEffectivePrice()} {t('common.currency')}
                       </p>
                       {bookingData.isAfterHours && (
                         <div className="flex items-center gap-2 bg-green-100 border border-green-300 rounded px-3 py-2 mt-2">
+                          <TrendingUp className="h-4 w-4 text-green-700 flex-shrink-0" />
                           <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
                             {t('booking.afterHours.badge')}
                           </span>
@@ -829,9 +849,18 @@ const Booking = () => {
                       <p><strong>{t('booking.steps.step4.barber')}:</strong> {bookingData.barberName}</p>
                       <p><strong>{t('booking.steps.step4.date')}:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>{t('booking.steps.step4.time')}:</strong> {bookingData.appointmentTime}</p>
-                      <p><strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}</p>
+                      <p>
+                        <strong>{t('booking.steps.step3.price')}:</strong>{' '}
+                        {bookingData.isAfterHours && (
+                          <span className="text-zinc-400 line-through mr-1">
+                            {selectedServiceDetails?.price} {t('common.currency')}
+                          </span>
+                        )}
+                        {getEffectivePrice()} {t('common.currency')}
+                      </p>
                       {bookingData.isAfterHours && (
                         <div className="flex items-center gap-2 bg-green-100 border border-green-300 rounded px-3 py-2 mt-2">
+                          <TrendingUp className="h-4 w-4 text-green-700 flex-shrink-0" />
                           <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
                             {t('booking.afterHours.badge')}
                           </span>
