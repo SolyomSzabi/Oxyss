@@ -194,10 +194,19 @@ const AllAppointments = () => {
     return appointmentDate < currentTime;
   };
 
-  // Program utáni foglalás: a 2 speciális service csak 19:00-21:00 között foglalható, más (magasabb) áron
+  // Program utáni foglalás: a 2 speciális service más (magasabb) áron foglalható a program után.
+  // Az ablak naponta eltérő: hétköznap 19:00-21:00, szombaton 13:00-15:00 (a rövidebb nyitvatartás miatt).
   const isAfterHoursAppointment = (appointmentTime) => {
-    const [hours] = (appointmentTime || '').split(':').map(Number);
-    return hours >= 19 && hours < 21;
+    const [hours, minutes] = (appointmentTime || '').split(':').map(Number);
+    const totalMinutes = hours * 60 + (minutes || 0);
+    const dayOfWeek = new Date(selectedDate + "T00:00:00").getDay(); // 0 = vasárnap, 6 = szombat
+    if (dayOfWeek === 6) {
+      return totalMinutes >= 13 * 60 && totalMinutes < 15 * 60;
+    }
+    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+      return totalMinutes >= 19 * 60 && totalMinutes < 21 * 60;
+    }
+    return false;
   };
 
   const getAppointmentPosition = (appointmentTime, duration) => {

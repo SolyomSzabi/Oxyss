@@ -216,6 +216,15 @@ const Booking = () => {
     }));
   };
 
+  // Program utáni ablak szövege a kiválasztott nap alapján: hétköznap 19:00-21:00, szombaton 13:00-15:00
+  const getAfterHoursWindowLabel = (date) => {
+    if (!date) return '';
+    const day = date.getDay(); // 0 = vasárnap, 6 = szombat
+    if (day === 6) return '13:00–15:00';
+    if (day >= 1 && day <= 5) return '19:00–21:00';
+    return '';
+  };
+
   // Program utáni foglalásnál a különleges ár, egyébként a normál (barber-specifikus) ár
   const getEffectivePrice = () => {
     if (bookingData.isAfterHours && AFTER_HOURS_PRICING[bookingData.serviceId] !== undefined) {
@@ -504,7 +513,7 @@ const Booking = () => {
                               PROGRAM UTÁNI
                             </span>
                             <span className="text-sm text-purple-900">
-                              19:00–21:00 közötti időpont – emelt ár érvényes rá
+                              {getAfterHoursWindowLabel(bookingData.appointmentDate)} közötti időpont – emelt ár érvényes rá
                             </span>
                           </div>
                         )}
@@ -615,7 +624,7 @@ const Booking = () => {
                                   PROGRAM UTÁNI
                                 </span>
                                 <p className="text-sm font-semibold text-purple-800">
-                                  19:00–21:00 – emelt ár: {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
+                                  {getAfterHoursWindowLabel(bookingData.appointmentDate)} – emelt ár: {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
                                 </p>
                               </div>
                               <div className="grid grid-cols-2 gap-2">
@@ -680,7 +689,7 @@ const Booking = () => {
                             PROGRAM UTÁNI
                           </span>
                           <span className="text-purple-900">
-                            19:00–21:00 közötti időpont – emelt ár
+                            {getAfterHoursWindowLabel(bookingData.appointmentDate)} közötti időpont – emelt ár
                           </span>
                         </div>
                       )}
@@ -823,7 +832,7 @@ const Booking = () => {
                             PROGRAM UTÁNI
                           </span>
                           <span className="text-purple-900">
-                            19:00–21:00 közötti időpont – emelt ár
+                            {getAfterHoursWindowLabel(bookingData.appointmentDate)} közötti időpont – emelt ár
                           </span>
                         </div>
                       )}
