@@ -508,12 +508,12 @@ const Booking = () => {
                           </div>
                         </div>
                         {bookingData.isAfterHours && (
-                          <div className="flex items-center gap-2 bg-purple-100 border border-purple-300 rounded px-3 py-2">
-                            <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
-                              PROGRAM UTÁNI
+                          <div className="flex items-center gap-2 bg-green-100 border border-green-300 rounded px-3 py-2">
+                            <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                              {t('booking.afterHours.badge')}
                             </span>
-                            <span className="text-sm text-purple-900">
-                              {getAfterHoursWindowLabel(bookingData.appointmentDate)} közötti időpont – emelt ár érvényes rá
+                            <span className="text-sm text-green-900">
+                              {t('booking.afterHours.noteSelected', { window: getAfterHoursWindowLabel(bookingData.appointmentDate) })}
                             </span>
                           </div>
                         )}
@@ -619,12 +619,16 @@ const Booking = () => {
 
                           {availableSlots.some(slot => slot.after_hours) && (
                             <div>
-                              <div className="flex items-center gap-2 mb-2 border-t pt-3">
-                                <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
-                                  PROGRAM UTÁNI
+                              <div className="flex items-center gap-2 mb-2 mt-3">
+                                <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                  {t('booking.afterHours.badge')}
                                 </span>
-                                <p className="text-sm font-semibold text-purple-800">
-                                  {getAfterHoursWindowLabel(bookingData.appointmentDate)} – emelt ár: {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
+                                <p className="text-sm font-semibold text-green-800">
+                                  {t('booking.afterHours.slotsHeader', {
+                                    window: getAfterHoursWindowLabel(bookingData.appointmentDate),
+                                    price: AFTER_HOURS_PRICING[bookingData.serviceId],
+                                    currency: t('common.currency')
+                                  })}
                                 </p>
                               </div>
                               <div className="grid grid-cols-2 gap-2">
@@ -638,7 +642,7 @@ const Booking = () => {
                                       bookingData.appointmentTime === slot.time
                                         ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
                                         : slot.available
-                                          ? 'border-purple-400 hover:bg-purple-50'
+                                          ? 'border-green-400 hover:bg-green-50'
                                           : 'border-red-200 bg-red-50 text-red-400 cursor-not-allowed'
                                     }`}
                                     data-testid={`time-slot-${slot.time}`}
@@ -684,12 +688,12 @@ const Booking = () => {
                         <strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}
                       </p>
                       {bookingData.isAfterHours && (
-                        <div className="flex items-center gap-2 bg-purple-100 border border-purple-300 rounded px-3 py-2 mt-2">
-                          <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
-                            PROGRAM UTÁNI
+                        <div className="flex items-center gap-2 bg-green-100 border border-green-300 rounded px-3 py-2 mt-2">
+                          <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                            {t('booking.afterHours.badge')}
                           </span>
-                          <span className="text-purple-900">
-                            {getAfterHoursWindowLabel(bookingData.appointmentDate)} közötti időpont – emelt ár
+                          <span className="text-green-900">
+                            {t('booking.afterHours.noteSelected', { window: getAfterHoursWindowLabel(bookingData.appointmentDate) })}
                           </span>
                         </div>
                       )}
@@ -827,12 +831,12 @@ const Booking = () => {
                       <p><strong>{t('booking.steps.step4.time')}:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}</p>
                       {bookingData.isAfterHours && (
-                        <div className="flex items-center gap-2 bg-purple-100 border border-purple-300 rounded px-3 py-2 mt-2">
-                          <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
-                            PROGRAM UTÁNI
+                        <div className="flex items-center gap-2 bg-green-100 border border-green-300 rounded px-3 py-2 mt-2">
+                          <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                            {t('booking.afterHours.badge')}
                           </span>
-                          <span className="text-purple-900">
-                            {getAfterHoursWindowLabel(bookingData.appointmentDate)} közötti időpont – emelt ár
+                          <span className="text-green-900">
+                            {t('booking.afterHours.noteSelected', { window: getAfterHoursWindowLabel(bookingData.appointmentDate) })}
                           </span>
                         </div>
                       )}

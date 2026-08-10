@@ -247,6 +247,11 @@
       "nextStep": "Következő Lépés",
       "bookAppointment": "Időpont Foglalása",
       "booking": "Foglalás..."
+    },
+    "afterHours": {
+      "badge": "PROGRAM UTÁNI",
+      "noteSelected": "{{window}} – ekkor is foglalhatsz",
+      "slotsHeader": "{{window}} – program után is foglalható: {{price}} {{currency}}"
     }
   },
   "common": {

@@ -247,6 +247,11 @@
       "nextStep": "Pasul Următor",
       "bookAppointment": "Programează",
       "booking": "Se programează..."
+    },
+    "afterHours": {
+      "badge": "DUPĂ PROGRAM",
+      "noteSelected": "{{window}} – poți programa și la această oră",
+      "slotsHeader": "{{window}} – disponibil și după program: {{price}} {{currency}}"
     }
   },
   "common": {
