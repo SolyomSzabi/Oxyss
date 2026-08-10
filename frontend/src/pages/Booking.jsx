@@ -499,9 +499,14 @@ const Booking = () => {
                           </div>
                         </div>
                         {bookingData.isAfterHours && (
-                          <p className="text-sm text-yellow-700">
-                            Program utáni időpont (19:00–21:00) – akciós ár
-                          </p>
+                          <div className="flex items-center gap-2 bg-purple-100 border border-purple-300 rounded px-3 py-2">
+                            <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                              PROGRAM UTÁNI
+                            </span>
+                            <span className="text-sm text-purple-900">
+                              19:00–21:00 közötti időpont – emelt ár érvényes rá
+                            </span>
+                          </div>
                         )}
                         {bookingData.barberName && (
                           <div className="flex items-center">
@@ -605,9 +610,14 @@ const Booking = () => {
 
                           {availableSlots.some(slot => slot.after_hours) && (
                             <div>
-                              <p className="text-sm font-semibold text-yellow-700 mb-2 border-t pt-3">
-                                Program utáni időpontok (19:00–21:00) – {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
-                              </p>
+                              <div className="flex items-center gap-2 mb-2 border-t pt-3">
+                                <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                  PROGRAM UTÁNI
+                                </span>
+                                <p className="text-sm font-semibold text-purple-800">
+                                  19:00–21:00 – emelt ár: {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
+                                </p>
+                              </div>
                               <div className="grid grid-cols-2 gap-2">
                                 {availableSlots.filter(slot => slot.after_hours).map((slot) => (
                                   <Button
@@ -619,7 +629,7 @@ const Booking = () => {
                                       bookingData.appointmentTime === slot.time
                                         ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
                                         : slot.available
-                                          ? 'border-yellow-400 hover:bg-yellow-50'
+                                          ? 'border-purple-400 hover:bg-purple-50'
                                           : 'border-red-200 bg-red-50 text-red-400 cursor-not-allowed'
                                     }`}
                                     data-testid={`time-slot-${slot.time}`}
@@ -661,7 +671,19 @@ const Booking = () => {
                       <p><strong>{t('booking.steps.step3.date')}:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>{t('booking.steps.step3.time')}:</strong> {bookingData.appointmentTime}</p>
                       <p><strong>{t('booking.steps.step3.duration')}:</strong> {selectedServiceDetails?.duration} {t('booking.steps.step3.minutes')}</p>
-                      <p><strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}{bookingData.isAfterHours && ' (program utáni ár)'}</p>
+                      <p>
+                        <strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}
+                      </p>
+                      {bookingData.isAfterHours && (
+                        <div className="flex items-center gap-2 bg-purple-100 border border-purple-300 rounded px-3 py-2 mt-2">
+                          <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                            PROGRAM UTÁNI
+                          </span>
+                          <span className="text-purple-900">
+                            19:00–21:00 közötti időpont – emelt ár
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -794,6 +816,17 @@ const Booking = () => {
                       <p><strong>{t('booking.steps.step4.barber')}:</strong> {bookingData.barberName}</p>
                       <p><strong>{t('booking.steps.step4.date')}:</strong> {bookingData.appointmentDate && format(bookingData.appointmentDate, 'EEEE, MMMM d, yyyy')}</p>
                       <p><strong>{t('booking.steps.step4.time')}:</strong> {bookingData.appointmentTime}</p>
+                      <p><strong>{t('booking.steps.step3.price')}:</strong> {getEffectivePrice()} {t('common.currency')}</p>
+                      {bookingData.isAfterHours && (
+                        <div className="flex items-center gap-2 bg-purple-100 border border-purple-300 rounded px-3 py-2 mt-2">
+                          <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                            PROGRAM UTÁNI
+                          </span>
+                          <span className="text-purple-900">
+                            19:00–21:00 közötti időpont – emelt ár
+                          </span>
+                        </div>
+                      )}
                       <p><strong>{t('booking.steps.step4.customer')}:</strong> {bookingData.customerName}</p>
                       <p><strong>{t('booking.steps.step4.contact')}:</strong> {bookingData.customerEmail}</p>
                     </div>
