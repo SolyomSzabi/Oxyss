@@ -310,8 +310,30 @@ const BarberDashboard = () => {
     return format(date, 'MMM d, yyyy');
   };
 
-  const AppointmentCard = ({ appointment, showBarberName = false }) => (
-    <Card key={appointment.id} className="mb-4" data-testid={`appointment-card-${appointment.id}`}>
+  // Program utáni foglalás: hétköznap 19:00-21:00, szombaton 13:00-15:00 (a rövidebb nyitvatartás miatt)
+  const isAfterHoursAppointment = (appointment) => {
+    const appointmentTime = appointment.appointment_time || appointment.time;
+    if (!appointmentTime || !appointment.appointment_date) return false;
+    const [hours, minutes] = appointmentTime.split(':').map(Number);
+    const totalMinutes = hours * 60 + (minutes || 0);
+    const dayOfWeek = parseISO(appointment.appointment_date).getDay(); // 0 = vasárnap, 6 = szombat
+    if (dayOfWeek === 6) {
+      return totalMinutes >= 13 * 60 && totalMinutes < 15 * 60;
+    }
+    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+      return totalMinutes >= 19 * 60 && totalMinutes < 21 * 60;
+    }
+    return false;
+  };
+
+  const AppointmentCard = ({ appointment, showBarberName = false }) => {
+    const isAfterHours = isAfterHoursAppointment(appointment);
+    return (
+    <Card
+      key={appointment.id}
+      className={`mb-4 ${isAfterHours ? 'border-purple-400 border-2 bg-purple-50' : ''}`}
+      data-testid={`appointment-card-${appointment.id}`}
+    >
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-2">
@@ -321,6 +343,11 @@ const BarberDashboard = () => {
             </Badge>
             {showBarberName && (
               <Badge variant="outline">{appointment.barber_name}</Badge>
+            )}
+            {isAfterHours && (
+              <Badge className="bg-purple-600 text-white hover:bg-purple-600" title="Program utáni foglalás - emelt ár">
+                PROGRAM UTÁNI
+              </Badge>
             )}
           </div>
           <div className="text-right text-sm text-zinc-600">
@@ -337,7 +364,14 @@ const BarberDashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <h3 className="font-semibold text-zinc-900 mb-2">{appointment.service_name}</h3>
+            <h3 className="font-semibold text-zinc-900 mb-2">
+              {appointment.service_name}
+              {appointment.price != null && (
+                <span className={`ml-2 text-sm font-bold px-2 py-0.5 rounded ${isAfterHours ? 'bg-purple-200 text-purple-900' : 'bg-yellow-100 text-yellow-800'}`}>
+                  {appointment.price} RON
+                </span>
+              )}
+            </h3>
             <div className="space-y-1 text-sm text-zinc-600">
               <div className="flex items-center">
                 <User className="h-3 w-3 mr-2" />
@@ -493,6 +527,7 @@ const BarberDashboard = () => {
       </CardContent>
     </Card>
   );
+  };
 
   if (loading) {
     return (
