@@ -194,6 +194,12 @@ const AllAppointments = () => {
     return appointmentDate < currentTime;
   };
 
+  // Program utáni foglalás: a 2 speciális service csak 19:00-21:00 között foglalható, más (magasabb) áron
+  const isAfterHoursAppointment = (appointmentTime) => {
+    const [hours] = (appointmentTime || '').split(':').map(Number);
+    return hours >= 19 && hours < 21;
+  };
+
   const getAppointmentPosition = (appointmentTime, duration) => {
     const [hours, minutes] = appointmentTime.split(':').map(Number);
     const startMinutes = (hours - 9) * 60 + minutes;
@@ -701,19 +707,31 @@ const AllAppointments = () => {
                       );
                       const isPast = isAppointmentPast(appointment.appointment_time || appointment.time);
                       const duration = appointment.duration || 45;
+                      const isAfterHours = isAfterHoursAppointment(appointment.appointment_time || appointment.time);
 
                       return (
                         <div
                           key={appointment.id}
                           className="absolute w-full px-0.5 z-10"
                           style={{ top: position.top, height: position.height, minHeight: '48px' }}
-                          title={`${formatTime(appointment.appointment_time || appointment.time)} - ${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.price} RON - ${appointment.customer_phone}`}
+                          title={`${formatTime(appointment.appointment_time || appointment.time)} - ${appointment.customer_name} - ${appointment.service_name} (${duration} min) - ${appointment.price} RON${isAfterHours ? ' - PROGRAM UTÁNI FOGLALÁS' : ''} - ${appointment.customer_phone}`}
                         >
-                          <div className={`appointment-card h-full rounded p-1 shadow-md border-l-4 border ${isPast ? 'bg-green-50 border-green-500 border-green-200' : 'bg-blue-50 border-blue-500 border-blue-200'}`}>
+                          <div className={`appointment-card h-full rounded p-1 shadow-md border-l-4 border ${
+                            isAfterHours
+                              ? 'bg-purple-50 border-purple-500 border-purple-200'
+                              : isPast
+                                ? 'bg-green-50 border-green-500 border-green-200'
+                                : 'bg-blue-50 border-blue-500 border-blue-200'
+                          }`}>
                             <div className="h-full flex text-[9px] leading-tight">
                               <div className="flex-1 flex flex-col justify-between min-w-0 pr-1">
-                                <div className="font-bold text-zinc-900 truncate text-[9px]">
+                                <div className="font-bold text-zinc-900 truncate text-[9px] flex items-center gap-1">
                                   {formatTime(appointment.appointment_time || appointment.time)}
+                                  {isAfterHours && (
+                                    <span className="bg-purple-600 text-white px-1 rounded text-[7px] leading-tight" title="Program utáni foglalás">
+                                      PU
+                                    </span>
+                                  )}
                                 </div>
                                 <div className="font-semibold text-zinc-900 truncate">{appointment.customer_name}</div>
                                 <div className="text-zinc-700 truncate text-[8px]">{appointment.service_name}</div>
@@ -730,7 +748,9 @@ const AllAppointments = () => {
                                   {duration}m
                                   {appointment.status === 'confirmed' && <Edit2 className="w-2 h-2 text-zinc-500" />}
                                 </div>
-                                <div className="bg-yellow-100 px-1 py-0.5 rounded font-bold text-yellow-800 text-[8px] leading-none whitespace-nowrap">
+                                <div className={`px-1 py-0.5 rounded font-bold text-[8px] leading-none whitespace-nowrap ${
+                                  isAfterHours ? 'bg-purple-200 text-purple-900' : 'bg-yellow-100 text-yellow-800'
+                                }`}>
                                   {appointment.price || '?'} RON
                                 </div>
                                 <button
