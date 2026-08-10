@@ -257,3 +257,13 @@ html {
 .rdp-day_selected:hover {
   background-color: #B8941F !important;
 }
+
+/* A kiválasztott nap kiemelése - erős kontraszttal, hogy a szám mindig jól látható legyen */
+.day-selected-custom,
+.day-selected-custom:hover,
+.day-selected-custom:focus {
+  background-color: var(--rdp-accent-color) !important;
+  color: #1a1408 !important;
+  font-weight: 700 !important;
+  box-shadow: inset 0 0 0 2px #B8941F;
+}
