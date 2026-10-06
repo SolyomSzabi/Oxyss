@@ -798,7 +798,7 @@ async def get_barber_appointments(barber_id: str, status: Optional[str] = None, 
         if date_filter:
             query_filter["appointment_date"] = date_filter
     
-    appointments = await db.appointments.find(query_filter, {"_id": 0}).sort("appointment_date", 1).to_list(1000)
+    appointments = await db.appointments.find(query_filter, {"_id": 0}).sort("appointment_date", -1).to_list(1000)
     
     # Parse dates and times from MongoDB
     for appointment in appointments:
