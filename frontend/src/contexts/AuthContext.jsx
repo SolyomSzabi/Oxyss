@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { setUnauthorizedHandler } from '@/lib/api';
+import { clearSession, loadSession, saveSession } from '@/lib/session';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -11,63 +13,48 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [barberData, setBarberData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(loadSession);
 
-  useEffect(() => {
-    // Check if user is logged in on app load
-    const token = localStorage.getItem('barber_token');
-    const barberId = localStorage.getItem('barber_id');
-    const barberName = localStorage.getItem('barber_name');
-
-    if (token && barberId && barberName) {
-      setIsAuthenticated(true);
-      setBarberData({
-        id: barberId,
-        name: barberName,
-        token: token
-      });
-    } else {
-      setIsAuthenticated(false);
-      setBarberData(null);
-    }
-    setLoading(false);
+  const logout = useCallback(() => {
+    clearSession();
+    setSession(null);
   }, []);
 
-  const login = (token, barberId, barberName) => {
-    localStorage.setItem('barber_token', token);
-    localStorage.setItem('barber_id', barberId);
-    localStorage.setItem('barber_name', barberName);
-    
-    setIsAuthenticated(true);
-    setBarberData({
-      id: barberId,
-      name: barberName,
-      token: token
-    });
-  };
+  /** Store the response of POST /auth/login. */
+  const login = useCallback(({ access_token, barber_id, barber_name, expires_in }) => {
+    const next = {
+      token: access_token,
+      barberId: barber_id,
+      barberName: barber_name,
+      expiresAt: Date.now() + expires_in * 1000,
+    };
+    saveSession(next);
+    setSession(next);
+  }, []);
 
-  const logout = () => {
-    localStorage.removeItem('barber_token');
-    localStorage.removeItem('barber_id');
-    localStorage.removeItem('barber_name');
-    
-    setIsAuthenticated(false);
-    setBarberData(null);
-  };
+  // Any 401 on an authenticated request means the session is no longer valid.
+  useEffect(() => {
+    setUnauthorizedHandler(logout);
+    return () => setUnauthorizedHandler(null);
+  }, [logout]);
 
-  const value = {
-    isAuthenticated,
-    barberData,
-    login,
-    logout,
-    loading
-  };
+  // Log out automatically when the token expires.
+  useEffect(() => {
+    if (!session) return undefined;
+    const timer = setTimeout(logout, Math.max(0, session.expiresAt - Date.now()));
+    return () => clearTimeout(timer);
+  }, [session, logout]);
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      isAuthenticated: Boolean(session),
+      barberData: session ? { id: session.barberId, name: session.barberName } : null,
+      login,
+      logout,
+      loading: false,
+    }),
+    [session, login, logout],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

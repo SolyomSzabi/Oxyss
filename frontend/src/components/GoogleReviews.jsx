@@ -2,11 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Star, ExternalLink, Cookie } from "lucide-react";
-import axios from "axios";
 import { useCookieConsent } from "@/components/CookieBanner";
+import { api } from "@/lib/api";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 const PLACE_ID = "ChIJg-gd3M5lSEcRdneKQxwkmes";
 
 // ── Exportált hook – használható Home.jsx-ben is ──────────
@@ -25,8 +23,8 @@ export const useGoogleReviews = () => {
       return;
     }
 
-    axios
-      .get(`${API}/reviews`)
+    api
+      .get("/reviews")
       .then((res) => {
         setData(res.data);
         setLoading(false);

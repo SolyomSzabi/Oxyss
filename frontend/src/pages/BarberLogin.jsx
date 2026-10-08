@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,10 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Scissors, LogIn, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import axios from 'axios';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import { api } from '@/lib/api';
 
 const BarberLogin = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +18,7 @@ const BarberLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
 
   const handleInputChange = (e) => {
@@ -37,17 +35,16 @@ const BarberLogin = () => {
     setError('');
 
     try {
-      const response = await axios.post(`${API}/auth/login`, formData);
+      const response = await api.post('/auth/login', formData);
       
       if (response.data) {
         // Use the context login function to update state immediately
-        login(response.data.access_token, response.data.barber_id, response.data.barber_name);
+        login(response.data);
         
         toast.success(`Welcome back, ${response.data.barber_name}!`);
-        navigate('/barber-dashboard');
+        navigate(location.state?.from || '/barber-dashboard', { replace: true });
       }
     } catch (error) {
-      console.error('Login error:', error);
       if (error.response?.status === 401) {
         setError('Invalid email or password. Please try again.');
       } else {

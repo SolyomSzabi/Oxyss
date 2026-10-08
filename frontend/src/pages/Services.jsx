@@ -5,10 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Scissors, Loader2 } from 'lucide-react';
-import axios from 'axios';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import { api } from '@/lib/api';
 
 const Services = () => {
   const { t, i18n } = useTranslation();
@@ -34,10 +31,7 @@ const Services = () => {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      // First initialize services if needed
-      await axios.post(`${API}/init-services`);
-      // Then fetch all services
-      const response = await axios.get(`${API}/services`);
+      const response = await api.get('/services');
       
       // Remove duplicate services by name, keeping the first occurrence
       const uniqueServices = [];

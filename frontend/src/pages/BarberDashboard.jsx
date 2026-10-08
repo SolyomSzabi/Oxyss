@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -38,10 +38,7 @@ import {
 } from 'lucide-react';
 import { format, isToday, isTomorrow, parseISO } from 'date-fns';
 import { toast } from 'sonner';
-import axios from 'axios';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import { api, errorMessage } from '@/lib/api';
 
 const BarberDashboard = () => {
   const { isAuthenticated, barberData, logout } = useAuth();
@@ -70,19 +67,6 @@ const BarberDashboard = () => {
     }
   }, [isAuthenticated, barberData]);
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      navigate('/barber-login');
-    }
-  }, [isAuthenticated, loading, navigate]);
-
-  const getAuthHeaders = () => ({
-    headers: {
-      Authorization: `Bearer ${barberData?.token}`
-    }
-  });
-
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -98,10 +82,8 @@ const BarberDashboard = () => {
 
   const fetchTodayAppointments = async () => {
     try {
-      const response = await axios.get(`${API}/appointments/today`);
-      // Filter for current barber's appointments
-      const myAppointments = response.data.filter(apt => apt.barber_id === barberData.id);
-      setTodayAppointments(myAppointments);
+      const response = await api.get(`/barbers/${barberData.id}/appointments/today`);
+      setTodayAppointments(response.data);
     } catch (error) {
       console.error('Error fetching today appointments:', error);
     }
@@ -109,15 +91,10 @@ const BarberDashboard = () => {
 
   const fetchBarberAppointments = async () => {
     try {
-      const url = `${API}/barbers/${barberData.id}/appointments`;
-      const response = await axios.get(url, getAuthHeaders());
+      const response = await api.get(`/barbers/${barberData.id}/appointments`);
       setAppointments(response.data);
     } catch (error) {
-      console.error('Error fetching barber appointments:', error);
-      if (error.response?.status === 401) {
-        logout();
-        navigate('/barber-login');
-      } else {
+      if (error.response?.status !== 401) {
         toast.error('Failed to load appointments');
       }
     }
@@ -125,7 +102,7 @@ const BarberDashboard = () => {
 
   const fetchBarberBreaks = async () => {
     try {
-      const response = await axios.get(`${API}/barbers/${barberData.id}/breaks`, getAuthHeaders());
+      const response = await api.get(`/barbers/${barberData.id}/breaks`);
       setBreaks(response.data);
     } catch (error) {
       console.error('Error fetching barber breaks:', error);
@@ -135,9 +112,7 @@ const BarberDashboard = () => {
   const updateAppointmentStatus = async (appointmentId, newStatus) => {
     setUpdating(prev => ({ ...prev, [appointmentId]: true }));
     try {
-      await axios.patch(`${API}/appointments/${appointmentId}`, {
-        status: newStatus
-      }, getAuthHeaders());
+      await api.patch(`/appointments/${appointmentId}`, { status: newStatus });
       
       toast.success(`Appointment ${newStatus} successfully`);
       
@@ -155,10 +130,10 @@ const BarberDashboard = () => {
   const handleBreakSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API}/breaks`, {
+      await api.post('/breaks', {
         ...breakForm,
         barber_id: barberData.id
-      }, getAuthHeaders());
+      });
       
       toast.success('Break added successfully');
       setShowBreakForm(false);
@@ -171,7 +146,7 @@ const BarberDashboard = () => {
       await fetchBarberBreaks();
     } catch (error) {
       console.error('Error creating break:', error);
-      toast.error('Failed to create break');
+      toast.error(errorMessage(error, 'Failed to create break'));
     }
   };
 
@@ -179,7 +154,7 @@ const BarberDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this break?')) return;
     
     try {
-      await axios.delete(`${API}/breaks/${breakId}`, getAuthHeaders());
+      await api.delete(`/breaks/${breakId}`);
       toast.success('Break deleted successfully');
       await fetchBarberBreaks();
     } catch (error) {
@@ -214,11 +189,9 @@ const BarberDashboard = () => {
     try {
       setUpdating({ ...updating, [appointmentId]: true });
       
-      await axios.patch(
-        `${API}/appointments/${appointmentId}/duration`,
-        { duration: parseInt(newDuration) },
-        getAuthHeaders()
-      );
+      await api.patch(`/appointments/${appointmentId}/duration`, {
+        duration: parseInt(newDuration, 10)
+      });
 
       toast.success(`Duration updated to ${newDuration} minutes`);
       setEditingDuration({ ...editingDuration, [appointmentId]: false });
@@ -228,7 +201,7 @@ const BarberDashboard = () => {
       await fetchBarberAppointments();
     } catch (error) {
       console.error('Error updating duration:', error);
-      toast.error(error.response?.data?.detail || 'Failed to update duration');
+      toast.error(errorMessage(error, 'Failed to update duration'));
     } finally {
       setUpdating({ ...updating, [appointmentId]: false });
     }
@@ -252,10 +225,7 @@ const BarberDashboard = () => {
     try {
       setDeleting(true);
       
-      await axios.delete(
-        `${API}/appointments/${deletingAppointment.id}`,
-        getAuthHeaders()
-      );
+      await api.delete(`/appointments/${deletingAppointment.id}`);
 
       toast.success('Appointment deleted successfully');
       handleCloseDeleteDialog();
@@ -265,7 +235,7 @@ const BarberDashboard = () => {
       await fetchBarberAppointments();
     } catch (error) {
       console.error('Error deleting appointment:', error);
-      toast.error(error.response?.data?.detail || 'Failed to delete appointment');
+      toast.error(errorMessage(error, 'Failed to delete appointment'));
     } finally {
       setDeleting(false);
     }
@@ -538,10 +508,6 @@ const BarberDashboard = () => {
         </div>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null; // Will redirect via useEffect
   }
 
   return (

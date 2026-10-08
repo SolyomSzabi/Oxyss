@@ -11,16 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, Clock, CheckCircle, Loader2, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
-import axios from 'axios';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
-
-// Program utáni foglalás: csak ez a 2 service, külön áron, 19:00-21:00 között
-const AFTER_HOURS_PRICING = {
-  'b5a81fce-8d76-4837-a7df-46d658881e1c': 120, // Férfi Hajvágás
-  'ceae8f66-1620-4c46-9423-45f3ccb4481a': 145, // Férfi BRONZE (Hajvágás + Szakáll)
-};
+import { api, errorMessage } from '@/lib/api';
 
 const Booking = () => {
   const { t, i18n } = useTranslation();
@@ -51,6 +42,7 @@ const Booking = () => {
     appointmentDate: null,
     appointmentTime: '',
     isAfterHours: false,
+    afterHoursPrice: null,
     customerName: '',
     customerEmail: '',
     customerPhone: '',
@@ -81,15 +73,12 @@ const Booking = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      await axios.post(`${API}/init-data`);
-      
-      const barbersResponse = await axios.get(`${API}/barbers`);
+      const barbersResponse = await api.get('/barbers');
       setBarbers(barbersResponse.data);
       
       setServices([]);
     } catch (err) {
       setError('Failed to load booking data');
-      console.error('Error fetching data:', err);
     } finally {
       setLoading(false);
     }
@@ -97,10 +86,9 @@ const Booking = () => {
 
   const fetchBarberServices = async (barberId) => {
     try {
-      const response = await axios.get(`${API}/barbers/${barberId}/services`);
+      const response = await api.get(`/barbers/${barberId}/services`);
       setServices(response.data);
     } catch (err) {
-      console.error('Error fetching barber services:', err);
       toast.error('Failed to load services for selected barber');
       setServices([]);
     }
@@ -111,7 +99,7 @@ const Booking = () => {
     
     try {
       setLoadingSlots(true);
-      const response = await axios.get(`${API}/barbers/${barberId}/available-slots`, {
+      const response = await api.get(`/barbers/${barberId}/available-slots`, {
         params: {
           date: format(date, 'yyyy-MM-dd'),
           service_id: serviceId
@@ -119,7 +107,6 @@ const Booking = () => {
       });
       setAvailableSlots(response.data.slots || []);
     } catch (err) {
-      console.error('Error fetching available slots:', err);
       toast.error('Failed to load available time slots');
       setAvailableSlots([]);
     } finally {
@@ -132,7 +119,7 @@ const Booking = () => {
 
     try {
       setLoadingDates(true);
-      const response = await axios.get(`${API}/barbers/${barberId}/available-dates`, {
+      const response = await api.get(`/barbers/${barberId}/available-dates`, {
         params: {
           year: month.getFullYear(),
           month: month.getMonth() + 1,
@@ -142,7 +129,6 @@ const Booking = () => {
       setAvailableDates(new Set(response.data.available_dates || []));
       setAvailableDatesMonth({ year: month.getFullYear(), month: month.getMonth() });
     } catch (err) {
-      console.error('Error fetching available dates:', err);
       // Hiba esetén ne blokkoljunk semmit, csak a régi múlt/vasárnap szabályok maradnak érvényben
       setAvailableDates(null);
     } finally {
@@ -160,7 +146,8 @@ const Booking = () => {
       serviceName: getLocalizedField(barberService, 'service_name') || barberService?.service_name || '',
       barberServiceId: barberServiceId,
       appointmentTime: '',
-      isAfterHours: false
+      isAfterHours: false,
+      afterHoursPrice: null
     }));
     setAvailableDates(null);
     setAvailableDatesMonth(null);
@@ -199,7 +186,8 @@ const Booking = () => {
       ...prev,
       appointmentDate: date,
       appointmentTime: '',
-      isAfterHours: false
+      isAfterHours: false,
+      afterHoursPrice: null
     }));
     
     if (bookingData.barberId && bookingData.serviceId) {
@@ -212,7 +200,8 @@ const Booking = () => {
     setBookingData(prev => ({
       ...prev,
       appointmentTime: time,
-      isAfterHours: slot?.after_hours || false
+      isAfterHours: slot?.after_hours || false,
+      afterHoursPrice: slot?.after_hours ? slot.price : null
     }));
   };
 
@@ -227,8 +216,8 @@ const Booking = () => {
 
   // Program utáni foglalásnál a különleges ár, egyébként a normál (barber-specifikus) ár
   const getEffectivePrice = () => {
-    if (bookingData.isAfterHours && AFTER_HOURS_PRICING[bookingData.serviceId] !== undefined) {
-      return AFTER_HOURS_PRICING[bookingData.serviceId];
+    if (bookingData.isAfterHours && bookingData.afterHoursPrice != null) {
+      return bookingData.afterHoursPrice;
     }
     return selectedServiceDetails?.price;
   };
@@ -279,23 +268,23 @@ const Booking = () => {
         customer_email: bookingData.customerEmail,
         customer_phone: bookingData.customerPhone,
         service_id: bookingData.serviceId,
-        service_name: bookingData.serviceName,
         barber_id: bookingData.barberId,
-        barber_name: bookingData.barberName,
-        barber_service_id: bookingData.barberServiceId,
         appointment_date: format(bookingData.appointmentDate, 'yyyy-MM-dd'),
         appointment_time: bookingData.appointmentTime + ':00'
       };
 
-      const response = await axios.post(`${API}/appointments`, appointmentPayload);
+      const response = await api.post('/appointments', appointmentPayload);
       
       if (response.data) {
         toast.success('Appointment booked successfully! We\'ll contact you to confirm.');
         setCurrentStep(4);
       }
     } catch (error) {
-      console.error('Error booking appointment:', error);
-      toast.error('Failed to book appointment. Please try again.');
+      toast.error(errorMessage(error, 'Failed to book appointment. Please try again.'));
+      if (error.response?.status === 409) {
+        // The slot was taken in the meantime: refresh the list so the customer can pick another time.
+        fetchAvailableSlots(bookingData.barberId, bookingData.appointmentDate, bookingData.serviceId);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -639,7 +628,7 @@ const Booking = () => {
                                       {selectedServiceDetails.price} {t('common.currency')}
                                     </span>
                                     <span className="font-bold text-green-800">
-                                      {AFTER_HOURS_PRICING[bookingData.serviceId]} {t('common.currency')}
+                                      {availableSlots.find(slot => slot.after_hours)?.price} {t('common.currency')}
                                     </span>
                                   </span>
                                 )}
@@ -886,6 +875,7 @@ const Booking = () => {
                         appointmentDate: null,
                         appointmentTime: '',
                         isAfterHours: false,
+                        afterHoursPrice: null,
                         customerName: '',
                         customerEmail: '',
                         customerPhone: '',

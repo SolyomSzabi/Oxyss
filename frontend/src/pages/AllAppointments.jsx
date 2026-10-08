@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar, Clock, User, Loader2, ArrowLeft, Edit2, Save, X, Trash2, Plus, Coffee } from 'lucide-react';
 import { toast } from 'sonner';
-import axios from 'axios';
+import { api, errorMessage } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   Dialog,
@@ -24,9 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 const AllAppointments = () => {
   const navigate = useNavigate();
@@ -78,10 +75,6 @@ const AllAppointments = () => {
   }
 
   useEffect(() => {
-    if (!barberData) {
-      navigate('/barber-login');
-      return;
-    }
     fetchAllAppointments();
     fetchServices();
 
@@ -101,20 +94,18 @@ const AllAppointments = () => {
   const fetchAllAppointments = async (date = selectedDate) => {
     try {
       setLoading(true);
-      const barbersResponse = await axios.get(`${API}/barbers`);
+      const barbersResponse = await api.get('/barbers');
       const allBarbers = barbersResponse.data;
 
-      const token = localStorage.getItem('barber_token');
       const barbersWithData = await Promise.all(
         allBarbers.map(async (barber) => {
           try {
             const [appointmentsResponse, breaksResponse] = await Promise.all([
-              axios.get(`${API}/barbers/${barber.id}/appointments`, {
+              api.get(`/barbers/${barber.id}/appointments`, {
                 params: { date_from: date, date_to: date },
-                headers: { Authorization: `Bearer ${token}` },
               }),
-              axios.get(`${API}/barbers/${barber.id}/breaks`, {
-                headers: { Authorization: `Bearer ${token}` },
+              api.get(`/barbers/${barber.id}/breaks`, {
+                params: { date_from: date, date_to: date },
               }).catch(() => ({ data: [] }))
             ]);
 
@@ -147,7 +138,7 @@ const AllAppointments = () => {
 
   const fetchServices = async () => {
     try {
-      const response = await axios.get(`${API}/services`);
+      const response = await api.get('/services');
       setServices(response.data);
     } catch (err) {
       console.error('Error fetching services:', err);
@@ -289,17 +280,12 @@ const AllAppointments = () => {
     }
     try {
       setUpdating(true);
-      const token = localStorage.getItem('barber_token');
-      await axios.patch(
-        `${API}/appointments/${editingAppointment.id}/duration`,
-        { duration: durationValue },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.patch(`/appointments/${editingAppointment.id}/duration`, { duration: durationValue });
       toast.success(`Duration updated to ${durationValue} minutes`);
       handleCloseDurationDialog();
       await fetchAllAppointments();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to update duration');
+      toast.error(errorMessage(error, 'Failed to update duration'));
     } finally {
       setUpdating(false);
     }
@@ -312,15 +298,12 @@ const AllAppointments = () => {
     if (!deletingAppointment) return;
     try {
       setDeleting(true);
-      const token = localStorage.getItem('barber_token');
-      await axios.delete(`${API}/appointments/${deletingAppointment.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.delete(`/appointments/${deletingAppointment.id}`);
       toast.success('Appointment deleted successfully');
       handleCloseDeleteDialog();
       await fetchAllAppointments();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to delete appointment');
+      toast.error(errorMessage(error, 'Failed to delete appointment'));
     } finally {
       setDeleting(false);
     }
@@ -343,18 +326,14 @@ const AllAppointments = () => {
 
     try {
       setCreating(true);
-      const token = localStorage.getItem('barber_token');
       const selectedService = services.find(s => s.id.toString() === newAppointmentData.service_id.toString());
       if (!selectedService) { toast.error('Service not found'); return; }
       const selectedBarber = barbers.find(b => b.id === creatingAppointment.barber_id);
       if (!selectedBarber) { toast.error('Barber not found'); setCreating(false); return; }
 
-      const freshAppointmentsResponse = await axios.get(
-        `${API}/barbers/${creatingAppointment.barber_id}/appointments`,
-        {
-          params: { date_from: creatingAppointment.date, date_to: creatingAppointment.date },
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      const freshAppointmentsResponse = await api.get(
+        `/barbers/${creatingAppointment.barber_id}/appointments`,
+        { params: { date_from: creatingAppointment.date, date_to: creatingAppointment.date } }
       );
       const freshAppointments = freshAppointmentsResponse.data || [];
 
@@ -394,24 +373,16 @@ const AllAppointments = () => {
         durationAdjusted = true;
       }
 
-      const appointmentPayload = {
+      // Names and price are filled in by the server from the selected barber and service.
+      await api.post('/appointments', {
         barber_id: creatingAppointment.barber_id,
-        barber_name: selectedBarber.name,
         customer_name: newAppointmentData.customer_name.trim(),
         customer_phone: newAppointmentData.customer_phone.trim(),
         customer_email: newAppointmentData.customer_email.trim(),
         service_id: newAppointmentData.service_id.toString(),
-        service_name: selectedService.name,
         appointment_date: creatingAppointment.date,
         appointment_time: creatingAppointment.time,
         duration: actualDuration,
-        price: selectedService.price || 0,
-        status: 'confirmed'
-      };
-      if (newAppointmentData.notes.trim()) appointmentPayload.notes = newAppointmentData.notes.trim();
-
-      await axios.post(`${API}/appointments`, appointmentPayload, {
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
       });
 
       if (durationAdjusted) {
@@ -422,18 +393,7 @@ const AllAppointments = () => {
       handleCloseCreateDialog();
       await fetchAllAppointments();
     } catch (error) {
-      console.error('Error creating appointment:', error);
-      if (error.response?.data?.detail) {
-        if (typeof error.response.data.detail === 'string') {
-          toast.error(error.response.data.detail);
-        } else if (Array.isArray(error.response.data.detail)) {
-          toast.error(error.response.data.detail.map(e => `${e.loc?.join('.')}: ${e.msg}`).join(', '));
-        } else {
-          toast.error(JSON.stringify(error.response.data.detail));
-        }
-      } else {
-        toast.error('Failed to create appointment');
-      }
+      toast.error(errorMessage(error, 'Failed to create appointment'));
     } finally {
       setCreating(false);
     }
@@ -461,23 +421,21 @@ const AllAppointments = () => {
 
     try {
       setSavingBreak(true);
-      const token = localStorage.getItem('barber_token');
-      await axios.post(
-        `${API}/breaks`,
+      await api.post(
+        '/breaks',
         {
           barber_id: creatingBreak.barber_id,
           break_date: selectedDate,
           start_time: newBreakData.start_time,
           end_time: newBreakData.end_time,
           title: newBreakData.title.trim()
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
       toast.success('Break added successfully');
       handleCloseBreakDialog();
       await fetchAllAppointments();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to add break');
+      toast.error(errorMessage(error, 'Failed to add break'));
     } finally {
       setSavingBreak(false);
     }
@@ -497,15 +455,12 @@ const AllAppointments = () => {
     if (!deletingBreak) return;
     try {
       setDeleting(true);
-      const token = localStorage.getItem('barber_token');
-      await axios.delete(`${API}/breaks/${deletingBreak.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.delete(`/breaks/${deletingBreak.id}`);
       toast.success('Break deleted successfully');
       handleCloseDeleteBreakDialog();
       await fetchAllAppointments();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to delete break');
+      toast.error(errorMessage(error, 'Failed to delete break'));
     } finally {
       setDeleting(false);
     }

@@ -22,6 +22,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import ProtectedRoute from "./components/ProtectedRoute";
 import CookieBanner from "./components/CookieBanner";
 
 function App() {
@@ -40,8 +41,14 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/booking" element={<Booking />} />
               <Route path="/barber-login" element={<BarberLogin />} />
-              <Route path="/barber-dashboard" element={<BarberDashboard />} />
-              <Route path="/all-appointments" element={<AllAppointments />} />
+              <Route
+                path="/barber-dashboard"
+                element={<ProtectedRoute><BarberDashboard /></ProtectedRoute>}
+              />
+              <Route
+                path="/all-appointments"
+                element={<ProtectedRoute><AllAppointments /></ProtectedRoute>}
+              />
               {/* Legal pages */}
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/cookies" element={<CookiePolicy />} />
