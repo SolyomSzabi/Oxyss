@@ -41,7 +41,7 @@ const BarberLogin = () => {
       
       if (response.data) {
         // Use the context login function to update state immediately
-        login(response.data.access_token, response.data.barber_id, response.data.barber_name);
+        login(response.data.access_token, response.data.barber_id, response.data.barber_name, response.data.is_admin);
         
         toast.success(`Welcome back, ${response.data.barber_name}!`);
         navigate('/barber-dashboard');

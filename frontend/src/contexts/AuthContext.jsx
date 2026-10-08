@@ -20,13 +20,15 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('barber_token');
     const barberId = localStorage.getItem('barber_id');
     const barberName = localStorage.getItem('barber_name');
+    const isAdmin = localStorage.getItem('barber_is_admin') === 'true';
 
     if (token && barberId && barberName) {
       setIsAuthenticated(true);
       setBarberData({
         id: barberId,
         name: barberName,
-        token: token
+        token: token,
+        isAdmin: isAdmin
       });
     } else {
       setIsAuthenticated(false);
@@ -35,16 +37,18 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = (token, barberId, barberName) => {
+  const login = (token, barberId, barberName, isAdmin = false) => {
     localStorage.setItem('barber_token', token);
     localStorage.setItem('barber_id', barberId);
     localStorage.setItem('barber_name', barberName);
+    localStorage.setItem('barber_is_admin', String(isAdmin));
     
     setIsAuthenticated(true);
     setBarberData({
       id: barberId,
       name: barberName,
-      token: token
+      token: token,
+      isAdmin: isAdmin
     });
   };
 
@@ -52,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('barber_token');
     localStorage.removeItem('barber_id');
     localStorage.removeItem('barber_name');
+    localStorage.removeItem('barber_is_admin');
     
     setIsAuthenticated(false);
     setBarberData(null);
