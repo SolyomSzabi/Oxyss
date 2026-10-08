@@ -19,19 +19,19 @@ const Home = () => {
   const services = [
     {
       nameKey: 'home.services.preview.mensHaircut.name',
-      price: '70 RON',
+      price: 55,
       duration: '30 min',
       descriptionKey: 'home.services.preview.mensHaircut.description'
     },
     {
       nameKey: 'home.services.preview.mensBronze.name',
-      price: '95 RON',
-      duration: '45 min',
+      price: 115,
+      duration: '60 min',
       descriptionKey: 'home.services.preview.mensBronze.description'
     },
     {
       nameKey: 'home.services.preview.mensGold.name',
-      price: '170 RON',
+      price: 155,
       duration: '90 min',
       descriptionKey: 'home.services.preview.mensGold.description'
     }
@@ -152,7 +152,7 @@ const Home = () => {
                   <p className="text-zinc-600 mb-4">{t(service.descriptionKey)}</p>
                   <div className="flex justify-between items-center">
                     <span className="text-2xl font-bold text-yellow-600">
-                      {service.price}
+                      {t('services.priceFrom', { price: service.price, currency: t('common.currency') })}
                     </span>
                     <Link to="/booking">
                       <Button 

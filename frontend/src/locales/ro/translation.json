@@ -68,7 +68,7 @@
     "subtitle": "Descoperă gama noastră cuprinzătoare de servicii premium de îngrijire, fiecare realizat cu precizie și grijă pentru a-ți oferi aspectul perfect.",
     "bookAppointment": "Programează-te",
     "bookThisService": "Rezervă Acest Serviciu",
-    "from": "De la",
+    "priceFrom": "De la {{price}} {{currency}}",
     "tryAgain": "Încearcă Din Nou",
     "error": "Nu s-au putut încărca serviciile",
     "categories": {

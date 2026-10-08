@@ -68,7 +68,7 @@
     "subtitle": "Discover our comprehensive range of premium grooming services, each crafted with precision and care to give you the perfect look.",
     "bookAppointment": "Book Appointment",
     "bookThisService": "Book This Service",
-    "from": "From",
+    "priceFrom": "From {{price}} {{currency}}",
     "tryAgain": "Try Again",
     "error": "Failed to load services",
     "categories": {

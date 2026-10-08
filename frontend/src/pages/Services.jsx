@@ -148,7 +148,7 @@ const Services = () => {
                             </div>
                             <div className="flex items-center space-x-1">
                               <span className="text-lg font-bold text-yellow-600">
-                                {t('services.from')} {service.base_price} {t('common.currency')}
+                                {t('services.priceFrom', { price: service.base_price, currency: t('common.currency') })}
                               </span>
                             </div>
                           </div>

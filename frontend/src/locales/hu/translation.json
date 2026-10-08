@@ -68,7 +68,7 @@
     "subtitle": "Fedezd fel átfogó prémium ápolási szolgáltatásainkat, amelyek mindegyike precizitással és gondossággal készült, hogy tökéletes megjelenést biztosítsunk.",
     "bookAppointment": "Időpontfoglalás",
     "bookThisService": "Foglald Le Ezt a Szolgáltatást",
-    "from": "Már",
+    "priceFrom": "{{price}} {{currency}}-tól",
     "tryAgain": "Próbáld Újra",
     "error": "Nem sikerült betölteni a szolgáltatásokat",
     "categories": {
