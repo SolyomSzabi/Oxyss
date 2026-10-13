@@ -148,6 +148,10 @@ async def get_current_barber(credentials: HTTPAuthorizationCredentials = Depends
         raise credentials_exception
     return barber
 
+def can_manage_barber(current_barber: dict, barber_id: str) -> bool:
+    """A barber can manage their own data; an admin can manage every barber's data."""
+    return current_barber.get("is_admin", False) or current_barber["id"] == barber_id
+
 # Helper functions for MongoDB serialization
 def prepare_for_mongo(data):
     if isinstance(data.get('date'), date):
@@ -287,6 +291,7 @@ class Token(BaseModel):
     token_type: str
     barber_id: str
     barber_name: str
+    is_admin: bool = False
 
 class BarberBreak(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -377,7 +382,8 @@ async def login_barber(barber_login: BarberLogin):
         "access_token": access_token,
         "token_type": "bearer",
         "barber_id": barber_auth["barber_id"],
-        "barber_name": barber["name"]
+        "barber_name": barber["name"],
+        "is_admin": barber.get("is_admin", False)
     }
 
 @api_router.post("/auth/create", response_model=BarberAuth)
@@ -512,8 +518,8 @@ async def get_barber_breaks(barber_id: str, date_from: Optional[str] = None, dat
 
 @api_router.post("/breaks", response_model=BarberBreak)
 async def create_barber_break(break_data: BarberBreakCreate, current_barber: dict = Depends(get_current_barber)):
-    # Verify barber can only create breaks for themselves
-    if break_data.barber_id != current_barber["id"]:
+    # Verify barber can only create breaks for themselves (admins can for anyone)
+    if not can_manage_barber(current_barber, break_data.barber_id):
         raise HTTPException(status_code=403, detail="Can only create breaks for yourself")
     
     break_dict = break_data.model_dump()
@@ -532,7 +538,7 @@ async def delete_barber_break(break_id: str, current_barber: dict = Depends(get_
     if not break_item:
         raise HTTPException(status_code=404, detail="Break not found")
     
-    if break_item["barber_id"] != current_barber["id"]:
+    if not can_manage_barber(current_barber, break_item["barber_id"]):
         raise HTTPException(status_code=403, detail="Can only delete your own breaks")
     
     result = await db.barber_breaks.delete_one({"id": break_id})
@@ -1083,14 +1089,14 @@ async def update_appointment_status_body(appointment_id: str, status_update: Sta
 
 @api_router.patch("/appointments/{appointment_id}/duration")
 async def update_appointment_duration(appointment_id: str, duration_update: dict, current_barber: dict = Depends(get_current_barber)):
-    """Update appointment duration - only the assigned barber can reduce their appointment time"""
+    """Update appointment duration - only the assigned barber (or an admin) can reduce the appointment time"""
     
     # Verify appointment exists and belongs to this barber
     appointment = await db.appointments.find_one({"id": appointment_id}, {"_id": 0})
     if not appointment:
         raise HTTPException(status_code=404, detail="Appointment not found")
     
-    if appointment["barber_id"] != current_barber["id"]:
+    if not can_manage_barber(current_barber, appointment["barber_id"]):
         raise HTTPException(status_code=403, detail="Can only modify your own appointments")
     
     new_duration = duration_update.get("duration")
